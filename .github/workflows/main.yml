@@ -24,7 +24,7 @@ jobs:
       - name: Black Code Formatter
         uses: lgeiger/black-action@v1.0.1
         with:
-          args: "src"
+          args: "."
 
       - name: Prettier Code Formatter
         uses: creyD/prettier_action@v3.3
