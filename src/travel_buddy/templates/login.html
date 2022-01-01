@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<head>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/grid.min.css">
+	<title>Travel Buddy - Login</title>
+</head>
+
+<body>
+	<div class="container" id="container">
+		<div class="form-container log-in-container">
+			<form method="POST">
+				{% csrf_token %}
+				<h1>Login</h1>
+				<br />
+				
+				<input type="email" placeholder="Email" required autocomplete="email" />
+
+				<div style="width: 100%">
+					<input type="password" id="password" placeholder="Password" required />
+				</div>
+
+				<a href="/register">Don't have an account?</a>
+				<button>Login</button>
+			</form>
+		</div>
+		<div class="overlay-container">
+			<div class="overlay">
+				<div class="overlay-panel overlay-right">
+					<h1>Access your<br>Travel Buddy</h1>
+					<img style="height: 35vh; margin: 1em" src="https://cdn.pixabay.com/photo/2019/07/19/09/54/map-4348394_1280.png" alt="" />
+					<p>Quickly plan your journey, save money, and help the planet!</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
+
+<style>
+	@import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
+
+	* {
+		box-sizing: border-box;
+		transition: all 0.4s;
+	}
+
+	.input-icon {
+		position: absolute;
+		margin-top: 20px;
+		right: 60px;
+		cursor: pointer;
+		color: grey;
+		width: 20px;
+	}
+
+	.input-icon:hover {
+		color: black;
+	}
+
+	ul>li {
+		list-style-type: none;
+		float: left;
+	}
+
+	ul>li.active {
+		color: #333;
+	}
+
+	ul>li {
+		color: lightgray;
+	}
+
+	ul>li.active i {
+		color: #4caf50;
+	}
+
+	ul>li i {
+		color: lightgray;
+	}
+
+	body {
+		background: #f3e0e2;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		font-family: "Montserrat", sans-serif;
+		height: 100vh;
+		margin: -20px 0 50px;
+	}
+
+	h1 {
+		font-weight: bold;
+		margin: 0;
+	}
+
+	p {
+		font-size: 14px;
+		font-weight: 100;
+		line-height: 20px;
+		letter-spacing: 0.5px;
+		margin: 20px 0 30px;
+	}
+
+	span {
+		font-size: 12px;
+	}
+
+	a {
+		color: #ff4b2b;
+		font-size: 14px;
+		text-decoration: none;
+		margin: 15px 0;
+		font-weight: 500;
+	}
+
+	button {
+		border-radius: 20px;
+		border: 1px solid #ff4b2b;
+		background-color: #ff4b2b;
+		color: #ffffff;
+		font-size: 12px;
+		font-weight: bold;
+		padding: 12px 45px;
+		letter-spacing: 1px;
+		text-transform: uppercase;
+		transition: transform 80ms ease-in;
+	}
+
+	button:hover {
+		background-color: #ff816b;
+		cursor: pointer;
+	}
+
+	form {
+		background-color: #ffffff;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+		padding: 0 50px;
+		height: 100%;
+		text-align: center;
+	}
+
+	input {
+		background-color: #eee;
+		border: none;
+		padding: 12px 15px;
+		margin: 8px 0;
+		width: 100%;
+		outline: none;
+	}
+
+	input:focus {
+		background-color: #ddd;
+	}
+
+	.container {
+		background-color: #fff;
+		border-radius: 10px;
+		box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+		position: relative;
+		overflow: hidden;
+		width: 986px;
+		max-width: 100%;
+		min-height: 594px;
+	}
+
+	.form-container {
+		position: absolute;
+		top: 0;
+		height: 100%;
+	}
+
+	.log-in-container {
+		left: 0;
+		width: 50%;
+		z-index: 2;
+	}
+
+	.overlay-container {
+		position: absolute;
+		top: 0;
+		left: 50%;
+		width: 50%;
+		height: 100%;
+	}
+	
+	@media screen and (max-width: 600px){
+		.log-in-container {
+			top: 50%;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			width: 100%;
+			height: auto;
+		}
+		.overlay-container {
+			width: 100%;
+			height: 50%;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 50%;
+			height: auto;
+		}
+		.container {
+			height: 100%;
+		}
+		
+		.overlay-right img {
+			height: 25vh !important;
+		}
+	}
+
+	.overlay {
+		background: #ff416c;
+		background: -webkit-linear-gradient(to right, #ff4b2b, #ff416c);
+		background: linear-gradient(to right, #ff4b2b, #ff416c);
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-position: 0 0;
+		color: #ffffff;
+		position: relative;
+		left: -100%;
+		height: 100%;
+		width: 200%;
+	}
+
+	.overlay-panel {
+		position: absolute;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+		padding: 0 40px;
+		text-align: center;
+		top: 0;
+		height: 100%;
+		width: 50%;
+	}
+
+	.overlay-right {
+		right: 0;
+	}
+
+</style>
