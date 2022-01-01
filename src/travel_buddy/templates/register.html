@@ -1,136 +1,91 @@
 <!DOCTYPE html>
 <html>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <head>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
-    <title>Travel Buddy - Login</title>
+    <title>Travel Buddy - Register</title>
   </head>
 
   <body>
-    <div id="bigContainer">
-      <div class="container" id="container">
-        <div class="form-container log-in-container">
-          <form action="#">
-            <h1>Register</h1>
-            <br />
-            <input
-              type="text"
-              placeholder="First Name"
-              required
-              autocomplete="name"
-            />
-            <input
-              type="text"
-              placeholder="Last Name"
-              required
-              autocomplete="family-name"
-            />
+    <div class="container" id="container">
+      <div class="form-container log-in-container">
+        <form action="{% url 'register' %}" method="POST">
+          {% csrf_token %}
+          <h1>Register</h1>
+          <br />
+          <input
+            type="text"
+            placeholder="First Name"
+            required
+            autocomplete="name"
+          />
+          <input
+            type="text"
+            placeholder="Last Name"
+            required
+            autocomplete="family-name"
+          />
 
-            <input
-              type="email"
-              placeholder="Email"
-              required
-              autocomplete="email"
-            />
+          <input
+            type="email"
+            placeholder="Email"
+            required
+            autocomplete="email"
+          />
 
-            <div style="width: 100%">
-              <i
-                class="fa-solid fa-eye-slash input-icon"
-                id="toggle-password-view"
-              ></i>
-              <input
-                type="password"
-                id="password1"
-                placeholder="Password"
-                required
-              />
-            </div>
+          <div style="width: 100%">
+            <i
+              class="fa-solid fa-eye-slash input-icon"
+              id="toggle-password-view"
+            ></i>
             <input
               type="password"
-              id="password2"
-              placeholder="Repeat Password"
-              required
-            />
-
-            <ul id="password-check-icons">
-              <li>
-                <i class="fa-solid fa-circle-check"></i> Atleast 8 characters
-              </li>
-              <li>
-                <i class="fa-solid fa-circle-check"></i> Uppercase and lowercase
-                character
-              </li>
-              <li>
-                <i class="fa-solid fa-circle-check"></i> Atleast one number
-              </li>
-              <li>
-                <i class="fa-solid fa-circle-check"></i> Atleast one special
-                symbol
-              </li>
-              <li><i class="fa-solid fa-circle-check"></i> Passwords match</li>
-            </ul>
-
-            <a href="#" onclick='get("bigContainer").classList.add("active");'
-              >Already have an account?</a
-            >
-            <button>Register</button>
-          </form>
-        </div>
-        <div class="overlay-container">
-          <div class="overlay">
-            <div class="overlay-panel overlay-right">
-              <h1>Join Travel Buddy</h1>
-              <img
-                style="height: 35vh; margin: 1em"
-                src="https://cdn.pixabay.com/photo/2019/07/19/09/54/map-4348394_1280.png"
-                alt=""
-              />
-              <p>Quickly plan your journey, save money, and help the planet!</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="container" id="container2">
-        <div class="form-container log-in-container">
-          <form action="#">
-            <h1>Login</h1>
-            <br />
-            <input
-              type="email"
-              placeholder="Email"
-              required
-              autocomplete="email"
-            />
-
-            <input
-              type="password"
-              id="password"
+              id="password1"
               placeholder="Password"
               required
             />
+          </div>
+          <input
+            type="password"
+            id="password2"
+            placeholder="Repeat Password"
+            required
+          />
 
-            <a
-              href="#"
-              onclick='get("bigContainer").classList.remove("active");'
-              >Don't have an account?</a
-            >
-            <button>Login</button>
-          </form>
-        </div>
-        <div class="overlay-container">
-          <div class="overlay">
-            <div class="overlay-panel overlay-right">
-              <h1>Travel Buddy</h1>
-              <img
-                style="height: 35vh; margin: 1em"
-                src="https://cdn.pixabay.com/photo/2019/07/19/09/54/map-4348394_1280.png"
-                alt=""
-              />
-              <p>Quickly plan your journey, save money, and help the planet!</p>
-            </div>
+          <ul id="password-check-icons">
+            <li>
+              <i class="fa-solid fa-circle-check"></i> Atleast 8 characters
+            </li>
+            <li>
+              <i class="fa-solid fa-circle-check"></i> Uppercase and lowercase
+              character
+            </li>
+            <li><i class="fa-solid fa-circle-check"></i> Atleast one number</li>
+            <li>
+              <i class="fa-solid fa-circle-check"></i> Atleast one special
+              symbol
+            </li>
+            <li><i class="fa-solid fa-circle-check"></i> Passwords match</li>
+          </ul>
+
+          <a href="/login">Already have an account?</a>
+          <button>Register</button>
+        </form>
+      </div>
+      <div class="overlay-container">
+        <div class="overlay">
+          <div class="overlay-panel overlay-right">
+            <h1>Join Travel Buddy</h1>
+            <img
+              style="height: 35vh; margin: 1em"
+              src="https://cdn.pixabay.com/photo/2019/07/19/09/54/map-4348394_1280.png"
+              alt=""
+            />
+            <p>Quickly plan your journey, save money, and help the planet!</p>
           </div>
         </div>
       </div>
@@ -226,6 +181,8 @@
 
   ul > li {
     color: lightgray;
+    float: left;
+    clear: both;
   }
 
   ul > li.active i {
@@ -245,7 +202,6 @@
     font-family: "Montserrat", sans-serif;
     height: 100vh;
     margin: -20px 0 50px;
-    perspective: 1000px;
   }
 
   h1 {
@@ -315,31 +271,6 @@
     background-color: #ddd;
   }
 
-  #container2 {
-    position: absolute;
-    transform: rotateY(180deg);
-    backface-visibility: visible;
-    top: 0;
-    z-index: 4;
-  }
-
-  #container {
-    z-index: 8;
-    backface-visibility: hidden;
-  }
-
-  #bigContainer {
-    position: relative;
-  }
-
-  #bigContainer.active {
-    transform: rotateY(180deg);
-  }
-
-  #bigContainer.active #container {
-    z-index: 2;
-  }
-
   .container {
     background-color: #fff;
     border-radius: 10px;
@@ -349,7 +280,6 @@
     width: 986px;
     max-width: 100%;
     min-height: 594px;
-    transform-style: preserve-3d;
   }
 
   .form-container {
@@ -370,6 +300,31 @@
     left: 50%;
     width: 50%;
     height: 100%;
+  }
+
+  @media screen and (max-width: 700px) {
+    .log-in-container {
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: auto;
+    }
+    .overlay-container {
+      width: 100%;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: auto;
+      display: none;
+    }
+    .container {
+      height: 150vh;
+    }
+
+    .overlay-right img {
+      height: 25vh !important;
+    }
   }
 
   .overlay {
@@ -401,20 +356,5 @@
 
   .overlay-right {
     right: 0;
-  }
-
-  .social-container {
-    margin: 50px 0;
-  }
-
-  .social-container a {
-    border: 1px solid #dddddd;
-    border-radius: 50%;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 5px;
-    height: 40px;
-    width: 40px;
   }
 </style>
