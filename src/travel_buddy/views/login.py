@@ -1,11 +1,11 @@
 """
-Handles the view for the login system and related functionality.
+Handles the view for the user login system and related functionality.
 """
 
 import sqlite3
 
 from flask import Blueprint, redirect, render_template, request, session
-from passlib.hash import sha256_crypt
+import bcrypt
 
 login_blueprint = Blueprint(
     "login", __name__, static_folder="static", template_folder="templates"
@@ -35,14 +35,12 @@ def login_page() -> object:
 
     elif request.method == "POST":
         username = request.form["username"].lower()
-        password = request.form["password"]
+        password = request.form["password"].encode("utf-8")
 
         with sqlite3.connect("db.sqlite3") as conn:
             cur = conn.cursor()
             # Gets user from database using username.
-            cur.execute(
-                "SELECT password FROM account WHERE username=?;", (username,)
-            )
+            cur.execute("SELECT password FROM account WHERE username=?;", (username,))
             conn.commit()
             row = cur.fetchone()
 
@@ -53,7 +51,7 @@ def login_page() -> object:
             return redirect("/login")
 
         if hashed_password:
-            if sha256_crypt.verify(password, hashed_password):
+            if bcrypt.checkpw(password, hashed_password):
                 session["username"] = username
                 session["prev-page"] = request.url
                 return redirect("/profile")

@@ -1,8 +1,12 @@
+"""
+Handles the view for the user registration system and related functionality.
+"""
+
 import sqlite3
 
+import bcrypt
 import travel_buddy.helpers.helper_register as helper_register
 from flask import Blueprint, redirect, render_template, request, session
-from passlib.hash import sha256_crypt
 
 register_blueprint = Blueprint(
     "register", __name__, static_folder="static", template_folder="templates"
@@ -12,10 +16,12 @@ register_blueprint = Blueprint(
 @register_blueprint.route("/register", methods=["GET", "POST"])
 def register() -> object:
     """
-    Renders the user registration page.
+    Renders the user registration page, and registers an account using the
+    user's input from the registration form.
 
     Returns:
-        The web page for user registration.
+        GET: The web page for user registration.
+        POST: The web page based on whether the details provided were valid.
     """
     if request.method == "GET":
         errors = ""
@@ -59,7 +65,9 @@ def register() -> object:
             )
             # Registers the user if the details are valid.
             if valid is True:
-                hash_password = sha256_crypt.hash(password)
+                hash_password = bcrypt.hashpw(
+                    password.encode("utf-8"), bcrypt.gensalt()
+                )
                 cur.execute(
                     "INSERT INTO account (username, first_name, last_name, password, "
                     "verified) VALUES (?, ?, ?, ?, ?);",
