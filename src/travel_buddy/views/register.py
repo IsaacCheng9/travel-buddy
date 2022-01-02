@@ -9,7 +9,7 @@ register_blueprint = Blueprint(
 )
 
 
-@register_blueprint.route("/register", methods=["GET, POST"])
+@register_blueprint.route("/register", methods=["GET", "POST"])
 def register() -> object:
     """
     Renders the user registration page.
