@@ -13,28 +13,30 @@
   <body>
     <div class="container" id="container">
       <div class="form-container log-in-container">
-        <form action="{% url 'register' %}" method="POST">
-          {% csrf_token %}
+        <form action="/register" method="POST">
           <h1>Register</h1>
           <br />
           <input
             type="text"
+            name="first_name"
             placeholder="First Name"
             required
             autocomplete="name"
           />
           <input
             type="text"
+            name="last_name"
             placeholder="Last Name"
             required
             autocomplete="family-name"
           />
 
           <input
-            type="email"
-            placeholder="Email"
+            type="username"
+            name="username"
+            placeholder="Username"
             required
-            autocomplete="email"
+            autocomplete="username"
           />
 
           <div style="width: 100%">
@@ -43,6 +45,7 @@
               id="toggle-password-view"
             ></i>
             <input
+              name="password1"
               type="password"
               id="password1"
               placeholder="Password"
@@ -50,6 +53,7 @@
             />
           </div>
           <input
+            name="password2"
             type="password"
             id="password2"
             placeholder="Repeat Password"
