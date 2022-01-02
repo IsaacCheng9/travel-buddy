@@ -39,7 +39,7 @@ def register() -> object:
 
     elif request.method == "POST":
         # Obtains user input from the account registration form.
-        username = request.form["username"]
+        username = request.form["username"].lower()
         first_name = request.form["first_name"]
         last_name = request.form["last_name"]
         password = request.form["password1"]

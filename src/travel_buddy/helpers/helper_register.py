@@ -50,6 +50,10 @@ def validate_registration(
     if cur.fetchone() is not None:
         message.append("Username has already been registered!")
         valid = False
+    # Checks that the username exceed 20 characters.
+    if len(username) > 20:
+        message.append("Username exceeds 20 characters!")
+        valid = False
 
     # Checks that the first and last names don't exceed 20 characters.
     if len(first_name) > 20:
