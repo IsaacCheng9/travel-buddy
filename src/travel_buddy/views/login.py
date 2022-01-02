@@ -47,13 +47,13 @@ def login_page() -> object:
             row = cur.fetchone()
 
         if row:
-            hashed_psw = row[0]
+            hashed_password = row[0]
         else:
             session["error"] = ["login"]
             return redirect("/login")
 
-        if hashed_psw:
-            if sha256_crypt.verify(password, hashed_psw):
+        if hashed_password:
+            if sha256_crypt.verify(password, hashed_password):
                 session["username"] = username
                 session["prev-page"] = request.url
                 return redirect("/profile")
