@@ -70,20 +70,23 @@ def register() -> object:
                 )
                 # Creates the user account in the database.
                 cur.execute(
-                    "INSERT INTO account (username, first_name, last_name, password, "
-                    "verified) VALUES (?, ?, ?, ?, ?);",
+                    "INSERT INTO account (username, password, verified) "
+                    "VALUES (?, ?, ?);",
                     (
                         username,
-                        first_name,
-                        last_name,
                         hash_password,
                         verified,
                     ),
                 )
                 # Creates the user profile in the database.
                 cur.execute(
-                    "INSERT into profile (username) VALUES (?);",
-                    username,
+                    "INSERT into profile (username, first_name, last_name) "
+                    "VALUES (?, ?, ?);",
+                    (
+                        username,
+                        first_name,
+                        last_name,
+                    )
                 )
                 conn.commit()
 
