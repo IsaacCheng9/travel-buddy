@@ -68,6 +68,7 @@ def register() -> object:
                 hash_password = bcrypt.hashpw(
                     password.encode("utf-8"), bcrypt.gensalt()
                 )
+                # Creates the user account in the database.
                 cur.execute(
                     "INSERT INTO account (username, first_name, last_name, password, "
                     "verified) VALUES (?, ?, ?, ?, ?);",
@@ -78,6 +79,11 @@ def register() -> object:
                         hash_password,
                         verified,
                     ),
+                )
+                # Creates the user profile in the database.
+                cur.execute(
+                    "INSERT into profile (username) VALUES (?);",
+                    username,
                 )
                 conn.commit()
 
