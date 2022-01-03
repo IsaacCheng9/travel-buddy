@@ -23,6 +23,6 @@ jobs:
           args: "."
 
       - name: Commit changes made with code formatters
-      - uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Format Python code with Black
