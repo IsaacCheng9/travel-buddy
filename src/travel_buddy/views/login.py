@@ -12,7 +12,7 @@ login_blueprint = Blueprint(
 )
 
 
-@login_blueprint.route("/login", methods=["GET", "POST"])
+@login_blueprint.route("/", methods=["GET", "POST"])
 def login_page() -> object:
     """
     Renders the login page and validates the user's login details.
@@ -48,7 +48,7 @@ def login_page() -> object:
             hashed_password = row[0]
         else:
             session["error"] = ["login"]
-            return redirect("/login")
+            return redirect("/")
 
         if hashed_password:
             if bcrypt.checkpw(password, hashed_password):
@@ -57,7 +57,7 @@ def login_page() -> object:
                 return redirect("/profile")
             else:
                 session["error"] = ["login"]
-                return redirect("/login")
+                return redirect("/")
         else:
             session["error"] = ["login"]
-            return redirect("/login")
+            return redirect("/")
