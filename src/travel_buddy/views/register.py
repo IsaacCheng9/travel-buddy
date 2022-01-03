@@ -86,7 +86,7 @@ def register() -> object:
                         username,
                         first_name,
                         last_name,
-                    )
+                    ),
                 )
                 conn.commit()
 
