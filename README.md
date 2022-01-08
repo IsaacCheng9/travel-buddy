@@ -6,7 +6,8 @@
 
 ### Python Version
 
-The application has been developed and tested to work on Python 3.8 and onwards.
+The application has been developed and tested to work on _Python 3.8_ and
+onwards.
 
 ### Running the Application Locally
 
@@ -30,15 +31,10 @@ To run the application, you should follow the following steps:
 5. Run all tests with the command `python -m pytest`
 6. View test results in the terminal.
 
-## Contributing
+## Demo Instructions
 
-### GitHub Actions
+A demo database has been set up by default (`db.sqlite3`), with some sample user
+accounts to save the hassle of registration and make it easy to get started:
 
-After pushing to the repository, the workflow in GitHub Actions consists of:
-
-- Running Python code formatting with Black
-  - This ensures good readability and a consistent style across the codebase to
-    reduce diffs for code reviews.
-- Running all unit tests for Python with Pytest
-  - This helps prevent runtime errors in production.
-  - Test should be created and kept updated to facilitate this.
+- Username: `johndoe` | Password: `P@ssword01`
+- Username: `janedoe` | Password: `P@ssword01`
