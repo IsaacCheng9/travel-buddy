@@ -1,4 +1,10 @@
+"""
+Helper functions for the user registration system and related functionality.
+"""
+
 from typing import List, Tuple
+
+import bcrypt
 
 
 def validate_registration(
@@ -85,3 +91,50 @@ def validate_registration(
         valid = False
 
     return valid, message
+
+
+def hash_password(password: str) -> str:
+    """
+    Hashes the password using bcrypt.
+
+    Args:
+        password: The password input by the user in the form.
+
+    Returns:
+        The password after applying bcrypt hashing.
+    """
+    hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
+    return hashed_password
+
+
+def register_user(
+    cur, username: str, hashed_password: str, first_name: str, last_name: str
+) -> None:
+    """
+    Inserts the user in the 'account' and 'profile' tables in the database.
+
+    Args:
+        cur: Cursor for the SQLite database.
+        username: The username input by the user in the form.
+        hashed_password: The user's password after bcrypt hashing was applied.
+        first_name: The first name input by the user in the form.
+        last_name: The last name input by the user in the form.
+    """
+    # Creates the user account in the database.
+    cur.execute(
+        "INSERT INTO account (username, password, verified) " "VALUES (?, ?, ?);",
+        (
+            username,
+            hashed_password,
+            0,
+        ),
+    )
+    # Creates the user profile in the database.
+    cur.execute(
+        "INSERT into profile (username, first_name, last_name) " "VALUES (?, ?, ?);",
+        (
+            username,
+            first_name,
+            last_name,
+        ),
+    )

@@ -19,3 +19,26 @@ To run the application, you should follow the following steps:
    `pip install -e .`
 5. Run the application with the command: `python -m travel_buddy.app`
 6. Navigate to http://127.0.0.1:5000/ in your web browser.
+
+### Running Tests Locally
+
+1. Clone this GitHub repository.
+2. Ensure that you're in the root directory: `travel-buddy`
+3. Install the required Python libraries: `pip install -r requirements.txt`
+4. Install the code as a package on your local machine with the command:
+   `pip install -e .`
+5. Run all tests with the command `python -m pytest`
+6. View test results in the terminal.
+
+## Contributing
+
+### GitHub Actions
+
+After pushing to the repository, the workflow in GitHub Actions consists of:
+
+- Running Python code formatting with Black
+  - This ensures good readability and a consistent style across the codebase to
+    reduce diffs for code reviews.
+- Running all unit tests for Python with Pytest
+  - This helps prevent runtime errors in production.
+  - Test should be created and kept updated to facilitate this.
