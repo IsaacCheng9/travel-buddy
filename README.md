@@ -1,6 +1,7 @@
 # Travel Buddy
 
 [![code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+![CI](https://github.com/IsaacCheng9/travel-buddy/actions/workflows/main.yml/badge.svg)
 
 ## Installation
 
