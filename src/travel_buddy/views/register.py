@@ -50,7 +50,6 @@ def register() -> object:
         last_name = request.form["last_name"]
         password = request.form["password1"]
         password_confirm = request.form["password2"]
-        verified = 0
 
         # Connects to the database to perform validation.
         with sqlite3.connect("db.sqlite3") as conn:
@@ -65,31 +64,13 @@ def register() -> object:
             )
             # Registers the user if the details are valid.
             if valid is True:
-                hash_password = bcrypt.hashpw(
-                    password.encode("utf-8"), bcrypt.gensalt()
-                )
-                # Creates the user account in the database.
-                cur.execute(
-                    "INSERT INTO account (username, password, verified) "
-                    "VALUES (?, ?, ?);",
-                    (
-                        username,
-                        hash_password,
-                        verified,
-                    ),
-                )
-                # Creates the user profile in the database.
-                cur.execute(
-                    "INSERT into profile (username, first_name, last_name) "
-                    "VALUES (?, ?, ?);",
-                    (
-                        username,
-                        first_name,
-                        last_name,
-                    ),
+                # Hashes the password using bcrypt.
+                hashed_password = helper_register.hash_password(password)
+                # Inserts the user to the database tables.
+                helper_register.register_user(
+                    cur, username, hashed_password, first_name, last_name
                 )
                 conn.commit()
-
                 session["username"] = username
                 return redirect("/register")
             # Displays error message(s) stating why their details are invalid.
