@@ -1,5 +1,21 @@
 # Contributing to Travel Buddy
 
+## Reporting Issues
+
+We use
+[GitHub Projects as a Kanban board](https://github.com/IsaacCheng9/travel-buddy/projects/1)
+and integrate the GitHub Issues feature to track the progress of tasks and
+related pull requests - remember to link the issue to the Kanban board.
+
+Include the following information when reporting an issue (where possible):
+
+- Breakdown of the problem
+- Expected changes
+- Reproducible steps (if reporting a bug)
+
+The `high priority` label should be sparingly to avoid diluting its
+significance - overuse of this defeats the purpose of the label.
+
 ## Project Structure
 
 This project uses _Flask Blueprints_ to organise the application (more info
@@ -11,6 +27,17 @@ by what they do (further explanation using Facebook as an example
 Each Python file in the [/views/](src/travel_buddy/views) directory represents a
 blueprint, which is registered in the main application in
 [app.py](src/travel_buddy/app.py).
+
+## Pull Requests
+
+Include the following information when submitting a pull request:
+
+- Overview of the changes
+  - Where needed, add explanations about what the changes will effect and why
+    they were made.
+- Related issues
+  - Using the `This fixes {link to issue}` syntax will automatically close the
+    issue once merged.
 
 ## Merge Strategy
 
