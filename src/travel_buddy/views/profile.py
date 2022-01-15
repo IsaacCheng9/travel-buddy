@@ -60,5 +60,4 @@ def profile(username: str) -> object:
         else:
             first_name, last_name, is_driver, bio, photo = row[0]
 
-    # TODO: Add HTML template for profile page.
-    return f"<h1>{first_name} {last_name}'s Profile</h1>"
+    return render_template("profile.html")
