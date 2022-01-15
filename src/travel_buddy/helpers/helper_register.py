@@ -60,7 +60,7 @@ def validate_registration(
         message.append("First name exceeds 20 characters!")
         valid = False
     if len(last_name) > 20:
-        message.append("Last name  exceeds 20 characters!")
+        message.append("Last name exceeds 20 characters!")
         valid = False
     # Checks that the first and last names only contains valid characters.
     if not all(x.isalpha() or x.isspace() for x in first_name):

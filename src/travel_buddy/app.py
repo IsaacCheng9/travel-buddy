@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, request, session
+from flask import Flask, request, session, redirect
 
 import travel_buddy.views.register as register
 import travel_buddy.views.login as login
@@ -20,7 +20,7 @@ app.secret_key = (
 
 @app.route("/")
 def hello_world():
-    return "<p>Hello, World!</p>"
+    return redirect("/login")
 
 
 if __name__ == "__main__":
