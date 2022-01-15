@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, request, session
+from flask import Flask, request, session, redirect
 
 import travel_buddy.views.login as login
 import travel_buddy.views.register as register
