@@ -130,8 +130,7 @@ def register_user(
     )
     # Creates the user profile in the database.
     cur.execute(
-        "INSERT into profile (username, first_name, last_name) "
-        "VALUES (?, ?, ?);",
+        "INSERT into profile (username, first_name, last_name) " "VALUES (?, ?, ?);",
         (
             username,
             first_name,
