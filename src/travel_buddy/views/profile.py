@@ -48,6 +48,8 @@ def profile(username: str) -> object:
             (username,),
         )
         row = cur.fetchall()
+
+        # Returns an error if the user doesn't exist.
         if len(row) == 0:
             message.append(
                 f"The username {username} does not exist. Please ensure you "
@@ -57,7 +59,14 @@ def profile(username: str) -> object:
             session["error"] = message
             # TODO: Add HTML template for error page.
             return "<h1>Error</h1>"
-        else:
-            first_name, last_name, is_driver, bio, photo = row[0]
 
-    return render_template("profile.html")
+        first_name, last_name, is_driver, bio, photo = row[0]
+
+    return render_template(
+        "profile.html",
+        first_name=first_name,
+        last_name=last_name,
+        is_driver=is_driver,
+        bio=bio,
+        photo=photo,
+    )
