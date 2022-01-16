@@ -122,11 +122,10 @@ def register_user(
     """
     # Creates the user account in the database.
     cur.execute(
-        "INSERT INTO account (username, password, verified) " "VALUES (?, ?, ?);",
+        "INSERT INTO account (username, password) " "VALUES (?, ?);",
         (
             username,
             hashed_password,
-            0,
         ),
     )
     # Creates the user profile in the database.

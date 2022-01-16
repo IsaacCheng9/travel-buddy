@@ -24,19 +24,12 @@
 				</div>
 				<input name="password2" type="password" id="password2" placeholder="Repeat Password" required />
 
+				<!-- !important Need to figure out how to centre these properly. Text should be centred, but the tickbox  icons shouldn't. -->
 				<ul id="password-check-icons">
 					<li>
-						<i class="fa-solid fa-circle-check"></i> Atleast 8 characters
+						<i class="fa-solid fa-circle-check"></i> At least eight characters
 					</li>
-					<li>
-						<i class="fa-solid fa-circle-check"></i> Uppercase and lowercase
-						character
-					</li>
-					<li><i class="fa-solid fa-circle-check"></i> Atleast one number</li>
-					<li>
-						<i class="fa-solid fa-circle-check"></i> Atleast one special
-						symbol
-					</li>
+					<li><i class="fa-solid fa-circle-check"></i> At least one number</li>
 					<li><i class="fa-solid fa-circle-check"></i> Passwords match</li>
 				</ul>
 
@@ -78,22 +71,14 @@
 		if (this.value.length >= 8) {
 			list[0].classList.add("active");
 		}
-		if (this.value.match(/[A-Z]/) && this.value.match(/[a-z]/)) {
+		if (this.value.match(/[0-9]/)) {
 			list[1].classList.add("active");
 		}
-		if (this.value.match(/[0-9]/)) {
-			list[2].classList.add("active");
-		}
-
-		if (this.value.match(/[ !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/)) {
-			list[3].classList.add("active");
-		}
-
 		if (
 			get("password1").value == get("password2").value &&
 			get("password1").value.length > 0
 		) {
-			list[4].classList.add("active");
+			list[2].classList.add("active");
 		}
 	}
 

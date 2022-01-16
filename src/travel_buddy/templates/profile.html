@@ -5,7 +5,7 @@
 <head>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-	<title>Travel Buddy - Register</title>
+	<title>Travel Buddy - My Profile</title>
 </head>
 
 <body>
@@ -18,14 +18,19 @@
 					</div>
 				</div>
 				<div class="center" style="padding: 0.5em;">
-					James Smith <i class="check circle icon" style="color: #3498DB;"></i>
+					{{ first_name }} {{ last_name }}
+					{% if verified == 1 %}
+						<i class="check circle icon" style="color: #3498DB;"></i>
+					{% endif %}
 				</div>
-				<div class="center">
-					<div class="ui label basic"><i class="car icon"></i> Verified Driver</div>
-				</div>
+				{% if is_driver == 1 %}
+					<div class="center">
+						<div class="ui label basic"><i class="car icon"></i> Verified Driver</div>
+					</div>
+				{% endif %}
 				<br>
 				<div class="bio">
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum atque dolorem incidunt animi fugit sapiente numquam quos, ad distinctio rerum sed dolor, quia quae ratione dolores, praesentium fuga dicta rem.
+					{{ bio }}
 				</div>
 				<div class="ui horizontal divider"><i class="bar chart icon"></i> Top Statistics</div>
 				
