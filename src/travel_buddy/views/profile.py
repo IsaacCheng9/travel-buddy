@@ -43,8 +43,8 @@ def profile(username: str) -> object:
     with sqlite3.connect("db.sqlite3") as conn:
         cur = conn.cursor()
         cur.execute(
-            "SELECT first_name, last_name, is_driver, bio, photo FROM profile "
-            "WHERE username=?;",
+            "SELECT first_name, last_name, is_driver, bio, photo, verified "
+            "FROM profile WHERE username=?;",
             (username,),
         )
         row = cur.fetchall()
@@ -60,7 +60,7 @@ def profile(username: str) -> object:
             # TODO: Add HTML template for error page.
             return "<h1>Error</h1>"
 
-        first_name, last_name, is_driver, bio, photo = row[0]
+        first_name, last_name, is_driver, bio, photo, verified = row[0]
 
     return render_template(
         "profile.html",
@@ -69,4 +69,5 @@ def profile(username: str) -> object:
         is_driver=is_driver,
         bio=bio,
         photo=photo,
+        verified=verified,
     )
