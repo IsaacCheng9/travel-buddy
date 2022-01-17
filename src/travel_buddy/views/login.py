@@ -11,6 +11,7 @@ login_blueprint = Blueprint(
     "login", __name__, static_folder="static", template_folder="templates"
 )
 
+
 @login_blueprint.route("/", methods=["GET", "POST"])
 def login_page() -> object:
     """

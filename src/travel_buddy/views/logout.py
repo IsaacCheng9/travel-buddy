@@ -20,8 +20,8 @@ def logout() -> object:
     Returns:
         Redirect for the home page
     """
-    
+
     if "username" in session:
         session.pop("username", None)
-    
+
     return redirect("/")
