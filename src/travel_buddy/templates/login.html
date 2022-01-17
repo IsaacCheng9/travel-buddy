@@ -16,6 +16,8 @@
 				<h1>Login</h1>
 				<br />
 
+				{% if "error" in session %} <div class="error">Invalid username or password.</div> {% endif %}
+
 				<input type="username" name="username" placeholder="Username" required autocomplete="Username" />
 
 				<div style="width: 100%">
@@ -46,6 +48,11 @@
 	* {
 		box-sizing: border-box;
 		transition: all 0.4s;
+	}
+	
+	.error {
+		color: red;
+		font-weight: 600;
 	}
 
 	.input-icon {

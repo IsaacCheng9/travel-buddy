@@ -11,7 +11,6 @@ login_blueprint = Blueprint(
     "login", __name__, static_folder="static", template_folder="templates"
 )
 
-
 @login_blueprint.route("/", methods=["GET", "POST"])
 def login_page() -> object:
     """
@@ -49,7 +48,7 @@ def login_page() -> object:
             hashed_password = row[0]
         else:
             session["error"] = ["login"]
-            return redirect("/")
+            return render_template("login.html")
 
         if hashed_password:
             # Checks whether the password is correct for that user.
@@ -59,7 +58,7 @@ def login_page() -> object:
                 return redirect("/profile")
             else:
                 session["error"] = ["login"]
-                return redirect("/")
+                return render_template("login.html")
         else:
             session["error"] = ["login"]
-            return redirect("/")
+            return render_template("login.html")
