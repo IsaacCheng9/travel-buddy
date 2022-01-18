@@ -80,6 +80,8 @@ def routes() -> object:
         lowest, highest = helper_routes.safeget(
             details, sorted_keys[0], "distance", "text"
         ), helper_routes.safeget(details, sorted_keys[-1], "distance", "text")
-        range = f"{lowest} - {highest}"
+        distance_range = f"{lowest} - {highest}"
 
-        return render_template("routes.html", distance_range=range, details=details)
+        return render_template(
+            "routes.html", distance_range=distance_range, details=details
+        )
