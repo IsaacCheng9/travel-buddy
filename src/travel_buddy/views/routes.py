@@ -21,8 +21,8 @@ def routes() -> object:
         mode = request.form["mode"]
         print(origins, destinations, mode)
 
-        filename = "keys.json"
-        KEYS = helper_routes.get_keys(filename)
+        API_KEY_FILE = "keys.json"
+        KEYS = helper_routes.get_keys(API_KEY_FILE)
         map_client = helper_routes.generate_client(KEYS["google_maps"])
         route_data = {}
         route_data["walking"] = helper_routes.run_api(
