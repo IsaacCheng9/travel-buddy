@@ -2,3 +2,5 @@ Flask==2.0.2
 setuptools==58.5.3
 bcrypt==3.2.0
 pytest==6.2.5
+requests==2.26.0
+googlemaps==4.5.3
