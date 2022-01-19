@@ -1,11 +1,10 @@
 """
-Handles the view for the user registration system and related functionality.
+Handles the view for changing user settings and related functionality.
 """
 
-from fileinput import filename
 import sqlite3
-
 import uuid
+
 from flask import Blueprint, redirect, render_template, request, session
 
 settings_blueprint = Blueprint(
@@ -16,8 +15,7 @@ settings_blueprint = Blueprint(
 @settings_blueprint.route("/settings", methods=["GET", "POST"])
 def settings() -> object:
     """
-    Renders the user registration page, and registers an account using the
-    user's input from the registration form.
+    Renders the settings page, and makes the changes accordingly.
 
     Returns:
         GET: The web page for user profile settings.
@@ -41,15 +39,16 @@ def settings() -> object:
         bio=bio,
         first_name=first_name,
         last_name=last_name,
+        is_driver=is_driver,
         avatar=photo,
         verified=verified,
     )
 
 
 @settings_blueprint.route("/API_SetUserInfo", methods=["POST", "GET"])
-def API_SetBio() -> object:
+def edit_user_details() -> object:
     """
-    Modifies the user's bio and saves it to the database.
+    Modifies the user's profile details and saves it to the database.
 
     Returns:
         200 - OK
@@ -57,14 +56,14 @@ def API_SetBio() -> object:
         405 - METHOD NOT ALLOWED
     """
 
-    if not "username" in session:
+    if "username" not in session:
         return "403"
 
-    target_bio = request.args.get("bio")
+    new_bio = request.args.get("bio")
     new_f_name = request.args.get("f_name")
     new_l_name = request.args.get("l_name")
 
-    if len(target_bio) > 180:
+    if len(new_bio) > 180:
         return "405"
 
     if len(new_f_name) > 20 or " " in new_f_name:
@@ -77,14 +76,14 @@ def API_SetBio() -> object:
         cur = conn.cursor()
         cur.execute(
             "UPDATE profile SET bio=?, first_name=?, last_name=? WHERE username=?;",
-            (target_bio, new_f_name, new_l_name, session["username"]),
+            (new_bio, new_f_name, new_l_name, session["username"]),
         )
 
     return "200"
 
 
 @settings_blueprint.route("/API_UploadAvatar", methods=["POST", "GET"])
-def API_UploadAvatar() -> object:
+def edit_avatar() -> object:
     """
     Uploads the user's avatar to the database.
 
@@ -94,13 +93,11 @@ def API_UploadAvatar() -> object:
         405 - METHOD NOT ALLOWED (invalid file type)
     """
 
-    if not "username" in session:
+    if "username" not in session:
         return "403"
 
     file = request.files["file"]
-
     file_name = str(uuid.uuid4()) + ".png"
-
     file.save("static/avatars/" + file_name)
 
     with sqlite3.connect("db.sqlite3") as conn:
