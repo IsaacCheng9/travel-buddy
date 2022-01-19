@@ -12,6 +12,7 @@ from pytest_steps import test_steps
 
 DB_PATH = helper_general.get_database_path()
 
+
 @test_steps(
     "valid",
     "invalid_passengers",
@@ -92,7 +93,7 @@ def test_validate_carpool_ride():
     types of valid and invalid requests.
     """
     print(DB_PATH)
-    
+
     with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
         driver = "johndoe"
