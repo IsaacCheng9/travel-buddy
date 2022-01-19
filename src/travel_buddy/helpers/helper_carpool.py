@@ -34,6 +34,7 @@ def validate_carpool_request(
     # Validates that no required fields are missing.
     if (
         not num_passengers
+        and num_passengers != 0
         or not location_from
         or not location_to
         or not pickup_datetime
