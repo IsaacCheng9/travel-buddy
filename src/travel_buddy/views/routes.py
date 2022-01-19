@@ -95,7 +95,7 @@ def routes() -> object:
         try:
             sorted_keys = sorted(distances, key=distances.get)
             lowest, highest = helper_routes.safeget(
-                details, sorted_keys[0], "distance", "text"
+                details, "modes", sorted_keys[0], "distance", "text"
             ), helper_routes.safeget(
                 details, "modes", sorted_keys[-1], "distance", "text"
             )
