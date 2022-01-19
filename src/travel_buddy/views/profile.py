@@ -10,7 +10,6 @@ profile_blueprint = Blueprint(
     "profile", __name__, static_folder="static", template_folder="templates"
 )
 
-
 @profile_blueprint.route("/profile", methods=["GET"])
 def my_profile() -> object:
     """
@@ -68,6 +67,6 @@ def profile(username: str) -> object:
         last_name=last_name,
         is_driver=is_driver,
         bio=bio,
-        photo=photo,
+        avatar=photo,
         verified=verified,
     )
