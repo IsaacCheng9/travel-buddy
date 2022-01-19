@@ -7,8 +7,10 @@ import sqlite3
 from datetime import datetime
 
 import travel_buddy.helpers.helper_carpool as helper_carpool
+import travel_buddy.helpers.helper_general as helper_general
 from pytest_steps import test_steps
 
+DB_PATH = helper_general.get_database_path()
 
 @test_steps(
     "valid",
@@ -89,7 +91,9 @@ def test_validate_carpool_ride():
     Tests whether the validation for carpool rides works for different
     types of valid and invalid requests.
     """
-    with sqlite3.connect("db.sqlite3") as conn:
+    print(DB_PATH)
+    
+    with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
         driver = "johndoe"
         seats_available = 3
