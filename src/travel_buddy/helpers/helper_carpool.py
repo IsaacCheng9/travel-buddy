@@ -11,8 +11,7 @@ def validate_carpool_request(
     num_passengers: int,
     location_from: str,
     location_to: str,
-    datetime_from: str,
-    datetime_to: str,
+    pickup_datetime: datetime,
     description: str,
 ) -> Tuple[bool, List[str]]:
     """
@@ -22,8 +21,7 @@ def validate_carpool_request(
         num_passengers: The number of passengers in the carpool.
         location_from: The starting location of the carpool.
         location_to: The ending location of the carpool.
-        datetime_from: The starting time of the carpool.
-        datetime_to: The ending time of the carpool.
+        pickup_datetime: The datetime to get picked up for the carpool.
         description: A description of the carpool.
 
     Returns:
@@ -38,8 +36,7 @@ def validate_carpool_request(
         not num_passengers
         or not location_from
         or not location_to
-        or not datetime_from
-        or not datetime_to
+        or not pickup_datetime
     ):
         valid = False
         error_messages.append("Please fill in all required fields (marked with *).")
@@ -58,7 +55,11 @@ def validate_carpool_request(
         )
 
     # TODO: Validate that the user has entered a valid location for the journey to and from.
-    # TODO: Validate that the user has entered a future date and time for the journey to and from.
+
+    # Validates that the user has entered a future start date and time.
+    if pickup_datetime <= datetime.now():
+        valid = False
+        error_messages.append("The pickup time must be in the future.")
 
     return valid, error_messages
 
@@ -68,8 +69,7 @@ def add_carpool_request(
     num_passengers: int,
     location_from: str,
     location_to: str,
-    datetime_from: datetime,
-    datetime_to: datetime,
+    pickup_datetime: datetime,
     description: str,
 ) -> None:
     """
@@ -80,20 +80,18 @@ def add_carpool_request(
         num_passengers: The number of passengers in the carpool.
         location_from: The starting location of the carpool.
         location_to: The ending location of the carpool.
-        datetime_from: The starting time of the carpool.
-        datetime_to: The ending time of the carpool.
+        pickup_datetime: The datetime to get picked up for the carpool.
         description: A description of the carpool.
     """
     # Adds the carpool request to the database.
     cur.execute(
         "INSERT INTO carpool_request (num_passengers, location_from, location_to, "
-        "datetime_from, datetime_to, description) VALUES (?, ?, ?, ?, ?, ?);",
+        "pickup_datetime, description) VALUES (?, ?, ?, ?, ?);",
         (
             num_passengers,
             location_from,
             location_to,
-            datetime_from,
-            datetime_to,
+            pickup_datetime,
             description,
         ),
     )
