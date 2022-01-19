@@ -9,8 +9,8 @@ from typing import List, Tuple
 
 def validate_carpool_request(
     num_passengers: int,
-    location_from: str,
-    location_to: str,
+    starting_point: str,
+    destination: str,
     pickup_datetime: datetime,
     description: str,
 ) -> Tuple[bool, List[str]]:
@@ -19,8 +19,8 @@ def validate_carpool_request(
 
     Args:
         num_passengers: The number of passengers in the carpool.
-        location_from: The starting location of the carpool.
-        location_to: The ending location of the carpool.
+        starting_point: The starting location of the carpool.
+        destination: The end location of the carpool.
         pickup_datetime: The datetime to get picked up for the carpool.
         description: A description of the carpool.
 
@@ -35,8 +35,8 @@ def validate_carpool_request(
     if (
         not num_passengers
         and num_passengers != 0
-        or not location_from
-        or not location_to
+        or not starting_point
+        or not destination
         or not pickup_datetime
     ):
         valid = False
@@ -68,8 +68,8 @@ def validate_carpool_request(
 def add_carpool_request(
     cur,
     num_passengers: int,
-    location_from: str,
-    location_to: str,
+    starting_point: str,
+    destination: str,
     pickup_datetime: datetime,
     description: str,
 ) -> None:
@@ -79,19 +79,19 @@ def add_carpool_request(
     Args:
         cur: Cursor for the SQLite database.
         num_passengers: The number of passengers in the carpool.
-        location_from: The starting location of the carpool.
-        location_to: The ending location of the carpool.
+        starting_point: The starting location of the carpool.
+        destination: The end location of the carpool.
         pickup_datetime: The datetime to get picked up for the carpool.
         description: A description of the carpool.
     """
     # Adds the carpool request to the database.
     cur.execute(
-        "INSERT INTO carpool_request (num_passengers, location_from, location_to, "
+        "INSERT INTO carpool_request (num_passengers, starting_point, destination, "
         "pickup_datetime, description) VALUES (?, ?, ?, ?, ?);",
         (
             num_passengers,
-            location_from,
-            location_to,
+            starting_point,
+            destination,
             pickup_datetime,
             description,
         ),
