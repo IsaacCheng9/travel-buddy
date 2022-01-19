@@ -46,4 +46,4 @@ jobs:
           pip install -e .
 
       - name: Run unit tests with Pytest
-        run: python -m pytest
+        run: python -m pytest -v

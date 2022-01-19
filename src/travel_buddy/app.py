@@ -9,6 +9,7 @@ import travel_buddy.views.login as login
 import travel_buddy.views.register as register
 import travel_buddy.views.profile as profile
 import travel_buddy.views.settings as settings
+import travel_buddy.views.carpool as carpool
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, "db.sqlite3")
@@ -20,6 +21,8 @@ app.register_blueprint(profile.profile_blueprint, url_prefix="")
 app.register_blueprint(settings.settings_blueprint, url_prefix="")
 
 limiter = Limiter(app, key_func=get_remote_address, default_limits=["2 per second"])
+
+app.register_blueprint(carpool.carpool_blueprint, url_prefix="")
 
 app.url_map.strict_slashes = False
 app.secret_key = (
