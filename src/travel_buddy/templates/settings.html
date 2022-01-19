@@ -121,7 +121,7 @@
 		const f_name = document.getElementById("f_name").value;
 		const l_name = document.getElementById("l_name").value;
 
-		xhttp.open("POST", `/API_SetUserInfo?bio=${new_bio}&f_name=${f_name}&l_name=${l_name}`, true);
+		xhttp.open("POST", `/settings/edit-user-details?bio=${new_bio}&f_name=${f_name}&l_name=${l_name}`, true);
 		xhttp.send();
 
 		document.getElementById("update_bio_button").innerHTML = `<div class="ui active inline loader mini"></div>`;
@@ -135,7 +135,7 @@
 		let formData = new FormData();
 		formData.append("file", this.files[0]);
 
-		await fetch("/API_UploadAvatar", {
+		await fetch("/settings/upload-avatar", {
 			method: "POST",
 			body: formData
 		});

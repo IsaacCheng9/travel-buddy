@@ -22,7 +22,7 @@ def settings() -> object:
         POST: Modify the user settings and save them.
     """
 
-    if not "username" in session:
+    if "username" not in session:
         return redirect("/")
 
     with sqlite3.connect("db.sqlite3") as conn:
@@ -45,7 +45,7 @@ def settings() -> object:
     )
 
 
-@settings_blueprint.route("/API_SetUserInfo", methods=["POST", "GET"])
+@settings_blueprint.route("/settings/edit-user-details", methods=["POST", "GET"])
 def edit_user_details() -> object:
     """
     Modifies the user's profile details and saves it to the database.
@@ -82,7 +82,7 @@ def edit_user_details() -> object:
     return "200"
 
 
-@settings_blueprint.route("/API_UploadAvatar", methods=["POST", "GET"])
+@settings_blueprint.route("/settings/upload-avatar", methods=["POST", "GET"])
 def edit_avatar() -> object:
     """
     Uploads the user's avatar to the database.
