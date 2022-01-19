@@ -112,6 +112,6 @@ def routes() -> object:
             "routes.html",
             distance_range=distance_range,
             details=details,
-            origin=address2,
-            destination=address1,
+            origin=address1,
+            destination=address2,
         )
