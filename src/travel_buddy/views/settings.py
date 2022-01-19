@@ -36,12 +36,15 @@ def settings() -> object:
         )
         first_name, last_name, is_driver, bio, photo, verified = cur.fetchone()
 
-    return render_template("settings.html",
-                            bio=bio,
-                            first_name=first_name,
-                            last_name=last_name,
-                            avatar=photo,
-                            verified = verified)
+    return render_template(
+        "settings.html",
+        bio=bio,
+        first_name=first_name,
+        last_name=last_name,
+        avatar=photo,
+        verified=verified,
+    )
+
 
 @settings_blueprint.route("/API_SetUserInfo", methods=["POST", "GET"])
 def API_SetBio() -> object:
@@ -60,23 +63,25 @@ def API_SetBio() -> object:
     target_bio = request.args.get("bio")
     new_f_name = request.args.get("f_name")
     new_l_name = request.args.get("l_name")
-    
+
     if len(target_bio) > 180:
         return "405"
 
     if len(new_f_name) > 20 or " " in new_f_name:
         return "405"
-        
+
     if len(new_l_name) > 20 or " " in new_l_name:
         return "405"
 
     with sqlite3.connect("db.sqlite3") as conn:
         cur = conn.cursor()
         cur.execute(
-            "UPDATE profile SET bio=?, first_name=?, last_name=? WHERE username=?;", (target_bio, new_f_name, new_l_name, session["username"])
+            "UPDATE profile SET bio=?, first_name=?, last_name=? WHERE username=?;",
+            (target_bio, new_f_name, new_l_name, session["username"]),
         )
 
     return "200"
+
 
 @settings_blueprint.route("/API_UploadAvatar", methods=["POST", "GET"])
 def API_UploadAvatar() -> object:
@@ -91,7 +96,7 @@ def API_UploadAvatar() -> object:
 
     if not "username" in session:
         return "403"
-        
+
     file = request.files["file"]
 
     file_name = str(uuid.uuid4()) + ".png"
@@ -101,7 +106,8 @@ def API_UploadAvatar() -> object:
     with sqlite3.connect("db.sqlite3") as conn:
         cur = conn.cursor()
         cur.execute(
-            "UPDATE profile SET photo=? WHERE username=?;", (file_name, session["username"])
+            "UPDATE profile SET photo=? WHERE username=?;",
+            (file_name, session["username"]),
         )
 
     return "200"
