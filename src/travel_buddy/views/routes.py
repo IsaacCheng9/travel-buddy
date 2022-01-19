@@ -27,7 +27,7 @@ def routes() -> object:
         KEYS = helper_routes.get_keys(API_KEY_FILE)
         map_client = helper_routes.generate_client(KEYS["google_maps"])
         if map_client is None:
-            #TODO error
+            # TODO error
             return
         route_data = {}
         route_data["walking"] = helper_routes.run_api(
@@ -44,8 +44,12 @@ def routes() -> object:
         )
 
         details = {
-            "origin": helper_routes.safeget(route_data, "walking", "origin_addresses", 0),
-            "destination": helper_routes.safeget(route_data, "walking", "destination_addresses", 0),
+            "origin": helper_routes.safeget(
+                route_data, "walking", "origin_addresses", 0
+            ),
+            "destination": helper_routes.safeget(
+                route_data, "walking", "destination_addresses", 0
+            ),
             "modes": {
                 "walking": {
                     "distance": helper_routes.safeget(
@@ -78,24 +82,36 @@ def routes() -> object:
                     "duration": helper_routes.safeget(
                         route_data, "transit", "rows", 0, "elements", 0, "duration"
                     ),
-                }
-            }
+                },
+            },
         }
         print(details)
 
-        distances = {k: helper_routes.safeget(v, "distance", "value") for k, v in helper_routes.safeget(details, "modes").items() if helper_routes.safeget(v, "distance", "value") is not None}
+        distances = {
+            k: helper_routes.safeget(v, "distance", "value")
+            for k, v in helper_routes.safeget(details, "modes").items()
+            if helper_routes.safeget(v, "distance", "value") is not None
+        }
         try:
             sorted_keys = sorted(distances, key=distances.get)
             lowest, highest = helper_routes.safeget(
                 details, sorted_keys[0], "distance", "text"
-            ), helper_routes.safeget(details, "modes", sorted_keys[-1], "distance", "text")
+            ), helper_routes.safeget(
+                details, "modes", sorted_keys[-1], "distance", "text"
+            )
             distance_range = f"{lowest} - {highest}"
         except Exception as e:
             distance_range = "Unknown"
             logging.warning(f"Failed to find shortest and longest distances - {e}")
 
-        address1, address2 = helper_routes.safeget(details, "origin"), helper_routes.safeget(details, "destination")
+        address1, address2 = helper_routes.safeget(
+            details, "origin"
+        ), helper_routes.safeget(details, "destination")
 
         return render_template(
-            "routes.html", distance_range=distance_range, details=details, origin=address2, destination=address1
+            "routes.html",
+            distance_range=distance_range,
+            details=details,
+            origin=address2,
+            destination=address1,
         )

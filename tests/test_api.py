@@ -4,6 +4,7 @@ Tests the validity of api keys and api return values
 
 import travel_buddy.helpers.helper_routes as helper_routes
 
+
 def test_key_is_read():
     API_KEY_FILE = "tests/keys_test.json"
     KEYS = helper_routes.get_keys(API_KEY_FILE)
@@ -12,6 +13,7 @@ def test_key_is_read():
     assert KEYS.get("test_key2") == "12345"
     assert KEYS.get("test_key3") == "!!!!!"
     assert KEYS.get("test_key4") == "   "
+
 
 def test_api_key_is_valid():
 
