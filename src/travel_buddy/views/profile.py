@@ -68,6 +68,6 @@ def profile(username: str) -> object:
         last_name=last_name,
         is_driver=is_driver,
         bio=bio,
-        photo=photo,
+        avatar=photo,
         verified=verified,
     )

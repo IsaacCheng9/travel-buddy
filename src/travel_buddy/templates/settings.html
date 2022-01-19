@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<head>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+	<link rel="stylesheet" href="../static/css/checkbox.css">
+
+	<title>Travel Buddy - Settings</title>
+</head>
+
+<body>
+	<div class="ui container">
+		<div id="message_notification" class="ui green message">Your changes have been saved.</div>
+		<div class="ui grid">
+			<div class="four wide column">
+				<div id="avatar_container">
+					<img id="image_avatar" class="ui image fluid" style="border-radius: 50%;" src="/static/avatars/{{avatar}}">
+					<div id="image_upload">
+						<input type="file" id="file_avatar" name="avatar" accept="image/*" />
+						<p>Upload an avatar</p>
+					</div>
+				</div>
+				<div class="name">
+					{{first_name}} {{last_name}}
+					{% if verified == 1 %}
+						<i class="check circle icon" data-content="Verified User" style="color: #3498DB;"></i>
+					{% endif %}
+				</div>
+				<div class="ui secondary vertical menu blue fluid" id="menu">
+					<a class="active item" onclick='OpenMenu("account_settings", this);'>
+						<i class="icon home"></i>
+						Account
+					</a>
+					<a class="item" onclick='OpenMenu("privacy_settings", this);'>
+						<i class="icon user secret"></i>
+						Privacy
+					</a>
+					<a class="item" onclick='OpenMenu("security_settings", this);'>
+						<i class="icon key"></i>
+						Security
+					</a>
+				</div>
+			</div>
+			<div class="twelve wide column">
+				<section id="account_settings">
+					<div class="ui header">Account Settings</div>
+					<div class="ui form">
+						<div id="name_error" class="error"></div>
+						<div class="ui two fields">
+							<div class="field">
+								<label>First Name</label>
+								<input maxlength=20 id="f_name" value="{{first_name}}" type="text">
+							</div>
+							<div class="field">
+								<label>Last Name</label>
+								<input maxlength=20 id="l_name" value="{{last_name}}" type="text">
+							</div>
+						</div>
+						<div class="ui field">
+							<label>Bio</label>
+							<textarea id="bio_input" maxlength=180 style="min-height: 6em;" cols="30" rows="5">{{bio}}</textarea>
+							<div id="bio_chars_left"></div>
+						</div>
+						<div class="ui field">
+							<button class="ui button blue" id="update_bio_button">Update</button>
+							<button class="ui button white" id="bio_cancel_button">Cancel</button>
+						</div>
+					</div>
+				</section>
+
+				<section id="privacy_settings" style="display: none;">
+					<div class="ui header">Privacy Settings</div>
+					<div class="ui form">
+						<div class="field">
+							<label>Name Display</label>
+							<select name="" id="name_display"></select>
+						</div>
+						<div class="field">
+							<label>Statistics Display</label>
+							<select name="" id="statistics_display">
+								<option value="1">Public</option>
+								<option value="0">Private</option>
+							</select>
+						</div>
+					</div>
+						
+				</section>
+			</div>
+		</div>
+	</div>
+</body>
+
+<script>
+	function ChangeBio(){
+		const xhttp = new XMLHttpRequest();
+		xhttp.onload = function(){
+			if (this.responseText == "200"){
+				setTimeout(function(){
+					document.getElementById("update_bio_button").innerHTML = "Saved";
+					document.getElementById("update_bio_button").disabled = false;
+					document.getElementById("bio_input").disabled = false;
+
+					document.querySelectorAll(".changed").forEach(function(element){
+						element.defaultValue = element.value;
+						element.classList.remove("changed");
+					});
+
+					DisplayNotification("Your account settings have been saved.");
+				}, 1000);
+			} else {
+				document.getElementById("update_bio_button").innerHTML = "Error";
+				document.getElementById("update_bio_button").disabled = false;
+				document.getElementById("bio_input").disabled = false;
+			}
+		}
+
+		const new_bio = document.getElementById("bio_input").value;
+		const f_name = document.getElementById("f_name").value;
+		const l_name = document.getElementById("l_name").value;
+
+		xhttp.open("POST", `/settings/edit-user-details?bio=${new_bio}&f_name=${f_name}&l_name=${l_name}`, true);
+		xhttp.send();
+
+		document.getElementById("update_bio_button").innerHTML = `<div class="ui active inline loader mini"></div>`;
+		document.getElementById("update_bio_button").disabled = true;
+		document.getElementById("bio_input").disabled = true;
+	}
+
+	update_bio_button.onclick = ChangeBio;
+
+	document.getElementById("file_avatar").onchange = async function(){
+		let formData = new FormData();
+		formData.append("file", this.files[0]);
+
+		await fetch("/settings/upload-avatar", {
+			method: "POST",
+			body: formData
+		});
+
+		document.getElementById("image_avatar").src = URL.createObjectURL(this.files[0]);
+
+		DisplayNotification("Your avatar has been updated.");
+	}
+
+	function DisplayNotification(text){
+		document.getElementById("message_notification").classList.add("active");
+		document.getElementById("message_notification").innerHTML = text;
+
+		setTimeout(function(){
+			document.getElementById("message_notification").classList.remove("active");
+		}, 3000);
+	}
+
+	function CountBioChars(){
+		const bio_chars_left = document.getElementById("bio_chars_left");
+		const bio_input = document.getElementById("bio_input");
+
+		const bio_length = bio_input.value.length;
+		const bio_max_length = 180;
+
+		bio_chars_left.innerHTML = `${bio_max_length - bio_length} characters left`;
+	}
+
+	document.getElementById("bio_input").onkeyup = CountBioChars;
+	document.getElementById("bio_input").oninput = CountBioChars;
+	CountBioChars();
+
+	document.getElementById("bio_cancel_button").onclick = function(){
+		document.getElementById("f_name").value = document.getElementById("f_name").defaultValue;
+		document.getElementById("l_name").value = document.getElementById("l_name").defaultValue;
+		document.getElementById("bio_input").value = document.getElementById("bio_input").defaultValue;
+
+		document.querySelectorAll(".changed").forEach(function(input){
+			input.classList.remove("changed");
+		});
+
+		CountBioChars();
+	}
+
+	var inputs = document.querySelectorAll("input, textarea");
+
+	inputs.forEach(function(input){
+		input.oninput = function(){
+			if (this.value != this.defaultValue){
+				this.classList.add("changed");
+			} else {
+				this.classList.remove("changed");
+			}
+		}
+	});
+
+	document.getElementById("f_name").oninput = ValidateName;
+	document.getElementById("l_name").oninput = ValidateName;
+
+	function ValidateName(){
+		const f_name = document.getElementById("f_name").value;
+		const l_name = document.getElementById("l_name").value;
+
+		if (f_name.length > 20){
+			name_error.innerHTML = "First name must be less than 20 characters.";
+		}
+		else if (l_name.length > 20){
+			name_error.innerHTML = "Last name must be less than 20 characters.";
+		}
+		else if (f_name.length == 0 || l_name.length == 0){
+			name_error.innerHTML = "First and last name must be filled.";
+		}
+		else if (f_name.includes(" ")){
+			name_error.innerHTML = "First name cannot contain spaces.";
+		}
+		else if (l_name.includes(" ")){
+			name_error.innerHTML = "Last name cannot contain spaces.";
+		}
+		else {
+			name_error.innerHTML = "";
+		}
+	}
+
+	const f_name = "{{first_name}}";
+	const l_name = "{{last_name}}";
+
+	function GenerateDisplayOptions(){
+		let name_display = document.getElementById("name_display");
+
+		name_display.add(new Option(f_name+" "+l_name));
+		name_display.add(new Option(f_name+" "+l_name.charAt(0)+"."));
+		name_display.add(new Option(f_name));
+	}
+	GenerateDisplayOptions();
+
+	const menus = ["account_settings","privacy_settings"];
+
+	function OpenMenu(menu, elem){
+		document.querySelector("#menu .active").classList.remove("active");
+		elem.classList.add("active");
+
+		menus.forEach(function(menu_name){
+			if (menu_name == menu){
+				document.getElementById(menu_name).style.display = "block";
+			} else {
+				document.getElementById(menu_name).style.display = "none";
+			}
+		});
+	}
+
+</script>
+
+</html>
+
+<style>
+	@import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
+
+	* {
+		box-sizing: border-box;
+		font-family: Montserrat, sans-serif;
+	}
+
+	.error {
+		font-weight: 600;
+		color: red;
+	}
+
+	.changed {
+		border-color: #F5B041 !important;
+	}
+
+	#image_avatar {
+		border-radius: 50%;
+		width: 100px;
+		height: 100px;
+		margin: 0 auto;
+	}
+
+	.name {
+		text-align: center;
+		padding: 1em;
+		font-size: 1.3em;
+		font-weight: 500;
+	}
+
+	#message_notification.active {
+		transform: scaleY(1);
+		transition: 0.4s ease-in-out;
+	}
+
+	#message_notification {
+		transform: scaleY(0);
+		transition: 0.4s ease-in-out;
+	}
+
+	#avatar_container {
+		position: relative;
+	}
+
+	#image_upload {
+		position: absolute;
+		display: flex;
+		top: 0;
+		left: 50%;
+		width: 100px;
+		height: 100px;
+    	align-items: center;
+    	justify-content: center;
+		background-color: #333;
+		border-radius: 50%;
+		opacity: 0;
+		color: white;
+		transition: 0.4s ease-in-out;
+		transform: translateX(-50%);
+		text-align: center;
+	}
+
+	#image_upload:hover {
+		opacity: 0.7;
+	}
+
+	#file_avatar {
+		width: 100%;
+		height: 100%;
+		opacity: 0;
+		position: absolute;
+		top: 0;
+		left: 0;
+		cursor: pointer;
+	}
+
+</style>
+
+<script src="../static/javascript/checkbox.js"></script>
