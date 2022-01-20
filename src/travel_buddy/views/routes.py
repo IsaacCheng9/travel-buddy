@@ -19,7 +19,13 @@ def routes() -> object:
     Returns view populated with data.
     """
     if request.method == "GET":
-        return render_template("routes.html", distance_range=None, details=None,origin=None,destination=None)
+        return render_template(
+            "routes.html",
+            distance_range=None,
+            details=None,
+            origin=None,
+            destination=None,
+        )
 
     elif request.method == "POST":
         origins = request.form["start_point"]
@@ -34,9 +40,12 @@ def routes() -> object:
             # TODO error
             return
         route_data = {}
-        modes = ("walking","driving","bicycling","transit")
+        modes = ("walking", "driving", "bicycling", "transit")
 
-        route_data = {m: helper_routes.run_api(map_client, origins, destinations, m) for m in modes}
+        route_data = {
+            m: helper_routes.run_api(map_client, origins, destinations, m)
+            for m in modes
+        }
 
         details = {
             "origin": helper_routes.safeget(
@@ -45,12 +54,18 @@ def routes() -> object:
             "destination": helper_routes.safeget(
                 route_data, "walking", "destination_addresses", 0
             ),
-            "modes": {}
+            "modes": {},
         }
 
-        data = ("distance","duration")
+        data = ("distance", "duration")
 
-        details["modes"] = {m: {d: helper_routes.safeget(route_data, m, "rows", 0, "elements", 0, d) for d in data} for m in modes}
+        details["modes"] = {
+            m: {
+                d: helper_routes.safeget(route_data, m, "rows", 0, "elements", 0, d)
+                for d in data
+            }
+            for m in modes
+        }
 
         print(details)
 
