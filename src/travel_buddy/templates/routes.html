@@ -37,20 +37,24 @@
 		<div class="overlay-container">
 			<div class="overlay">
 				<div class="overlay-panel overlay-right">
-					<h1>Route Details</h1>
-					<br/>
-					Start Point: {{ origin }}
-					<br/><br/>
-					Destination: {{ destination }}
-					<br/><br/>
-					Distance: {{ distance_range }}
-					<br/><br/>
-					{% for item in details['modes'].keys() %}
-						{% if details['modes'][item]['distance'] is not none %}
-							{{ item.capitalize() }} - Distance: {{ details['modes'][item]['distance']['text'] }}, Duration: {{ details['modes'][item]['duration']['text'] }}
-							<br/>
+					{% if origin is not none %}
+						<h1>Route Details</h1>
+						<br/>
+						Start Point: {{ origin }}
+						<br/><br/>
+						Destination: {{ destination }}
+						<br/><br/>
+						Distance: {{ distance_range }}
+						<br/><br/>
+						{% if details is not none %}
+							{% for item in details['modes'].keys() %}
+								{% if details['modes'][item]['distance'] is not none %}
+									{{ item.capitalize() }} - Distance: {{ details['modes'][item]['distance']['text'] }}, Duration: {{ details['modes'][item]['duration']['text'] }}
+									<br/>
+								{% endif %}
+							{% endfor %}
 						{% endif %}
-					{% endfor %}
+					{% endif %}
 				</div>
 			</div>
 		</div>

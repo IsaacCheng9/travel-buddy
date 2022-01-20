@@ -6,6 +6,9 @@ import travel_buddy.helpers.helper_routes as helper_routes
 
 
 def test_key_is_read():
+    """
+    Tests some example encoded data can be read from json and decoded correctly.
+    """
     API_KEY_FILE = "tests/keys_test.json"
     KEYS = helper_routes.get_keys(API_KEY_FILE)
 
@@ -16,7 +19,10 @@ def test_key_is_read():
 
 
 def test_api_key_is_valid():
-
+    """
+    Tests that the given encoded api keys can be decoded, the google maps client can be created,
+    and the keys can be used in with the google maps api to return correct data.
+    """
     API_KEY_FILE = "keys.json"
     KEYS = helper_routes.get_keys(API_KEY_FILE)
 

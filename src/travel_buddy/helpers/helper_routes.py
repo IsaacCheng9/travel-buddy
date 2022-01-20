@@ -6,14 +6,18 @@ from time import sleep
 from base64 import b64decode
 
 
-def get_keys(file_name):
+def get_keys(file_name: str) -> dict:
+    """
+    Reads and decodes api keys from given json file.
+    Return dictionary of keys
+    """
     with open(file_name, "r") as f:
         keys = json.loads(f.read())
     keys = {k: b64decode(v.encode()).decode() for (k, v) in keys.items()}
     return keys
 
 
-def generate_client(api_key):
+def generate_client(api_key: str) -> object:
     try:
         return googlemaps.Client(api_key)
     except Exception as e:
@@ -21,7 +25,11 @@ def generate_client(api_key):
         return None
 
 
-def run_api(map_client, origins, destinations, mode):
+def run_api(map_client: object, origins: str, destinations: str, mode: str) -> dict:
+    """
+    Run google maps api based on given information on route origin, destination, and mode of transport.
+    Return dictionary api response
+    """
     response = map_client.distance_matrix(origins, destinations, mode=mode)
     next_page_token = response.get("next_page_token")
     while next_page_token:
@@ -32,7 +40,10 @@ def run_api(map_client, origins, destinations, mode):
     return response
 
 
-def safeget(dct, *keys):
+def safeget(dct: dict, *keys):
+    """
+    Safely get key from possibly nested dictionary with error trapping and logging failures
+    """
     for key in keys:
         try:
             dct = dct[key]

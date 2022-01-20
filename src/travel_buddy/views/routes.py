@@ -14,8 +14,12 @@ routes_blueprint = Blueprint(
 
 @routes_blueprint.route("/routes", methods=["GET", "POST"])
 def routes() -> object:
+    """
+    Generates information on route details utilising google maps api funtions in helper_routes.
+    Returns view populated with data.
+    """
     if request.method == "GET":
-        return render_template("routes.html", distance_range="", details={})
+        return render_template("routes.html", distance_range=None, details=None,origin=None,destination=None)
 
     elif request.method == "POST":
         origins = request.form["start_point"]
@@ -30,18 +34,9 @@ def routes() -> object:
             # TODO error
             return
         route_data = {}
-        route_data["walking"] = helper_routes.run_api(
-            map_client, origins, destinations, "walking"
-        )
-        route_data["driving"] = helper_routes.run_api(
-            map_client, origins, destinations, "driving"
-        )
-        route_data["cycling"] = helper_routes.run_api(
-            map_client, origins, destinations, "bicycling"
-        )
-        route_data["transit"] = helper_routes.run_api(
-            map_client, origins, destinations, "transit"
-        )
+        modes = ("walking","driving","bicycling","transit")
+
+        route_data = {m: helper_routes.run_api(map_client, origins, destinations, m) for m in modes}
 
         details = {
             "origin": helper_routes.safeget(
@@ -50,41 +45,13 @@ def routes() -> object:
             "destination": helper_routes.safeget(
                 route_data, "walking", "destination_addresses", 0
             ),
-            "modes": {
-                "walking": {
-                    "distance": helper_routes.safeget(
-                        route_data, "walking", "rows", 0, "elements", 0, "distance"
-                    ),
-                    "duration": helper_routes.safeget(
-                        route_data, "walking", "rows", 0, "elements", 0, "duration"
-                    ),
-                },
-                "driving": {
-                    "distance": helper_routes.safeget(
-                        route_data, "driving", "rows", 0, "elements", 0, "distance"
-                    ),
-                    "duration": helper_routes.safeget(
-                        route_data, "driving", "rows", 0, "elements", 0, "duration"
-                    ),
-                },
-                "cycling": {
-                    "distance": helper_routes.safeget(
-                        route_data, "cycling", "rows", 0, "elements", 0, "distance"
-                    ),
-                    "duration": helper_routes.safeget(
-                        route_data, "cycling", "rows", 0, "elements", 0, "duration"
-                    ),
-                },
-                "transit": {
-                    "distance": helper_routes.safeget(
-                        route_data, "transit", "rows", 0, "elements", 0, "distance"
-                    ),
-                    "duration": helper_routes.safeget(
-                        route_data, "transit", "rows", 0, "elements", 0, "duration"
-                    ),
-                },
-            },
+            "modes": {}
         }
+
+        data = ("distance","duration")
+
+        details["modes"] = {m: {d: helper_routes.safeget(route_data, m, "rows", 0, "elements", 0, d) for d in data} for m in modes}
+
         print(details)
 
         distances = {
