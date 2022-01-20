@@ -14,13 +14,13 @@
 			<div class="sixteen wide column">
 				<div class="center">
 					<div class="ui image small">
-						<img class="avatar" src="https://via.placeholder.com/300">
+						<img class="avatar" src="/static/avatars/{{avatar}}">
 					</div>
 				</div>
 				<div class="center" style="padding: 0.5em;">
 					{{ first_name }} {{ last_name }}
 					{% if verified == 1 %}
-						<i class="check circle icon" style="color: #3498DB;"></i>
+					<i class="check circle icon" data-content="Verified User" style="color: #3498DB;"></i>
 					{% endif %}
 				</div>
 				{% if is_driver == 1 %}
