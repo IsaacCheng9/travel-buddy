@@ -92,8 +92,6 @@ def test_validate_carpool_ride():
     Tests whether the validation for carpool rides works for different
     types of valid and invalid requests.
     """
-    print(DB_PATH)
-
     with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
         driver = "johndoe"
