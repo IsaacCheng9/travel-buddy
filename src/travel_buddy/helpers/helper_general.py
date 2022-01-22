@@ -3,6 +3,19 @@ Handles helper functions for general use cases, such as getting database path.
 """
 import os
 import pathlib
+from base64 import b64decode
+import json
+
+
+def get_keys(file_name: str) -> dict:
+    """
+    Reads and decodes api keys from given json file.
+    Return dictionary of keys
+    """
+    with open(file_name, "r") as f:
+        keys = json.loads(f.read())
+    keys = {k: b64decode(v.encode()).decode() for (k, v) in keys.items()}
+    return keys
 
 
 def get_database_path() -> str:

@@ -3,6 +3,7 @@ Handles the view for the route details check functionality
 """
 
 import travel_buddy.helpers.helper_routes as helper_routes
+import travel_buddy.helpers.helper_general as helper_general
 from flask import Blueprint, redirect, render_template, request, session
 
 import logging
@@ -34,10 +35,11 @@ def routes() -> object:
         print(origins, destinations, mode)
 
         API_KEY_FILE = "keys.json"
-        KEYS = helper_routes.get_keys(API_KEY_FILE)
+        KEYS = helper_general.get_keys(API_KEY_FILE)
         map_client = helper_routes.generate_client(KEYS["google_maps"])
         if map_client is None:
             # TODO error
+            logging.warning(f"Failed to generate maps api client")
             return
         route_data = {}
         modes = ("walking", "driving", "bicycling", "transit")
