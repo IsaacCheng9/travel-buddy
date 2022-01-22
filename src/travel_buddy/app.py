@@ -1,14 +1,12 @@
-import os
+from flask import Flask
 
-from flask import Flask, redirect, request, session
-
+import travel_buddy.helpers.helper_general as helper_general
 import travel_buddy.views.carpool as carpool
 import travel_buddy.views.login as login
 import travel_buddy.views.profile as profile
-import travel_buddy.views.routes as routes
 import travel_buddy.views.register as register
+import travel_buddy.views.routes as routes
 import travel_buddy.views.settings as settings
-import travel_buddy.helpers.helper_general as helper_general
 
 
 def create_app() -> Flask:

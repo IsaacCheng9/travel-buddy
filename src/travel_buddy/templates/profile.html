@@ -10,6 +10,16 @@
 
 <body>
 	<div class="ui container" id="container">
+		
+		{% if "username" in session %}
+		<div class="ui four item menu">
+			<a href="/profile" class="active item"><i class="icon user"></i> Profile</a>
+			<a href="" class="item"><i class="icon map"></i> App</a>
+			<a href="" class="item"><i class="icon settings"></i> Settings</a>
+			<a href="/logout" class="item"><i class="icon key"></i> Logout</a>
+		</div>
+		{%endif%}
+	
 		<div class="ui grid">
 			<div class="sixteen wide column">
 				<div class="center">

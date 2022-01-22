@@ -51,7 +51,7 @@ def login_page() -> object:
             hashed_password = row[0]
         else:
             session["error"] = ["login"]
-            return redirect("/")
+            return render_template("login.html")
 
         if hashed_password:
             # Checks whether the password is correct for that user.
@@ -61,7 +61,22 @@ def login_page() -> object:
                 return redirect("/profile")
             else:
                 session["error"] = ["login"]
-                return redirect("/")
+                return render_template("login.html")
         else:
             session["error"] = ["login"]
-            return redirect("/")
+            return render_template("login.html")
+
+
+@login_blueprint.route("/logout", methods=["GET", "POST"])
+def logout() -> object:
+    """
+    Logs the user out and redirects them to the home page
+
+    Returns:
+        Redirect for the home page
+    """
+
+    if "username" in session:
+        session.pop("username", None)
+
+    return redirect("/")

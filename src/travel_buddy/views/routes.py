@@ -4,7 +4,7 @@ Handles the view for the route details check functionality
 
 import travel_buddy.helpers.helper_routes as helper_routes
 import travel_buddy.helpers.helper_general as helper_general
-from flask import Blueprint, redirect, render_template, request, session
+from flask import Blueprint, render_template, request
 
 import logging
 
