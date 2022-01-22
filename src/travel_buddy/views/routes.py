@@ -12,7 +12,7 @@ import logging
 routes_blueprint = Blueprint(
     "routes", __name__, static_folder="static", template_folder="templates"
 )
-limiter.limit("1/second")(routes_blueprint)
+limiter.limit("3/second")(routes_blueprint)
 
 
 @routes_blueprint.route("/routes", methods=["GET", "POST"])

@@ -12,7 +12,7 @@ from flask import Blueprint, redirect, render_template, request, session
 settings_blueprint = Blueprint(
     "settings", __name__, static_folder="static", template_folder="templates"
 )
-limiter.limit("1/second")(settings_blueprint)
+limiter.limit("3/second")(settings_blueprint)
 DB_PATH = helper_general.get_database_path()
 
 
