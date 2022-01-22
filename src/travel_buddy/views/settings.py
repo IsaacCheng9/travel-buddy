@@ -5,11 +5,13 @@ Handles the view for changing user settings and related functionality.
 import sqlite3
 import uuid
 
+import travel_buddy.helpers.helper_general as helper_general
 from flask import Blueprint, redirect, render_template, request, session
 
 settings_blueprint = Blueprint(
     "settings", __name__, static_folder="static", template_folder="templates"
 )
+DB_PATH = helper_general.get_database_path()
 
 
 @settings_blueprint.route("/settings", methods=["GET", "POST"])
@@ -25,7 +27,7 @@ def settings() -> object:
     if "username" not in session:
         return redirect("/")
 
-    with sqlite3.connect("db.sqlite3") as conn:
+    with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
         cur.execute(
             "SELECT first_name, last_name, is_driver, bio, photo, verified "
@@ -72,7 +74,7 @@ def edit_user_details() -> object:
     if len(new_l_name) > 20 or " " in new_l_name:
         return "405"
 
-    with sqlite3.connect("db.sqlite3") as conn:
+    with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
         cur.execute(
             "UPDATE profile SET bio=?, first_name=?, last_name=? WHERE username=?;",
@@ -100,7 +102,7 @@ def edit_avatar() -> object:
     file_name = str(uuid.uuid4()) + ".png"
     file.save("static/avatars/" + file_name)
 
-    with sqlite3.connect("db.sqlite3") as conn:
+    with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
         cur.execute(
             "UPDATE profile SET photo=? WHERE username=?;",

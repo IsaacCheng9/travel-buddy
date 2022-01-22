@@ -4,11 +4,13 @@ Handles the view for user profiles and related functionality.
 
 import sqlite3
 
+import travel_buddy.helpers.helper_general as helper_general
 from flask import Blueprint, redirect, render_template, request, session
 
 profile_blueprint = Blueprint(
     "profile", __name__, static_folder="static", template_folder="templates"
 )
+DB_PATH = helper_general.get_database_path()
 
 
 @profile_blueprint.route("/profile", methods=["GET"])
@@ -40,7 +42,7 @@ def profile(username: str) -> object:
     message = []
 
     # Gets the user's details from the database.
-    with sqlite3.connect("db.sqlite3") as conn:
+    with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
         cur.execute(
             "SELECT first_name, last_name, is_driver, bio, photo, verified "
