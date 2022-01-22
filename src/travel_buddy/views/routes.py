@@ -4,6 +4,7 @@ Handles the view for the route details check functionality
 
 import travel_buddy.helpers.helper_routes as helper_routes
 import travel_buddy.helpers.helper_general as helper_general
+from travel_buddy.helpers.helper_limiter import limiter
 from flask import Blueprint, render_template, request
 
 import logging
@@ -11,13 +12,17 @@ import logging
 routes_blueprint = Blueprint(
     "routes", __name__, static_folder="static", template_folder="templates"
 )
+limiter.limit("1/second")(routes_blueprint)
 
 
 @routes_blueprint.route("/routes", methods=["GET", "POST"])
+@limiter.limit("6/minute")
 def routes() -> object:
     """
-    Generates information on route details utilising google maps api funtions in helper_routes.
-    Returns view populated with data.
+    Generates information on route details using Google Maps API functions.
+
+    Returns:
+        A view populated with data about travel times.
     """
     if request.method == "GET":
         return render_template(
