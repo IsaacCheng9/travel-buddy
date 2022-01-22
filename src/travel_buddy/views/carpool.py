@@ -7,7 +7,7 @@ of carpools participated in.
 import sqlite3
 import travel_buddy.helpers.helper_carpool as helper_carpool
 
-from flask import Blueprint, redirect, render_template, request, session
+from flask import Blueprint, render_template, request
 
 carpool_blueprint = Blueprint(
     "carpool", __name__, static_folder="static", template_folder="templates"

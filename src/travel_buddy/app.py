@@ -1,11 +1,8 @@
-import os
-
 from flask import Flask
 
 import travel_buddy.helpers.helper_general as helper_general
 import travel_buddy.views.carpool as carpool
 import travel_buddy.views.login as login
-import travel_buddy.views.logout as logout
 import travel_buddy.views.profile as profile
 import travel_buddy.views.register as register
 import travel_buddy.views.routes as routes
