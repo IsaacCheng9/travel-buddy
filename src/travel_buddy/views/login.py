@@ -12,7 +12,6 @@ from travel_buddy.helpers.helper_limiter import limiter
 login_blueprint = Blueprint(
     "login", __name__, static_folder="static", template_folder="templates"
 )
-limiter.limit("3/second")(login_blueprint)
 DB_PATH = helper_general.get_database_path()
 
 
