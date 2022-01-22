@@ -6,10 +6,12 @@ import sqlite3
 
 import travel_buddy.helpers.helper_general as helper_general
 from flask import Blueprint, redirect, render_template, request, session
+from travel_buddy.helpers.helper_limiter import limiter
 
 profile_blueprint = Blueprint(
     "profile", __name__, static_folder="static", template_folder="templates"
 )
+limiter.limit("1/second")(profile_blueprint)
 DB_PATH = helper_general.get_database_path()
 
 
@@ -28,6 +30,7 @@ def my_profile() -> object:
 
 
 @profile_blueprint.route("/profile/<username>", methods=["GET"])
+@limiter.limit("15/minute")
 def profile(username: str) -> object:
     """
     Displays the user's profile page and fills in all of the necessary

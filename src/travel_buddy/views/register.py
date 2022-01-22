@@ -7,12 +7,13 @@ import sqlite3
 import travel_buddy.helpers.helper_general as helper_general
 import travel_buddy.helpers.helper_register as helper_register
 from flask import Blueprint, redirect, render_template, request, session
-
-DB_PATH = helper_general.get_database_path()
+from travel_buddy.helpers.helper_limiter import limiter
 
 register_blueprint = Blueprint(
     "register", __name__, static_folder="static", template_folder="templates"
 )
+limiter.limit("1/second")(register_blueprint)
+DB_PATH = helper_general.get_database_path()
 
 
 @register_blueprint.route("/register", methods=["GET", "POST"])

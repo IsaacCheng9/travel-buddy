@@ -5,13 +5,15 @@ of carpools participated in.
 """
 
 import sqlite3
-import travel_buddy.helpers.helper_carpool as helper_carpool
 
+import travel_buddy.helpers.helper_carpool as helper_carpool
 from flask import Blueprint, render_template, request
+from travel_buddy.helpers.helper_limiter import limiter
 
 carpool_blueprint = Blueprint(
     "carpool", __name__, static_folder="static", template_folder="templates"
 )
+limiter.limit("1/second")(carpool_blueprint)
 
 
 @carpool_blueprint.route("/carpools", methods=["GET"])
