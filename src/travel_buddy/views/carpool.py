@@ -13,10 +13,11 @@ from travel_buddy.helpers.helper_limiter import limiter
 carpool_blueprint = Blueprint(
     "carpool", __name__, static_folder="static", template_folder="templates"
 )
-limiter.limit("1/second")(carpool_blueprint)
+limiter.limit("3/second")(carpool_blueprint)
 
 
 @carpool_blueprint.route("/carpools", methods=["GET"])
+@limiter.limit("15/minute")
 def carpools():
     """
     Displays carpools available to participate in.
