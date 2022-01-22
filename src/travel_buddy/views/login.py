@@ -65,3 +65,18 @@ def login_page() -> object:
         else:
             session["error"] = ["login"]
             return render_template("login.html")
+
+
+@login_blueprint.route("/logout", methods=["GET", "POST"])
+def logout() -> object:
+    """
+    Logs the user out and redirects them to the home page
+
+    Returns:
+        Redirect for the home page
+    """
+
+    if "username" in session:
+        session.pop("username", None)
+
+    return redirect("/")
