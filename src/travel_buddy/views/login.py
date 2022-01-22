@@ -22,7 +22,6 @@ def display_login_page() -> object:
 
     Returns:
          The web page for user login.
-         POST: Redirection depending on whether login was successful or not.
     """
     errors = []
     if "username" in session:
