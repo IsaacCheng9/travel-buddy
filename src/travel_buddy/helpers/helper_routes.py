@@ -1,21 +1,6 @@
-import requests
-import json
 import googlemaps
 import logging
 from time import sleep
-from base64 import b64decode
-
-
-def get_keys(file_name: str) -> dict:
-    """
-    Reads and decodes api keys from given json file.
-    Return dictionary of keys
-    """
-    with open(file_name, "r") as f:
-        keys = json.loads(f.read())
-    keys = {k: b64decode(v.encode()).decode() for (k, v) in keys.items()}
-    return keys
-
 
 def generate_client(api_key: str) -> object:
     try:
@@ -57,5 +42,5 @@ def safeget(dct: dict, *keys):
 
 
 # TODO
-def validate_address(adr):
+def validate_address(address: str):
     pass
