@@ -3,6 +3,7 @@ Tests the validity of api keys and api return values
 """
 
 import travel_buddy.helpers.helper_routes as helper_routes
+import travel_buddy.helpers.helper_general as helper_general
 
 
 def test_key_is_read():
@@ -10,7 +11,7 @@ def test_key_is_read():
     Tests some example encoded data can be read from json and decoded correctly.
     """
     API_KEY_FILE = "tests/keys_test.json"
-    KEYS = helper_routes.get_keys(API_KEY_FILE)
+    KEYS = helper_general.get_keys(API_KEY_FILE)
 
     assert KEYS.get("test_key1") == "decoded_test_key_123"
     assert KEYS.get("test_key2") == "12345"
@@ -24,7 +25,7 @@ def test_api_key_is_valid():
     and the keys can be used in with the google maps api to return correct data.
     """
     API_KEY_FILE = "keys.json"
-    KEYS = helper_routes.get_keys(API_KEY_FILE)
+    KEYS = helper_general.get_keys(API_KEY_FILE)
 
     map_client = helper_routes.generate_client(KEYS["google_maps"])
 
