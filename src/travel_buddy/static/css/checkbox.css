@@ -1,0 +1,26 @@
+.checkbox {
+    width: 25px;
+    height: 25px;
+    border: 2px solid black;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.checkbox.checked .checkbox-value {
+    background-color: #3498DB;
+}
+
+.checkbox .checkbox-value:hover {
+    background-color: #97CAED;
+}
+
+.checkbox.checked .checkbox-value:hover {
+    background-color: #258CD0;
+}
+
+.checkbox ~ label {
+    display: inline-block;
+    width: 200px;
+    height: 25px;
+    line-height: 25px;
+}

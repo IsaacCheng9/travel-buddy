@@ -4,9 +4,11 @@ Handles the view for the user registration system and related functionality.
 
 import sqlite3
 
-import bcrypt
+import travel_buddy.helpers.helper_general as helper_general
 import travel_buddy.helpers.helper_register as helper_register
 from flask import Blueprint, redirect, render_template, request, session
+
+DB_PATH = helper_general.get_database_path()
 
 register_blueprint = Blueprint(
     "register", __name__, static_folder="static", template_folder="templates"
@@ -52,7 +54,7 @@ def register() -> object:
         password_confirm = request.form["password2"]
 
         # Connects to the database to perform validation.
-        with sqlite3.connect("db.sqlite3") as conn:
+        with sqlite3.connect(DB_PATH) as conn:
             cur = conn.cursor()
             valid, message = helper_register.validate_registration(
                 cur,

@@ -4,12 +4,14 @@ Handles the view for the user login system and related functionality.
 
 import sqlite3
 
+import travel_buddy.helpers.helper_general as helper_general
 import travel_buddy.helpers.helper_login as helper_login
 from flask import Blueprint, redirect, render_template, request, session
 
 login_blueprint = Blueprint(
     "login", __name__, static_folder="static", template_folder="templates"
 )
+DB_PATH = helper_general.get_database_path()
 
 
 @login_blueprint.route("/", methods=["GET", "POST"])
@@ -37,7 +39,7 @@ def login_page() -> object:
         username = request.form["username"].lower()
         password = request.form["password"]
 
-        with sqlite3.connect("db.sqlite3") as conn:
+        with sqlite3.connect(DB_PATH) as conn:
             cur = conn.cursor()
             # Gets user from database using username.
             cur.execute("SELECT password FROM account WHERE username=?;", (username,))
