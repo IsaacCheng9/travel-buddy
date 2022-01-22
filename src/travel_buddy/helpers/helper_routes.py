@@ -2,6 +2,7 @@ import googlemaps
 import logging
 from time import sleep
 
+
 def generate_client(api_key: str) -> object:
     try:
         return googlemaps.Client(api_key)

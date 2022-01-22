@@ -6,6 +6,7 @@ import pathlib
 from base64 import b64decode
 import json
 
+
 def get_keys(file_name: str) -> dict:
     """
     Reads and decodes api keys from given json file.
@@ -15,6 +16,7 @@ def get_keys(file_name: str) -> dict:
         keys = json.loads(f.read())
     keys = {k: b64decode(v.encode()).decode() for (k, v) in keys.items()}
     return keys
+
 
 def get_database_path() -> str:
     """

@@ -10,6 +10,7 @@ import travel_buddy.views.register as register
 import travel_buddy.views.settings as settings
 import travel_buddy.helpers.helper_general as helper_general
 
+
 def create_app() -> Flask:
     """
     Creates an instance of the Flask web application.
@@ -28,8 +29,8 @@ def create_app() -> Flask:
     app.url_map.strict_slashes = False
     API_KEY_FILE = "keys.json"
     KEYS = helper_general.get_keys(API_KEY_FILE)
-    app.secret_key = (KEYS["app_secret_key"])
-    
+    app.secret_key = KEYS["app_secret_key"]
+
     return app
 
 
