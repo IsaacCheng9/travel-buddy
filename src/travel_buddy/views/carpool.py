@@ -21,11 +21,13 @@ DB_PATH = helper_general.get_database_path()
 @limiter.limit("15/minute")
 def carpools():
     """
-    Displays carpools available to participate in.
+    Displays carpools available to participate in, and handles user input for
+    adding a new offer for carpool ride.
 
     Returns:
-        GET: The web page for viewing carpools.
-        POST: Redirection to the page for the selected carpool listing.
+        GET: The web page for viewing available carpools.
+        POST: Adds the carpool ride to the database and redirects to the
+              updated list of available carpools.
     """
     if request.method == "GET":
         with sqlite3.connect(DB_PATH) as conn:
@@ -54,6 +56,7 @@ def carpools():
             )
             incomplete_carpools = helper_carpool.get_incomplete_carpools(cur)
 
+            # Displays errors if the submitted carpool ride is invalid.
             if valid:
                 helper_carpool.add_carpool_ride(
                     cur,
@@ -65,7 +68,6 @@ def carpools():
                     description,
                 )
                 return render_template("carpools.html", carpools=incomplete_carpools)
-
             return render_template(
                 "carpools.html", errors=errors, carpools=incomplete_carpools
             )
