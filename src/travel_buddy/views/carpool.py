@@ -30,15 +30,15 @@ def carpools():
     if request.method == "GET":
         with sqlite3.connect(DB_PATH) as conn:
             cur = conn.cursor()
-            carpools = helper_carpool.get_carpool_list(cur, session["username"])
-            return render_template("carpools.html", carpools=carpools)
+            incomplete_carpools = helper_carpool.get_incomplete_carpools(cur)
+            return render_template("carpools.html", carpools=incomplete_carpools)
 
     if request.method == "POST":
         with sqlite3.connect(DB_PATH) as conn:
             cur = conn.cursor()
             location_from = request.form["location-from"]
             location_to = request.form["location-to"]
-            # from date string to date object
+            # Converts from date string input to date object.
             date_from = helper_general.string_to_date(request.form["date-from"])
             description = request.form["description"]
             seats = int(request.form["seats"])
@@ -52,7 +52,7 @@ def carpools():
                 date_from,
                 description,
             )
-            carpools = helper_carpool.get_carpool_list(cur, session["username"])
+            incomplete_carpools = helper_carpool.get_incomplete_carpools(cur)
 
             if valid:
                 helper_carpool.add_carpool_ride(
@@ -64,6 +64,8 @@ def carpools():
                     date_from,
                     description,
                 )
-                return render_template("carpools.html", carpools=carpools)
+                return render_template("carpools.html", carpools=incomplete_carpools)
 
-            return render_template("carpools.html", errors=errors, carpools=carpools)
+            return render_template(
+                "carpools.html", errors=errors, carpools=incomplete_carpools
+            )
