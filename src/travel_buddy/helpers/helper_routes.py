@@ -16,12 +16,16 @@ def run_api(map_client: object, origins: str, destinations: str, mode: str) -> d
     Run google maps api based on given information on route origin, destination, and mode of transport.
     Return dictionary api response
     """
-    response = map_client.distance_matrix(origins, destinations, mode=mode)
-    next_page_token = response.get("next_page_token")
-    while next_page_token:
-        sleep(2)
+    try:
         response = map_client.distance_matrix(origins, destinations, mode=mode)
         next_page_token = response.get("next_page_token")
+        while next_page_token:
+            sleep(2)
+            response = map_client.distance_matrix(origins, destinations, mode=mode)
+            next_page_token = response.get("next_page_token")
+    except Exception as e:
+        logging.warning(f"Api Error - {e}")
+        return
 
     return response
 

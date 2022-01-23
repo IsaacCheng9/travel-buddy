@@ -19,23 +19,27 @@ def routes() -> object:
     Generates information on route details utilising google maps api funtions in helper_routes.
     Returns view populated with data.
     """
+
+    API_KEY_FILE = "keys.json"
+    KEYS = helper_general.get_keys(API_KEY_FILE)
+    AUTOCOMPLETE_QUERY = f"https://maps.googleapis.com/maps/api/js?key={KEYS['google_maps']}&callback=initMap&libraries=places&v=weekly"
+
     if request.method == "GET":
+        MAP_QUERY = f"https://www.google.com/maps/embed/v1/view?key={KEYS['google_maps']}&center=50.9,-1.4&zoom=8"
+
         return render_template(
             "routes.html",
-            distance_range=None,
-            details=None,
-            origin=None,
-            destination=None,
+            MAP_QUERY=MAP_QUERY,
+            AUTOCOMPLETE_QUERY=AUTOCOMPLETE_QUERY
         )
 
     elif request.method == "POST":
-        origins = request.form["start_point"]
-        destinations = request.form["destination"]
-        mode = request.form["mode"]
-        print(origins, destinations, mode)
+        origins = request.form["start_point"].strip()
+        destinations = request.form["destination"].strip()
+        travel_mode = request.form["mode"]
+        if travel_mode == "cycling":
+            travel_mode = "bicycling" 
 
-        API_KEY_FILE = "keys.json"
-        KEYS = helper_general.get_keys(API_KEY_FILE)
         map_client = helper_routes.generate_client(KEYS["google_maps"])
         if map_client is None:
             # TODO error
@@ -69,8 +73,6 @@ def routes() -> object:
             for m in modes
         }
 
-        print(details)
-
         distances = {
             k: helper_routes.safeget(v, "distance", "value")
             for k, v in helper_routes.safeget(details, "modes").items()
@@ -83,7 +85,10 @@ def routes() -> object:
             ), helper_routes.safeget(
                 details, "modes", sorted_keys[-1], "distance", "text"
             )
-            distance_range = f"{lowest} - {highest}"
+            if lowest == highest:
+                distance_range = lowest
+            else:
+                distance_range = f"{lowest} - {highest}"
         except Exception as e:
             distance_range = "Unknown"
             logging.warning(f"Failed to find shortest and longest distances - {e}")
@@ -92,10 +97,17 @@ def routes() -> object:
             details, "origin"
         ), helper_routes.safeget(details, "destination")
 
+        origin_convert = address1.replace(" ","+")
+        destination_convert = address2.replace(" ","+")
+
+        MAP_QUERY = f"https://www.google.com/maps/embed/v1/directions?key={KEYS['google_maps']}&origin={origin_convert}&destination={destination_convert}&mode={travel_mode}&units=metric"
+
         return render_template(
-            "routes.html",
+            "routes_display.html",
             distance_range=distance_range,
             details=details,
             origin=address1,
             destination=address2,
+            MAP_QUERY=MAP_QUERY,
+            AUTOCOMPLETE_QUERY=AUTOCOMPLETE_QUERY
         )
