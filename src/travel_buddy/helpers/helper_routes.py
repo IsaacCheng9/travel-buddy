@@ -1,9 +1,13 @@
-import googlemaps
 import logging
 from time import sleep
 
+import googlemaps
+
 
 def generate_client(api_key: str) -> object:
+    """
+    Generates the Google Maps API client.
+    """
     try:
         return googlemaps.Client(api_key)
     except Exception as e:
@@ -13,8 +17,11 @@ def generate_client(api_key: str) -> object:
 
 def run_api(map_client: object, origins: str, destinations: str, mode: str) -> dict:
     """
-    Run google maps api based on given information on route origin, destination, and mode of transport.
-    Return dictionary api response
+    Run Google Maps API using information on route origin, destination, and
+    mode of transport.
+
+    Returns:
+        API response as a dictionary of route data.
     """
     response = map_client.distance_matrix(origins, destinations, mode=mode)
     next_page_token = response.get("next_page_token")
@@ -28,7 +35,8 @@ def run_api(map_client: object, origins: str, destinations: str, mode: str) -> d
 
 def safeget(dct: dict, *keys):
     """
-    Safely get key from possibly nested dictionary with error trapping and logging failures
+    Safely gets key from possibly nested dictionary with error trapping and
+    logging failures.
     """
     for key in keys:
         try:
