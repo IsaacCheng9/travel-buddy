@@ -42,7 +42,7 @@ def routes() -> object:
         travel_mode = request.form["mode"]
         if travel_mode == "cycling":
             travel_mode = "bicycling"
-            
+
         # Generates the Google Maps API client to get data on routes using
         # different modes of transport.
         map_client = helper_routes.generate_client(KEYS["google_maps"])
@@ -75,7 +75,7 @@ def routes() -> object:
             }
             for m in modes
         }
-        
+
         distances = {
             k: helper_routes.safeget(v, "distance", "value")
             for k, v in helper_routes.safeget(details, "modes").items()
