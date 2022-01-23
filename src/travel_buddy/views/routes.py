@@ -23,20 +23,23 @@ def routes() -> object:
     Returns:
         A view populated with data about travel times.
     """
-
     API_KEY_FILE = "keys.json"
     KEYS = helper_general.get_keys(API_KEY_FILE)
-    AUTOCOMPLETE_QUERY = f"https://maps.googleapis.com/maps/api/js?key={KEYS['google_maps']}&callback=initMap&libraries=places&v=weekly"
+    AUTOCOMPLETE_QUERY = (
+        f"https://maps.googleapis.com/maps/api/js"
+        f"?key={KEYS['google_maps']}&callback=initMap&libraries=places&v=weekly"
+    )
 
     if request.method == "GET":
-        MAP_QUERY = f"https://www.google.com/maps/embed/v1/view?key={KEYS['google_maps']}&center=50.9,-1.4&zoom=8"
-
+        MAP_QUERY = (
+            f"https://www.google.com/maps/embed/v1/view"
+            f"?key={KEYS['google_maps']}&center=50.9,-1.4&zoom=8"
+        )
         return render_template(
             "routes.html", MAP_QUERY=MAP_QUERY, AUTOCOMPLETE_QUERY=AUTOCOMPLETE_QUERY
         )
 
     elif request.method == "POST":
-
         origins = request.form["start_point"].strip()
         destinations = request.form["destination"].strip()
         travel_mode = request.form["mode"]
@@ -75,7 +78,6 @@ def routes() -> object:
             }
             for m in modes
         }
-
         distances = {
             k: helper_routes.safeget(v, "distance", "value")
             for k, v in helper_routes.safeget(details, "modes").items()
@@ -103,10 +105,15 @@ def routes() -> object:
             details, "origin"
         ), helper_routes.safeget(details, "destination")
 
+        # Gets the travel time for the selected mode of transport from Google
+        # Maps.
         origin_convert = address1.replace(" ", "+")
         destination_convert = address2.replace(" ", "+")
-
-        MAP_QUERY = f"https://www.google.com/maps/embed/v1/directions?key={KEYS['google_maps']}&origin={origin_convert}&destination={destination_convert}&mode={travel_mode}&units=metric"
+        MAP_QUERY = (
+            f"https://www.google.com/maps/embed/v1/directions"
+            f"?key={KEYS['google_maps']}&origin={origin_convert}"
+            f"&destination={destination_convert}&mode={travel_mode}&units=metric"
+        )
 
         return render_template(
             "routes_display.html",
