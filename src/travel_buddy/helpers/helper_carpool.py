@@ -205,8 +205,9 @@ def add_carpool_ride(
     )
 
 
-
-def get_carpool_list(cur, driver_username) -> List[Tuple[str, str, str, str, str, str, str, str, str, str]]:
+def get_carpool_list(
+    cur, driver_username
+) -> List[Tuple[str, str, str, str, str, str, str, str, str, str]]:
     """
     Gets all the carpools in the database and ratings.
 

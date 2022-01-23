@@ -17,7 +17,8 @@ carpool_blueprint = Blueprint(
 
 DB_PATH = helper_general.get_database_path()
 
-@carpool_blueprint.route("/carpools", methods=["GET","POST"])
+
+@carpool_blueprint.route("/carpools", methods=["GET", "POST"])
 def carpools():
     """
     Displays carpools available to participate in.
@@ -38,7 +39,7 @@ def carpools():
             print(carpools)
 
             return render_template("carpools.html", carpools=carpools)
-    
+
     if request.method == "POST":
         with sqlite3.connect(DB_PATH) as conn:
             cur = conn.cursor()
@@ -52,24 +53,31 @@ def carpools():
             description = request.form["description"]
             seats = int(request.form["seats"])
 
-            valid, errors = helper_carpool.validate_carpool_ride(cur,
-                                                    session["username"],
-                                                    seats,
-                                                    location_from,
-                                                    location_to,
-                                                    date_from,
-                                                    description)
+            valid, errors = helper_carpool.validate_carpool_ride(
+                cur,
+                session["username"],
+                seats,
+                location_from,
+                location_to,
+                date_from,
+                description,
+            )
 
             carpools = helper_carpool.get_carpool_list(cur, session["username"])
 
             if valid:
-                helper_carpool.add_carpool_ride(cur, session["username"], seats, location_from, location_to, date_from, description)
+                helper_carpool.add_carpool_ride(
+                    cur,
+                    session["username"],
+                    seats,
+                    location_from,
+                    location_to,
+                    date_from,
+                    description,
+                )
 
                 return render_template("carpools.html", carpools=carpools)
-            
+
             return render_template("carpools.html", errors=errors, carpools=carpools)
 
     return "Error, should never happen."
-
-
-

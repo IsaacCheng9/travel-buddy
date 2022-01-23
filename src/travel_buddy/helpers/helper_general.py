@@ -31,6 +31,7 @@ def get_database_path() -> str:
     DB_PATH = os.path.join(BASE_DIR, "db.sqlite3")
     return DB_PATH
 
+
 def string_to_date(date_string: str) -> object:
     """
     Converts a string of the form 'YYYY-MM-DDTHH:MM' to a datetime object.
@@ -42,4 +43,3 @@ def string_to_date(date_string: str) -> object:
         The converted date object.
     """
     return datetime.datetime.strptime(date_string, "%Y-%m-%dT%H:%M")
-    
