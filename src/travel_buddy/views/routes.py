@@ -2,12 +2,12 @@
 Handles the view for the route details check functionality
 """
 
-import travel_buddy.helpers.helper_routes as helper_routes
-import travel_buddy.helpers.helper_general as helper_general
-from travel_buddy.helpers.helper_limiter import limiter
-from flask import Blueprint, render_template, request
-
 import logging
+
+import travel_buddy.helpers.helper_general as helper_general
+import travel_buddy.helpers.helper_routes as helper_routes
+from flask import Blueprint, render_template, request
+from travel_buddy.helpers.helper_limiter import limiter
 
 routes_blueprint = Blueprint(
     "routes", __name__, static_folder="static", template_folder="templates"
@@ -105,8 +105,7 @@ def routes() -> object:
             details, "origin"
         ), helper_routes.safeget(details, "destination")
 
-        # Gets the travel time for the selected mode of transport from Google
-        # Maps.
+        # Displays Google Map preview for the selected mode of transport.
         origin_convert = address1.replace(" ", "+")
         destination_convert = address2.replace(" ", "+")
         MAP_QUERY = (
