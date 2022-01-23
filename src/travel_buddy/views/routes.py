@@ -28,9 +28,7 @@ def routes() -> object:
         MAP_QUERY = f"https://www.google.com/maps/embed/v1/view?key={KEYS['google_maps']}&center=50.9,-1.4&zoom=8"
 
         return render_template(
-            "routes.html",
-            MAP_QUERY=MAP_QUERY,
-            AUTOCOMPLETE_QUERY=AUTOCOMPLETE_QUERY
+            "routes.html", MAP_QUERY=MAP_QUERY, AUTOCOMPLETE_QUERY=AUTOCOMPLETE_QUERY
         )
 
     elif request.method == "POST":
@@ -38,7 +36,7 @@ def routes() -> object:
         destinations = request.form["destination"].strip()
         travel_mode = request.form["mode"]
         if travel_mode == "cycling":
-            travel_mode = "bicycling" 
+            travel_mode = "bicycling"
 
         map_client = helper_routes.generate_client(KEYS["google_maps"])
         if map_client is None:
@@ -97,8 +95,8 @@ def routes() -> object:
             details, "origin"
         ), helper_routes.safeget(details, "destination")
 
-        origin_convert = address1.replace(" ","+")
-        destination_convert = address2.replace(" ","+")
+        origin_convert = address1.replace(" ", "+")
+        destination_convert = address2.replace(" ", "+")
 
         MAP_QUERY = f"https://www.google.com/maps/embed/v1/directions?key={KEYS['google_maps']}&origin={origin_convert}&destination={destination_convert}&mode={travel_mode}&units=metric"
 
@@ -109,5 +107,5 @@ def routes() -> object:
             origin=address1,
             destination=address2,
             MAP_QUERY=MAP_QUERY,
-            AUTOCOMPLETE_QUERY=AUTOCOMPLETE_QUERY
+            AUTOCOMPLETE_QUERY=AUTOCOMPLETE_QUERY,
         )
