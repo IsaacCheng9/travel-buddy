@@ -203,3 +203,39 @@ def add_carpool_ride(
             description,
         ),
     )
+
+
+
+def get_carpool_list(cur, driver_username) -> List[Tuple[str, str, str, str, str, str, str, str, str, str]]:
+    """
+    Gets all the carpools in the database and ratings.
+
+    Args:
+        cur: Cursor for the SQLite database.
+        driver_username: The username of the driver for the carpool.
+
+    Returns:
+        A list of tuples containing the carpool information.
+    """
+    cur.execute(
+        """SELECT c.journey_id,
+                  c.driver,
+                  c.seats_available,
+                  c.starting_point,
+                  c.destination,
+                  c.pickup_datetime,
+                  c.description,
+        
+                  AVG(r.rating_given),
+                  COUNT(r.rating_given)
+
+        FROM carpool_ride c
+        JOIN rating r ON c.driver = r.rated_username
+        WHERE is_complete=0
+        GROUP BY c.journey_id
+        ORDER BY pickup_datetime ASC;"""
+    )
+
+    carpools = cur.fetchall()
+
+    return carpools
