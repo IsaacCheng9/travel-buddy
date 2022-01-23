@@ -5,6 +5,7 @@ import os
 import pathlib
 from base64 import b64decode
 import json
+import datetime
 
 
 def get_keys(file_name: str) -> dict:
@@ -29,3 +30,16 @@ def get_database_path() -> str:
     BASE_DIR = pathlib.Path(__file__).parent.parent.parent.parent
     DB_PATH = os.path.join(BASE_DIR, "db.sqlite3")
     return DB_PATH
+
+
+def string_to_date(date_string: str) -> datetime:
+    """
+    Converts a string of the form 'YYYY-MM-DDTHH:MM' to a datetime object.
+
+    Args:
+        date_string: The string to convert.
+
+    Returns:
+        The converted date object.
+    """
+    return datetime.datetime.strptime(date_string, "%Y-%m-%dT%H:%M")
