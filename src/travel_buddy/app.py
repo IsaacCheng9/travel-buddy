@@ -7,6 +7,7 @@ import travel_buddy.views.profile as profile
 import travel_buddy.views.register as register
 import travel_buddy.views.routes as routes
 import travel_buddy.views.settings as settings
+from travel_buddy.helpers.helper_limiter import limiter
 
 
 def create_app() -> Flask:
@@ -17,6 +18,7 @@ def create_app() -> Flask:
         An instance of the web application with the blueprints configured.
     """
     app = Flask(__name__)
+    limiter.init_app(app)
     app.register_blueprint(register.register_blueprint, url_prefix="")
     app.register_blueprint(login.login_blueprint, url_prefix="")
     app.register_blueprint(profile.profile_blueprint, url_prefix="")

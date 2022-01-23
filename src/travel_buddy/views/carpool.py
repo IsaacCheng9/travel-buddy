@@ -6,19 +6,19 @@ of carpools participated in.
 
 import sqlite3
 
-import travel_buddy.helpers.helper_general as helper_general
 import travel_buddy.helpers.helper_carpool as helper_carpool
-
+import travel_buddy.helpers.helper_general as helper_general
 from flask import Blueprint, render_template, request, session
+from travel_buddy.helpers.helper_limiter import limiter
 
 carpool_blueprint = Blueprint(
     "carpool", __name__, static_folder="static", template_folder="templates"
 )
-
 DB_PATH = helper_general.get_database_path()
 
 
 @carpool_blueprint.route("/carpools", methods=["GET", "POST"])
+@limiter.limit("15/minute")
 def carpools():
     """
     Displays carpools available to participate in.
@@ -27,29 +27,19 @@ def carpools():
         GET: The web page for viewing carpools.
         POST: Redirection to the page for the selected carpool listing.
     """
-
-    print(request.method)
-
     if request.method == "GET":
         with sqlite3.connect(DB_PATH) as conn:
             cur = conn.cursor()
-
             carpools = helper_carpool.get_carpool_list(cur, session["username"])
-
-            print(carpools)
-
             return render_template("carpools.html", carpools=carpools)
 
     if request.method == "POST":
         with sqlite3.connect(DB_PATH) as conn:
             cur = conn.cursor()
-
             location_from = request.form["location-from"]
             location_to = request.form["location-to"]
-
             # from date string to date object
             date_from = helper_general.string_to_date(request.form["date-from"])
-
             description = request.form["description"]
             seats = int(request.form["seats"])
 
@@ -62,7 +52,6 @@ def carpools():
                 date_from,
                 description,
             )
-
             carpools = helper_carpool.get_carpool_list(cur, session["username"])
 
             if valid:
@@ -75,9 +64,6 @@ def carpools():
                     date_from,
                     description,
                 )
-
                 return render_template("carpools.html", carpools=carpools)
 
             return render_template("carpools.html", errors=errors, carpools=carpools)
-
-    return "Error, should never happen."

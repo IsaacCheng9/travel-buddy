@@ -6,6 +6,7 @@ import sqlite3
 import uuid
 
 import travel_buddy.helpers.helper_general as helper_general
+from travel_buddy.helpers.helper_limiter import limiter
 from flask import Blueprint, redirect, render_template, request, session
 
 settings_blueprint = Blueprint(
