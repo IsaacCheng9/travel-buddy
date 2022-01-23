@@ -2,12 +2,12 @@
 Handles the view for the route details check functionality
 """
 
-import travel_buddy.helpers.helper_routes as helper_routes
-import travel_buddy.helpers.helper_general as helper_general
-from travel_buddy.helpers.helper_limiter import limiter
-from flask import Blueprint, render_template, request
-
 import logging
+
+import travel_buddy.helpers.helper_general as helper_general
+import travel_buddy.helpers.helper_routes as helper_routes
+from flask import Blueprint, render_template, request
+from travel_buddy.helpers.helper_limiter import limiter
 
 routes_blueprint = Blueprint(
     "routes", __name__, static_folder="static", template_folder="templates"
@@ -23,22 +23,28 @@ def routes() -> object:
     Returns:
         A view populated with data about travel times.
     """
+    API_KEY_FILE = "keys.json"
+    KEYS = helper_general.get_keys(API_KEY_FILE)
+    AUTOCOMPLETE_QUERY = (
+        f"https://maps.googleapis.com/maps/api/js"
+        f"?key={KEYS['google_maps']}&callback=initMap&libraries=places&v=weekly"
+    )
+
     if request.method == "GET":
+        MAP_QUERY = (
+            f"https://www.google.com/maps/embed/v1/view"
+            f"?key={KEYS['google_maps']}&center=50.9,-1.4&zoom=8"
+        )
         return render_template(
-            "routes.html",
-            distance_range=None,
-            details=None,
-            origin=None,
-            destination=None,
+            "routes.html", MAP_QUERY=MAP_QUERY, AUTOCOMPLETE_QUERY=AUTOCOMPLETE_QUERY
         )
 
     elif request.method == "POST":
-        origins = request.form["start_point"]
-        destinations = request.form["destination"]
-        # TODO: Mode of transport selected by the user isn't currently used.
-        mode = request.form["mode"]
-        API_KEY_FILE = "keys.json"
-        KEYS = helper_general.get_keys(API_KEY_FILE)
+        origins = request.form["start_point"].strip()
+        destinations = request.form["destination"].strip()
+        travel_mode = request.form["mode"]
+        if travel_mode == "cycling":
+            travel_mode = "bicycling"
 
         # Generates the Google Maps API client to get data on routes using
         # different modes of transport.
@@ -86,7 +92,10 @@ def routes() -> object:
             ), helper_routes.safeget(
                 details, "modes", sorted_keys[-1], "distance", "text"
             )
-            distance_range = f"{lowest} - {highest}"
+            if lowest == highest:
+                distance_range = lowest
+            else:
+                distance_range = f"{lowest} - {highest}"
         except Exception as e:
             distance_range = "Unknown"
             logging.warning(f"Failed to find shortest and longest distances - {e}")
@@ -96,10 +105,21 @@ def routes() -> object:
             details, "origin"
         ), helper_routes.safeget(details, "destination")
 
+        # Displays Google Map preview for the selected mode of transport.
+        origin_convert = address1.replace(" ", "+")
+        destination_convert = address2.replace(" ", "+")
+        MAP_QUERY = (
+            f"https://www.google.com/maps/embed/v1/directions"
+            f"?key={KEYS['google_maps']}&origin={origin_convert}"
+            f"&destination={destination_convert}&mode={travel_mode}&units=metric"
+        )
+
         return render_template(
-            "routes.html",
+            "routes_display.html",
             distance_range=distance_range,
             details=details,
             origin=address1,
             destination=address2,
+            MAP_QUERY=MAP_QUERY,
+            AUTOCOMPLETE_QUERY=AUTOCOMPLETE_QUERY,
         )

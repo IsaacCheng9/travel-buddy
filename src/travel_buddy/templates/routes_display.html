@@ -15,46 +15,69 @@
 	></script>
 	<div class="container" id="container">
 		<div class="form-container log-in-container">
-			<form action="/routes" method="POST">
-				<h1>Route Check</h1>
-				<br />
-				<input id="input-1" type="text" name="start_point" placeholder="Start Point"/>
-				<input id="input-2" type="text" name="destination" placeholder="Destination"/>
-				<div class="row">
-					<div class="column">
-						<input type="radio" id="driving" name="mode" value="driving"
-							checked>
-						<label for="driving">Driving</label>
+			<div class="form-container-top"> <!--id="pac-card">-->
+				<iframe
+					width=100%
+					height=100%
+					style="border:0"
+					loading="lazy"
+					allowfullscreen
+					src={{MAP_QUERY}}>
+				</iframe>
+				<div id="map"></div>
+			</div>
+			<div class="form-container-bottom" id="pac-card">
+				<form action="/routes" method="POST">
+					<h1>Route Check</h1>
+					<br />
+					<input id="input-1" type="text" name="start_point" placeholder="Start Point"/>
+					<input id="input-2" type="text" name="destination" placeholder="Destination"/>
+					
+					<div class="row">
+						<div class="column">
+							<input type="radio" id="driving" name="mode" value="driving"
+								checked>
+							<label for="driving">Driving</label>
+						</div>
+						<div class="column">
+							<input type="radio" id="walking" name="mode" value="walking">
+							<label for="walking">Walking</label>
+						</div>
+						<div class="column">
+							<input type="radio" id="cycling" name="mode" value="cycling">
+							<label for="cycling">Cycling</label>
+						</div>
+						<div class="column">
+							<input type="radio" id="transit" name="mode" value="transit">
+							<label for="transit">Public Transport</label>
+						</div>
 					</div>
-					<div class="column">
-						<input type="radio" id="walking" name="mode" value="walking">
-						<label for="walking">Walking</label>
-					</div>
-					<div class="column">
-						<input type="radio" id="cycling" name="mode" value="cycling">
-						<label for="cycling">Cycling</label>
-					</div>
-					<div class="column">
-						<input type="radio" id="transit" name="mode" value="transit">
-						<label for="transit">Public Transport</label>
-					</div>
-				</div>
-				<br/>
-				<button>Search</button>
-			</form>
+					<br/>
+					<button>Search</button>
+				</form>
+			</div>	
 		</div>
 		<div class="overlay-container">
 			<div class="overlay">
 				<div class="overlay-panel overlay-right">
-					<iframe
-						width=100%
-						height=100%
-						style="border:0"
-						loading="lazy"
-						allowfullscreen
-						src={{MAP_QUERY}}>
-					</iframe>
-					<div id="map"></div>
+					{% if origin is not none %}
+						<h1>Route Details</h1>
+						<br/>
+						Start Point: {{ origin }}
+						<br/><br/>
+						Destination: {{ destination }}
+						<br/><br/>
+						Distance: {{ distance_range }}
+						<br/><br/>
+						{% if details is not none %}
+							{% for item in details['modes'].keys() %}
+								{% if details['modes'][item]['distance'] is not none %}
+									{{ item.capitalize() }} - Distance: {{ details['modes'][item]['distance']['text'] }}, Duration: {{ details['modes'][item]['duration']['text'] }}
+									<br/>
+								{% endif %}
+							{% endfor %}
+						{% endif %}
+					{% endif %}
 				</div>
 			</div>
 		</div>
