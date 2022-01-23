@@ -32,7 +32,7 @@ def get_database_path() -> str:
     return DB_PATH
 
 
-def string_to_date(date_string: str) -> object:
+def string_to_date(date_string: str) -> datetime:
     """
     Converts a string of the form 'YYYY-MM-DDTHH:MM' to a datetime object.
 
