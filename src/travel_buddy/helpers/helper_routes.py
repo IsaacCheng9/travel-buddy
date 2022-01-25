@@ -10,6 +10,7 @@ from lxml import html
 
 DB_PATH = helper_general.get_database_path()
 
+
 def generate_client(api_key: str) -> object:
     """
     Generates the Google Maps API client.
@@ -59,6 +60,7 @@ def safeget(dct: dict, *keys):
             return None
     return dct
 
+
 def get_fuel_price(fuel_type):
     """
     Collects the current UK petrol or diesel prices from an online source
@@ -66,24 +68,28 @@ def get_fuel_price(fuel_type):
     Returns:
         The price in pounds of petrol or diesel
     """
-    if fuel_type == 'petrol':
-        url = 'https://www.globalpetrolprices.com/United-Kingdom/gasoline_prices/'
-    elif fuel_type == 'diesel':
-        url = 'https://www.globalpetrolprices.com/United-Kingdom/diesel_prices/'
+    if fuel_type == "petrol":
+        url = "https://www.globalpetrolprices.com/United-Kingdom/gasoline_prices/"
+    elif fuel_type == "diesel":
+        url = "https://www.globalpetrolprices.com/United-Kingdom/diesel_prices/"
     page = requests.get(url)
     tree = html.fromstring(page.content)
-    price = float(tree.xpath('//*[@id="graphPageLeft"]/table/tbody/tr[1]/td[1]/text()')[0])
+    price = float(
+        tree.xpath('//*[@id="graphPageLeft"]/table/tbody/tr[1]/td[1]/text()')[0]
+    )
     return price
+
 
 def calculate_fuel_consumption(mpg, distance):
     """
-    Calculates the fuel consumption in one journey given the miles per 
+    Calculates the fuel consumption in one journey given the miles per
     gallon of the car and the distance travelled in the journey
 
     Returns:
         The number of litres of fuel used
     """
-    return gallons_to_litres(distance/mpg)
+    return gallons_to_litres(distance / mpg)
+
 
 def calculate_fuel_cost(fuel_used, fuel_type):
     """
@@ -95,6 +101,7 @@ def calculate_fuel_cost(fuel_used, fuel_type):
     fuel_price = get_fuel_price(fuel_type)
     total_cost = gallons_to_litres(fuel_used) * fuel_price
     return total_cost
+
 
 def get_car():
     """
@@ -110,25 +117,27 @@ def get_car():
     with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
         cur.execute(
-            "SELECT make, mpg, fuel_type "
-            "FROM cars WHERE owner=?;",
+            "SELECT make, mpg, fuel_type " "FROM cars WHERE owner=?;",
             (username,),
         )
         row = cur.fetchall()
     make, mpg, fuel_type = row[0]
     return make, mpg, fuel_type
 
+
 def km_to_miles(km):
     """
     Converts kilometres to miles
     """
-    return km*0.621371
+    return km * 0.621371
+
 
 def gallons_to_litres(gallons):
     """
     Converts gallons to litres
     """
     return gallons * 4.54609
+
 
 # TODO
 def validate_address(address: str):

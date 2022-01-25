@@ -116,11 +116,15 @@ def routes() -> object:
 
         # Fetches the user's car information and calculates the fuel cost and consumption for the journey
         car_make, car_mpg, fuel_type = helper_routes.get_car()
-        print(details['modes']['driving']['distance'])
-        driving_distance = float(details['modes']['driving']['distance']['value']/1000)
+        print(details["modes"]["driving"]["distance"])
+        driving_distance = float(
+            details["modes"]["driving"]["distance"]["value"] / 1000
+        )
         distance = helper_routes.km_to_miles(driving_distance)
-        fuel_used = round(helper_routes.calculate_fuel_consumption(car_mpg, distance),2)
-        fuel_cost = round(helper_routes.calculate_fuel_cost(fuel_used, fuel_type),2)
+        fuel_used = round(
+            helper_routes.calculate_fuel_consumption(car_mpg, distance), 2
+        )
+        fuel_cost = round(helper_routes.calculate_fuel_cost(fuel_used, fuel_type), 2)
 
         return render_template(
             "routes_display.html",
@@ -130,8 +134,8 @@ def routes() -> object:
             destination=address2,
             MAP_QUERY=MAP_QUERY,
             AUTOCOMPLETE_QUERY=AUTOCOMPLETE_QUERY,
-            fuel_used = fuel_used,
-            fuel_cost = fuel_cost,
-            car_make = car_make,
-            car_mpg = car_mpg
+            fuel_used=fuel_used,
+            fuel_cost=fuel_cost,
+            car_make=car_make,
+            car_mpg=car_mpg,
         )
