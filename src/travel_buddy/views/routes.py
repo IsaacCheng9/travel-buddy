@@ -120,7 +120,7 @@ def routes() -> object:
         driving_distance = float(
             details["modes"]["driving"]["distance"]["value"] / 1000
         )
-        distance = helper_routes.km_to_miles(driving_distance)
+        distance = helper_routes.convert_km_to_miles(driving_distance)
         fuel_used = round(
             helper_routes.calculate_fuel_consumption(car_mpg, distance), 2
         )
