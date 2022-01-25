@@ -129,3 +129,6 @@ dmypy.json
 
 # Ignore IntelliJ config files
 .idea/
+
+# Ignore VS Code config files
+.vscode/

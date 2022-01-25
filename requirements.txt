@@ -6,3 +6,4 @@ requests==2.26.0
 googlemaps==4.5.3
 pytest-steps==1.8.0
 Flask-Limiter==2.1
+lxml==4.7.1
