@@ -89,6 +89,7 @@ def calculate_fuel_consumption(mpg: float, distance: float) -> float:
     Returns:
         The number of litres of fuel used
     """
+    # TODO: Add a test for this.
     return convert_gallons_to_litres(distance / mpg)
 
 
@@ -120,6 +121,7 @@ def get_car() -> Tuple[str, float, str]:
             (username,),
         )
         row = cur.fetchall()
+    # TODO: Add error handling for when the user has no car.
     make, mpg, fuel_type = row[0]
     return make, mpg, fuel_type
 
@@ -128,6 +130,7 @@ def convert_km_to_miles(kilometres: float) -> float:
     """
     Converts kilometres to miles
     """
+    # TODO: Add a test for this.
     return kilometres * 0.621371
 
 
@@ -135,6 +138,7 @@ def convert_gallons_to_litres(gallons: float) -> float:
     """
     Converts gallons to litres
     """
+    # TODO: Add a test for this.
     return gallons * 4.54609
 
 
