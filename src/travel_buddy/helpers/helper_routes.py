@@ -88,7 +88,7 @@ def calculate_fuel_consumption(mpg, distance):
     Returns:
         The number of litres of fuel used
     """
-    return gallons_to_litres(distance / mpg)
+    return convert_gallons_to_litres(distance / mpg)
 
 
 def calculate_fuel_cost(fuel_used, fuel_type):
@@ -99,7 +99,7 @@ def calculate_fuel_cost(fuel_used, fuel_type):
         The cost of fuel used
     """
     fuel_price = get_fuel_price(fuel_type)
-    total_cost = gallons_to_litres(fuel_used) * fuel_price
+    total_cost = convert_gallons_to_litres(fuel_used) * fuel_price
     return total_cost
 
 
@@ -117,7 +117,7 @@ def get_car():
     with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
         cur.execute(
-            "SELECT make, mpg, fuel_type " "FROM cars WHERE owner=?;",
+            "SELECT make, mpg, fuel_type FROM car WHERE owner=?;",
             (username,),
         )
         row = cur.fetchall()
@@ -125,14 +125,14 @@ def get_car():
     return make, mpg, fuel_type
 
 
-def km_to_miles(km):
+def convert_km_to_miles(km):
     """
     Converts kilometres to miles
     """
     return km * 0.621371
 
 
-def gallons_to_litres(gallons):
+def convert_gallons_to_litres(gallons):
     """
     Converts gallons to litres
     """
