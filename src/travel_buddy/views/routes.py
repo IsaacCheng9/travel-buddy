@@ -114,7 +114,8 @@ def routes() -> object:
             f"&destination={destination_convert}&mode={travel_mode}&units=metric"
         )
 
-        # Fetches the user's car information and calculates the fuel cost and consumption for the journey
+        # Fetches the user's car information and calculates the fuel cost and
+        # consumption for the journey.
         car_make, car_mpg, fuel_type = helper_routes.get_car()
         driving_distance = float(
             details["modes"]["driving"]["distance"]["value"] / 1000
