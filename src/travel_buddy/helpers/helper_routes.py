@@ -1,5 +1,6 @@
 import logging
 from time import sleep
+from typing import Tuple
 
 import googlemaps
 import sqlite3
@@ -61,7 +62,7 @@ def safeget(dct: dict, *keys):
     return dct
 
 
-def get_fuel_price(fuel_type):
+def get_fuel_price(fuel_type: str) -> float:
     """
     Collects the current UK petrol or diesel prices from an online source
 
@@ -80,7 +81,7 @@ def get_fuel_price(fuel_type):
     return price
 
 
-def calculate_fuel_consumption(mpg, distance):
+def calculate_fuel_consumption(mpg: float, distance: float) -> float:
     """
     Calculates the fuel consumption in one journey given the miles per
     gallon of the car and the distance travelled in the journey
@@ -91,7 +92,7 @@ def calculate_fuel_consumption(mpg, distance):
     return convert_gallons_to_litres(distance / mpg)
 
 
-def calculate_fuel_cost(fuel_used, fuel_type):
+def calculate_fuel_cost(fuel_used: float, fuel_type: str) -> float:
     """
     Calculates the cost of fuel used in pounds, for one journey
 
@@ -103,14 +104,12 @@ def calculate_fuel_cost(fuel_used, fuel_type):
     return total_cost
 
 
-def get_car():
+def get_car() -> Tuple[str, float, str]:
     """
     Fetches the user's car make, miles per gallon and fuel type
 
     Returns:
-        User's car make
-        User's car miles per gallon
-        User's car fuel_type
+        The make, miles per gallon, and fuel type of the user's car.
     """
     username = session["username"]
     # Gets the user's details from the database.
@@ -125,14 +124,14 @@ def get_car():
     return make, mpg, fuel_type
 
 
-def convert_km_to_miles(km):
+def convert_km_to_miles(kilometres: float) -> float:
     """
     Converts kilometres to miles
     """
-    return km * 0.621371
+    return kilometres * 0.621371
 
 
-def convert_gallons_to_litres(gallons):
+def convert_gallons_to_litres(gallons: float) -> float:
     """
     Converts gallons to litres
     """
@@ -140,5 +139,5 @@ def convert_gallons_to_litres(gallons):
 
 
 # TODO
-def validate_address(address: str):
+def validate_address(address: str) -> bool:
     pass
