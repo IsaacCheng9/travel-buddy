@@ -15,7 +15,7 @@ routes_blueprint = Blueprint(
 
 
 @routes_blueprint.route("/routes", methods=["GET", "POST"])
-#@limiter.limit("6/minute")
+# @limiter.limit("6/minute")
 def routes() -> object:
     """
     Generates information on route details using Google Maps API functions.
@@ -36,7 +36,10 @@ def routes() -> object:
             f"?key={KEYS['google_maps']}&center=50.9,-1.4&zoom=8"
         )
         return render_template(
-            "routes.html", MAP_QUERY=MAP_QUERY, AUTOCOMPLETE_QUERY=AUTOCOMPLETE_QUERY, route_exists=False
+            "routes.html",
+            MAP_QUERY=MAP_QUERY,
+            AUTOCOMPLETE_QUERY=AUTOCOMPLETE_QUERY,
+            route_exists=False,
         )
 
     elif request.method == "POST":
@@ -122,5 +125,5 @@ def routes() -> object:
             destination=address2,
             MAP_QUERY=MAP_QUERY,
             AUTOCOMPLETE_QUERY=AUTOCOMPLETE_QUERY,
-            route_exists=True
+            route_exists=True,
         )
