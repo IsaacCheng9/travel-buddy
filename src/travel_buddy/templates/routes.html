@@ -4,57 +4,127 @@
 
 <head>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/popup.min.css">
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/transition.min.css">
+
 	<title>Travel Buddy - Route Check</title>
 	<script src="../static/javascript/autocomplete.js"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/transition.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/popup.min.js"></script>
 </head>
 
 <body>
-	<script
-		src={{AUTOCOMPLETE_QUERY}}
-		async
-	></script>
-	<div class="container" id="container">
-		<div class="form-container log-in-container">
-			<form action="/routes" method="POST">
-				<h1>Route Check</h1>
-				<br />
-				<input id="input-1" type="text" name="start_point" placeholder="Start Point"/>
-				<input id="input-2" type="text" name="destination" placeholder="Destination"/>
-				<div class="row">
-					<div class="column">
-						<input type="radio" id="driving" name="mode" value="driving"
-							checked>
-						<label for="driving">Driving</label>
+	<script src={{AUTOCOMPLETE_QUERY}} async></script>
+
+	<div class="ui segment" style="background-color: transparent; height: 100%;">
+		<div class="ui grid stackable" style="height: 100%;">
+			<div class="four wide column center-both-ways">
+				<div class="ui segment">
+					<div class="ui dividing header">
+						<i class="fa fa-route"></i>
+						Route Check
 					</div>
-					<div class="column">
-						<input type="radio" id="walking" name="mode" value="walking">
-						<label for="walking">Walking</label>
-					</div>
-					<div class="column">
-						<input type="radio" id="cycling" name="mode" value="cycling">
-						<label for="cycling">Cycling</label>
-					</div>
-					<div class="column">
-						<input type="radio" id="transit" name="mode" value="transit">
-						<label for="transit">Public Transport</label>
+					<div id="collapsible">
+						<div class="ui form">
+							<form action="/routes" method="POST">
+								<div class="field">
+									<label>Start Point</label>
+									<input id="input-1" type="text" name="start_point" value="{{origin}}">
+								</div>
+								<div class="field">
+									<label>Destination</label>
+									<input id="input-2" type="text" name="destination" value="{{destination}}">
+								</div>
+								
+								<div class="row">
+									<input type="hidden" id="mode" name="mode" value="driving">
+									<div class="four fields">
+										<div class="field">
+											<div class="custom-radio active" data-value="driving"><i class="fas fa-car"></i></div>
+											<!-- <div class="ui toggle checkbox">
+												<input type="radio" id="driving" name="mode" value="driving" checked>
+												<label></label>
+											</div> -->
+										</div>
+										<div class="field">
+											<div class="custom-radio" data-value="walking"><i class="fas fa-walking"></i></div>
+											<!-- <div class="ui toggle checkbox">
+												<input type="radio" id="walking" name="mode" value="walking">
+												<label><i class="fas fa-walking"></i></label>
+											</div> -->
+										</div>
+										<div class="field">
+											<div class="custom-radio" data-value="cycling"><i class="fas fa-biking"></i></div>
+											<!-- <div class="ui toggle checkbox">
+												<input type="radio" id="cycling" name="mode" value="cycling">
+												<label><i class="fas fa-biking"></i></label>
+											</div> -->
+										</div>
+										<div class="field">
+											<div class="custom-radio" data-value="transit"><i class="fas fa-bus"></i></div>
+											<!-- <div class="ui toggle checkbox">
+												<input type="radio" id="transit" name="mode" value="transit">
+												<label><i class="fas fa-bus"></i></label>
+											</div> -->
+										</div>
+									</div>
+								</div>
+								<button class="ui button black fluid" id="search_btn" style="font-size: 1.2em;">Search</button>
+							</form>
+						</div>
+						
+						{% if route_exists %}
+						<div class="ui dividing header"><i class="fa fa-info-circle"></i> Route Info</div>
+						<table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
+							{% if details is not none %}
+							{% for item in details['modes'].keys() %}
+							<tr>
+								{% if details['modes'][item]['distance'] is not none %}
+								<td>{{item.capitalize()}}</td>
+								<td>{{ details['modes'][item]['distance']['text'] }}</td>
+								<td>{{ details['modes'][item]['duration']['text'] }}</td>
+								{% endif %}
+							</tr>
+							{% endfor %}
+							{% endif %}
+						</table>
+						<div class="ui label big fluid" style="text-align: center; background-color: #AED6F1;">{{distance_range}} <i class="fa fa-info-circle" data-content="Distance range for the above transport modes."></i></div>
+						{% endif %}
 					</div>
 				</div>
-				<br/>
-				<button>Search</button>
-			</form>
-		</div>
-		<div class="overlay-container">
-			<div class="overlay">
-				<div class="overlay-panel overlay-right">
-					<iframe
-						width=100%
-						height=100%
-						style="border:0"
-						loading="lazy"
-						allowfullscreen
-						src={{MAP_QUERY}}>
-					</iframe>
+			</div>
+			<div class="eight wide column center-both-ways">
+				<div class="ui container compact" id="map_container">
+					<iframe id="map_iframe" loading="lazy" allowfullscreen src={{MAP_QUERY}}></iframe>
 					<div id="map"></div>
+				</div>
+			</div>
+			<div class="four wide column center-both-ways">
+				<div class="ui segment">
+					<div class="ui dividing header">
+						<i class="fa fa-chart-area"></i>
+						Route Statistics
+					</div>
+					<div class="ui list">
+						<div class="item">
+							CO2 emissions
+						</div>
+						<div class="item">
+							Fuel Cost
+						</div>
+						<div class="item">
+							UK Average Fuel Cost
+						</div>
+						<div class="item">
+							Liters of fuel used
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -62,6 +132,24 @@
 </body>
 
 </html>
+
+<script>
+	var custom_radio_elements = document.querySelectorAll(".custom-radio");
+
+	custom_radio_elements.forEach(function(element) {
+		element.addEventListener("click", function() {
+			custom_radio_elements.forEach(function(element) {
+				element.classList.remove("active");
+			});
+			this.classList.add("active");
+
+			document.getElementById("mode").value = this.getAttribute("data-value");
+		});
+	});
+
+	$('*[data-content]').popup();
+
+</script>
 
 <style>
 	@import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
@@ -71,133 +159,112 @@
 		transition: all 0.4s;
 	}
 
-	.column {
-		float: left;
-		width: 25%;
+	.center-both-ways {
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
-	/* Clear floats after the columns */
-	.row:after {
-		content: "";
-		display: table;
-		clear: both;
-	}
-
-	.input-icon {
-		position: absolute;
-		margin-top: 20px;
-		right: 60px;
+	#toggle-view-button {
 		cursor: pointer;
-		color: grey;
-		width: 20px;
+		color: #777777;
 	}
 
-	.input-icon:hover {
+	#toggle-view-button:hover {
 		color: black;
 	}
 
-	ul>li {
-		list-style-type: none;
-		float: left;
+	#collapsible.hidden {
+		display: none;
 	}
 
-	ul>li.active {
-		color: #333;
-	}
-
-	ul>li {
-		color: lightgray;
-		float: left;
-		clear: both;
-	}
-
-	ul>li.active i {
-		color: #4caf50;
-	}
-
-	ul>li i {
-		color: lightgray;
+	#collapsible {
+		display: block;
 	}
 
 	body {
 		background: #f3e0e2;
+		/* display: flex; */
+		/* justify-content: center; */
+		/* align-items: center; */
+		/* flex-direction: column; */
+		font-family: "Montserrat", sans-serif;
+		width: 100%;
+		height: 100%;
+	}
+
+	#search_btn {
+		background: #ff416c;
+		background: -webkit-linear-gradient(to right, #ff4b2b, #ff416c);
+		background: linear-gradient(to right, #ff4b2b, #ff416c);
+	}
+
+	#map_iframe {
+		width: 100%;
+		height: 100%;
+		border: 0;
+		z-index: 5;
+		padding: 2em;
+	}
+
+	#map_container {
+		width: 100%;
+		height: 100%;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		flex-direction: column;
-		font-family: "Montserrat", sans-serif;
-		height: 100vh;
-		margin: -20px 0 50px;
 	}
 
-	h1 {
-		font-weight: bold;
-		margin: 0;
+	#container {
+		z-index: 10;
+		position: absolute;
+		top: 0;
+		left: 0;
+		margin: 0.5em;
+		width: 25em;
+		/* background: #ff416c;
+		background: -webkit-linear-gradient(to right, #ff4b2b, #ff416c);
+		background: linear-gradient(to right, #ff4b2b, #ff416c); */
 	}
 
-	p {
-		font-size: 14px;
-		font-weight: 100;
-		line-height: 20px;
-		letter-spacing: 0.5px;
-		margin: 20px 0 30px;
-	}
-
-	span {
-		font-size: 12px;
-	}
-
-	a {
-		color: #ff4b2b;
-		font-size: 14px;
-		text-decoration: none;
-		margin: 15px 0;
-		font-weight: 500;
-	}
-
-	button {
-		border-radius: 20px;
-		border: 1px solid #ff4b2b;
-		background-color: #ff4b2b;
-		color: #ffffff;
-		font-size: 12px;
-		font-weight: bold;
-		padding: 12px 45px;
-		letter-spacing: 1px;
-		text-transform: uppercase;
-		transition: transform 80ms ease-in;
-	}
-
-	button:hover {
-		background-color: #ff816b;
+	.custom-radio {
+		padding: 0.5em;
+		font-size: 1.5em;
+		color: #333;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 0.2em;
 		cursor: pointer;
 	}
 
-	form {
-		background-color: #ffffff;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		flex-direction: column;
-		padding: 0 50px;
-		height: 100%;
-		text-align: center;
+	.custom-radio:hover {
+		background-color: #eaeaea;
+		color: #FF464C !important;
 	}
 
-	input {
-		background-color: #eee;
-		border: none;
-		padding: 12px 15px;
-		margin: 8px 0;
-		width: 100%;
-		outline: none;
+	.custom-radio:hover i {
+		color: #FF464C !important;
 	}
 
-	input:focus {
-		background-color: #ddd;
+	.custom-radio.active i {
+		color: #FF464C !important;
 	}
 
-	.container {
+	.custom-radio.active {
+		position: relative;
+		background-color: #ECF0F1;
+		border-bottom: #d6d6d6 solid 4px;
+		top: -4px;
+		transition: none;
+	}
+
+	.custom-radio.active:hover {
+		background-color: #D0D3D4;
+		border-bottom: #c0c0c0 solid 4px;
+	}
+
+	/* .container {
 		background-color: #fff;
 		border-radius: 10px;
 		box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
@@ -206,95 +273,6 @@
 		width: 1400px;
 		max-width: 100%;
 		min-height: 654px;
-	}
-
-	.form-container {
-		position: absolute;
-		top: 0;
-		height: 100%;
-		align-items: center;
-	}
-
-	.log-in-container {
-		left: 0;
-		width: 50%;
-		z-index: 2;
-	}
-
-	.overlay-container {
-		position: absolute;
-		top: 0;
-		left: 50%;
-		width: 50%;
-		height: 100%;
-	}
-
-	@media screen and (max-width: 700px) {
-		.log-in-container {
-			bottom: 0;
-			left: 0;
-			right: 0;
-			width: 100%;
-			height: auto;
-		}
-
-		.overlay-container {
-			width: 100%;
-			top: 0;
-			left: 0;
-			right: 0;
-			height: auto;
-			display: none;
-		}
-
-		.container {
-			height: 150vh;
-		}
-
-		.overlay-right img {
-			height: 25vh !important;
-		}
-	}
-
-	.form-container-top {
-		top: 0;
-		height: 40%;
-	}
-
-	.form-container-bottom {
-		bottom: 0;
-		height: 60%;
-	}
-
-	.overlay {
-		background: #ff416c;
-		background: -webkit-linear-gradient(to right, #ff4b2b, #ff416c);
-		background: linear-gradient(to right, #ff4b2b, #ff416c);
-		background-repeat: no-repeat;
-		background-size: cover;
-		background-position: 0 0;
-		color: #ffffff;
-		position: relative;
-		left: -100%;
-		height: 100%;
-		width: 200%;
-	}
-
-	.overlay-panel {
-		position: absolute;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		flex-direction: column;
-		padding: 0 40px;
-		text-align: center;
-		top: 0;
-		height: 100%;
-		width: 50%;
-	}
-
-	.overlay-right {
-		right: 0;
-	}
+	} */
 
 </style>
