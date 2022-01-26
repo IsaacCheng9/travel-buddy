@@ -6,7 +6,7 @@ import logging
 
 import travel_buddy.helpers.helper_general as helper_general
 import travel_buddy.helpers.helper_routes as helper_routes
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, session, redirect
 from travel_buddy.helpers.helper_limiter import limiter
 
 routes_blueprint = Blueprint(
@@ -23,6 +23,10 @@ def routes() -> object:
     Returns:
         A view populated with data about travel times.
     """
+
+    if "username" not in session:
+        return redirect("/")
+
     API_KEY_FILE = "keys.json"
     KEYS = helper_general.get_keys(API_KEY_FILE)
     AUTOCOMPLETE_QUERY = (
@@ -119,7 +123,7 @@ def routes() -> object:
 
         # Fetches the user's car information and calculates the fuel cost and
         # consumption for the journey.
-        car_make, car_mpg, fuel_type = helper_routes.get_car()
+        car_make, car_mpg, fuel_type = helper_routes.get_car(session["username"])
         driving_distance = float(
             details["modes"]["driving"]["distance"]["value"] / 1000
         )
