@@ -140,13 +140,17 @@ def convert_gallons_to_litres(gallons: float) -> float:
     # TODO: Add a test for this.
     return gallons * 4.54609
 
+
 def get_distance_range(sorted_keys, details) -> str:
-    
-    lowest, highest = safeget(details, "modes", sorted_keys[0], "distance", "text"), safeget(details, "modes", sorted_keys[-1], "distance", "text")
+
+    lowest, highest = safeget(
+        details, "modes", sorted_keys[0], "distance", "text"
+    ), safeget(details, "modes", sorted_keys[-1], "distance", "text")
     if lowest == highest:
         return lowest
     else:
         return f"{lowest} - {highest}"
+
 
 # TODO
 def validate_address(address: str) -> bool:
