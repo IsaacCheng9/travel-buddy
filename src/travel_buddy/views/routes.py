@@ -97,18 +97,33 @@ def routes() -> object:
             if helper_routes.safeget(v, "distance", "value") is not None
         }
 
-        #distances_excersize = sorted[v for k,v in distances.items() if k in ("walking","cycling")]
-        
+        # distances_excersize = sorted[v for k,v in distances.items() if k in ("walking","cycling")]
+
         try:
-            #distances_excersize = (helper_routes.safeget(distances,x) for x in ("walking", "cycling"))
-            #print(distances_excersize)
+            # distances_excersize = (helper_routes.safeget(distances,x) for x in ("walking", "cycling"))
+            # print(distances_excersize)
 
             conversions = helper_routes.get_calorie_conversions()
 
             calories = {
-                "walking": helper_routes.get_calorie_count(helper_routes.safeget(details,"modes","walking","distance","value"), conversions.get("walking")),
-                "running": helper_routes.get_calorie_count(helper_routes.safeget(details,"modes","walking","distance","value"), conversions.get("running")),
-                "cycling": helper_routes.get_calorie_count(helper_routes.safeget(details,"modes","cycling","distance","value"), conversions.get("cycling")),
+                "walking": helper_routes.get_calorie_count(
+                    helper_routes.safeget(
+                        details, "modes", "walking", "distance", "value"
+                    ),
+                    conversions.get("walking"),
+                ),
+                "running": helper_routes.get_calorie_count(
+                    helper_routes.safeget(
+                        details, "modes", "walking", "distance", "value"
+                    ),
+                    conversions.get("running"),
+                ),
+                "cycling": helper_routes.get_calorie_count(
+                    helper_routes.safeget(
+                        details, "modes", "cycling", "distance", "value"
+                    ),
+                    conversions.get("cycling"),
+                ),
             }
             print(calories)
 
@@ -149,7 +164,8 @@ def routes() -> object:
         # consumption for the journey.
         car_make, car_mpg, fuel_type = helper_routes.get_car(session["username"])
         driving_distance = float(
-            helper_routes.safeget(details, "modes", "driving", "distance", "value") / 1000
+            helper_routes.safeget(details, "modes", "driving", "distance", "value")
+            / 1000
         )
         distance_miles = helper_routes.convert_km_to_miles(driving_distance)
         fuel_used = round(
@@ -173,5 +189,5 @@ def routes() -> object:
             car_make=car_make,
             car_mpg=car_mpg,
             fuel_price=fuel_price,
-            calories=calories
+            calories=calories,
         )
