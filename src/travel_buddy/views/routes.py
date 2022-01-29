@@ -97,14 +97,8 @@ def routes() -> object:
             if helper_routes.safeget(v, "distance", "value") is not None
         }
 
-        # distances_excersize = sorted[v for k,v in distances.items() if k in ("walking","cycling")]
-
         try:
-            # distances_excersize = (helper_routes.safeget(distances,x) for x in ("walking", "cycling"))
-            # print(distances_excersize)
-
             conversions = helper_routes.get_calorie_conversions()
-
             calories = {
                 "walking": helper_routes.get_calorie_count(
                     helper_routes.safeget(
@@ -125,7 +119,6 @@ def routes() -> object:
                     conversions.get("cycling"),
                 ),
             }
-            print(calories)
 
         except Exception as e:
             logging.warning(f"Failed to find calorie counts - {e}")

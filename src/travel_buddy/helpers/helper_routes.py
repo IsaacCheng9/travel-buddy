@@ -62,25 +62,20 @@ def safeget(dct: dict, *keys):
     return dct
 
 
-def get_calorie_count(distance: int, calories: tuple) -> str:
+def get_calorie_count(distance: int, calories: int) -> str:
     """
     Returns the estimated count of calories burned by route
     """
-    calorie_count = int(calories[0] * (distance / 1000)), int(
-        calories[1] * (distance / 1000)
-    )
 
-    if calorie_count[0] == calorie_count[1]:
-        return str(calorie_count[0])
-    else:
-        return f"{calorie_count[0]} - {calorie_count[1]} kcal"
+    return f"~{int(calories * (distance / 1000))} kcal"
 
 
 def get_calorie_conversions():
     """
     Returns dictionary of conversions from transport mode to calories burned per 1km
+    Source: bupa.co.uk/health-information/tools-calculators/calories-calculator
     """
-    conversions = {"walking": (40, 80), "running": (60, 140), "cycling": (45, 85)}
+    conversions = {"walking": 35, "running": 91, "cycling": 47}
 
     return conversions
 
