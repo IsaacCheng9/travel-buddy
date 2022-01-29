@@ -119,7 +119,7 @@ def view_carpool_journey(journey_id: int):
     )
 
 
-@carpool_blueprint.route("/carpools/<journey_id>/join", methods=["GET"])
+@carpool_blueprint.route("/carpools/<journey_id>/join", methods=["POST"])
 @limiter.limit("15/minute")
 def join_carpool_journey(journey_id: int):
     """
@@ -137,11 +137,14 @@ def join_carpool_journey(journey_id: int):
         cur = conn.cursor()
         # Checks whether the carpool can be joined by the user.
         valid, error_messages = helper_carpool.validate_joining_carpool(
-            cur, journey_id, username
+            journey_id, username
         )
 
         if not valid:
             session["error"] = error_messages
             return redirect("/carpools/{journey_id}/")
+        # Adds the user as a passenger to the carpool journey if validation
+        # passed.
+        helper_carpool.add_passenger_to_carpool_journey(cur, journey_id, username)
 
     return redirect("/carpools/{journey_id}/")
