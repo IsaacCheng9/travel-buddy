@@ -3,6 +3,7 @@ Helper functions for the carpool system and related functionality.
 """
 
 
+import sqlite3
 from datetime import datetime
 from typing import List, Tuple
 
@@ -237,3 +238,49 @@ def get_incomplete_carpools(
     )
     incomplete_carpools = cur.fetchall()
     return incomplete_carpools
+
+
+def validate_joining_carpool(cur, journey_id: int, username: str) -> bool:
+    """
+    Validates whether the carpool can be joined by the user.
+
+    Returns:
+        True if all checks have passed, or False otherwise.
+    """
+    valid = True
+    error_messages = []
+
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM carpool_ride WHERE journey_id=?;", (journey_id,))
+        conn.commit()
+        carpool_details = cur.fetchone()
+
+        if not carpool_details:
+            return False, "Carpool journey does not exist."
+
+        (
+            driver,
+            is_complete,
+            seats_available,
+            _,
+            _,
+            _,
+            _,
+        ) = carpool_details[0]
+        # The user cannot join their own carpool.
+        if driver == username:
+            valid = False
+            error_messages.append("You cannot join your own carpool.")
+        # The user may only join a carpool that hasn't been completed.
+        if is_complete:
+            valid = False
+            error_messages.append("You cannot join a completed carpool.")
+        # The carpool must have at least one seat available.
+        if seats_available < 1:
+            valid = False
+            error_messages.append(
+                "There are not enough seats available in this carpool."
+            )
+
+    return valid, error_messages
