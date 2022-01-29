@@ -62,6 +62,24 @@ def safeget(dct: dict, *keys):
     return dct
 
 
+def get_calorie_count(distance: int, calories: int) -> int:
+    """
+    Returns the estimated count of calories burned by route
+    """
+
+    return int(calories * (distance / 1000))
+
+
+def get_calorie_conversions():
+    """
+    Returns dictionary of conversions from transport mode to calories burned per 1km
+    Source: bupa.co.uk/health-information/tools-calculators/calories-calculator
+    """
+    conversions = {"walking": 35, "running": 91, "cycling": 47}
+
+    return conversions
+
+
 def get_fuel_price(fuel_type: str) -> float:
     """
     Collects the current UK petrol or diesel prices from an online source
