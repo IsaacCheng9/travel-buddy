@@ -9,6 +9,9 @@ import travel_buddy.views.routes as routes
 import travel_buddy.views.settings as settings
 from travel_buddy.helpers.helper_limiter import limiter
 
+API_KEY_FILE = "keys.json"
+KEYS = helper_general.get_keys(API_KEY_FILE)
+
 
 def create_app() -> Flask:
     """
@@ -27,10 +30,7 @@ def create_app() -> Flask:
     app.register_blueprint(carpool.carpool_blueprint, url_prefix="")
 
     app.url_map.strict_slashes = False
-    API_KEY_FILE = "keys.json"
-    KEYS = helper_general.get_keys(API_KEY_FILE)
     app.secret_key = KEYS["app_secret_key"]
-
     return app
 
 
