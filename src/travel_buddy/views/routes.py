@@ -49,9 +49,13 @@ def routes() -> object:
     elif request.method == "POST":
         origins = request.form["start_point"].strip()
         destinations = request.form["destination"].strip()
-        travel_mode = request.form["mode"]
-        if travel_mode == "cycling":
-            travel_mode = "bicycling"
+        travel_mode_full = request.form["mode"]
+        if travel_mode_full == "bicycling":
+            travel_mode_simple = "cycling"
+        elif travel_mode_full == "transit":
+            travel_mode_simple = "public transport"
+        else:
+            travel_mode_simple = travel_mode_full
 
         # Generates the Google Maps API client to get data on routes using
         # different modes of transport.
@@ -85,11 +89,38 @@ def routes() -> object:
             }
             for m in modes
         }
+        details["modes"]["cycling"] = details["modes"].pop("bicycling")
+        details["modes"]["public transport"] = details["modes"].pop("transit")
         distances = {
             k: helper_routes.safeget(v, "distance", "value")
             for k, v in helper_routes.safeget(details, "modes").items()
             if helper_routes.safeget(v, "distance", "value") is not None
         }
+
+        try:
+            conversions = helper_routes.get_calorie_conversions()
+            calories = {
+                "walking": helper_routes.get_calorie_count(
+                    helper_routes.safeget(
+                        details, "modes", "walking", "distance", "value"
+                    ),
+                    conversions.get("walking"),
+                ),
+                "running": helper_routes.get_calorie_count(
+                    helper_routes.safeget(
+                        details, "modes", "walking", "distance", "value"
+                    ),
+                    conversions.get("running"),
+                ),
+                "cycling": helper_routes.get_calorie_count(
+                    helper_routes.safeget(
+                        details, "modes", "cycling", "distance", "value"
+                    ),
+                    conversions.get("cycling"),
+                ),
+            }
+        except Exception as e:
+            logging.warning(f"Failed to find calorie counts - {e}")
 
         # Finds the shortest and longest distances from the routes.
         try:
@@ -110,18 +141,19 @@ def routes() -> object:
         MAP_QUERY = (
             f"https://www.google.com/maps/embed/v1/directions"
             f"?key={KEYS['google_maps']}&origin={origin_convert}"
-            f"&destination={destination_convert}&mode={travel_mode}&units=metric"
+            f"&destination={destination_convert}&mode={travel_mode_full}&units=metric"
         )
 
         # Fetches the user's car information and calculates the fuel cost and
         # consumption for the journey.
         car_make, car_mpg, fuel_type = helper_routes.get_car(session["username"])
         driving_distance = float(
-            details["modes"]["driving"]["distance"]["value"] / 1000
+            helper_routes.safeget(details, "modes", "driving", "distance", "value")
+            / 1000
         )
-        distance = helper_routes.convert_km_to_miles(driving_distance)
+        distance_miles = helper_routes.convert_km_to_miles(driving_distance)
         fuel_used = round(
-            helper_routes.calculate_fuel_consumption(car_mpg, distance), 2
+            helper_routes.calculate_fuel_consumption(car_mpg, distance_miles), 2
         )
         fuel_cost = round(helper_routes.calculate_fuel_cost(fuel_used, fuel_type), 2)
         fuel_price = round(helper_routes.get_fuel_price(fuel_type), 2)
@@ -129,6 +161,7 @@ def routes() -> object:
         return render_template(
             "routes.html",
             distance_range=distance_range,
+            mode=travel_mode_simple,
             details=details,
             origin=address1,
             destination=address2,
@@ -140,4 +173,5 @@ def routes() -> object:
             car_make=car_make,
             car_mpg=car_mpg,
             fuel_price=fuel_price,
+            calories=calories,
         )

@@ -68,28 +68,44 @@
 									<input type="hidden" id="mode" name="mode" value="driving">
 									<div class="four fields">
 										<div class="field">
-											<div class="custom-radio active" data-value="driving"><i class="fas fa-car"></i></div>
+											{% if mode == "driving" %}
+												<div class="custom-radio active" data-value="driving"><i class="fas fa-car"></i></div>
+											{% else %}
+												<div class="custom-radio" data-value="driving"><i class="fas fa-car"></i></div>
+											{% endif %}
 											<!-- <div class="ui toggle checkbox">
 												<input type="radio" id="driving" name="mode" value="driving" checked>
 												<label></label>
 											</div> -->
 										</div>
 										<div class="field">
-											<div class="custom-radio" data-value="walking"><i class="fas fa-walking"></i></div>
+											{% if mode == "walking" %}
+												<div class="custom-radio active" data-value="walking"><i class="fas fa-walking"></i></div>
+											{% else %}
+												<div class="custom-radio" data-value="walking"><i class="fas fa-walking"></i></div>
+											{% endif %}
 											<!-- <div class="ui toggle checkbox">
 												<input type="radio" id="walking" name="mode" value="walking">
 												<label><i class="fas fa-walking"></i></label>
 											</div> -->
 										</div>
 										<div class="field">
-											<div class="custom-radio" data-value="cycling"><i class="fas fa-biking"></i></div>
+											{% if mode == "cycling" %}
+												<div class="custom-radio active" data-value="bicycling"><i class="fas fa-biking"></i></div>
+											{% else %}
+												<div class="custom-radio" data-value="bicycling"><i class="fas fa-biking"></i></div>
+											{% endif %}
 											<!-- <div class="ui toggle checkbox">
 												<input type="radio" id="cycling" name="mode" value="cycling">
 												<label><i class="fas fa-biking"></i></label>
 											</div> -->
 										</div>
 										<div class="field">
-											<div class="custom-radio" data-value="transit"><i class="fas fa-bus"></i></div>
+											{% if mode == "public transport" %}
+												<div class="custom-radio active" data-value="transit"><i class="fas fa-bus"></i></div>
+											{% else %}
+												<div class="custom-radio" data-value="transit"><i class="fas fa-bus"></i></div>
+											{% endif %}
 											<!-- <div class="ui toggle checkbox">
 												<input type="radio" id="transit" name="mode" value="transit">
 												<label><i class="fas fa-bus"></i></label>
@@ -100,7 +116,6 @@
 								<button class="ui button black fluid" id="search_btn" style="font-size: 1.2em;">Search</button>
 							</form>
 						</div>
-						
 						{% if route_exists %}
 						<div class="ui dividing header"><i class="fa fa-info-circle"></i> Route Info</div>
 						<table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
@@ -108,9 +123,15 @@
 							{% for item in details['modes'].keys() %}
 							<tr>
 								{% if details['modes'][item]['distance'] is not none %}
-								<td>{{item.capitalize()}}</td>
-								<td>{{ details['modes'][item]['distance']['text'] }}</td>
-								<td>{{ details['modes'][item]['duration']['text'] }}</td>
+									{% if mode == item %}
+										<td><b>{{item.capitalize()}}</b></td>
+										<td><b>{{ details['modes'][item]['distance']['text'] }}</b></td>
+										<td><b>{{ details['modes'][item]['duration']['text'] }}</b></td>
+									{% else %}
+										<td>{{item.capitalize()}}</td>
+										<td>{{ details['modes'][item]['distance']['text'] }}</td>
+										<td>{{ details['modes'][item]['duration']['text'] }}</td>
+									{% endif %}
 								{% endif %}
 							</tr>
 							{% endfor %}
@@ -123,7 +144,7 @@
 			</div>
 			<div class="eight wide column center-both-ways">
 				<div class="ui container compact" id="map_container">
-					<iframe id="map_iframe" loading="lazy" allowfullscreen src={{MAP_QUERY}}></iframe>
+					<iframe id="map_iframe" loading="lazy" allowfullscreen src={{MAP_QUERY}} style="border-radius: 40px"></iframe>
 					<div id="map"></div>
 				</div>
 			</div>
@@ -133,6 +154,7 @@
 						<i class="fa fa-chart-area"></i>
 						Route Statistics
 					</div>
+					{% if route_exists %}
 					<div class="ui list">
 						<div class="item">
 							CO2 emissions
@@ -146,7 +168,23 @@
 						<div class="item">
 							Liters of fuel used
 						</div>
+						<br>
+						<div class="item">
+							<i class="fa fa-info-circle" data-content="We understand that everyone burns calories at different rates, but here is an
+							estimate of how many calories you could burn by chosing to make this journey in a more active way.
+							Source: bupa.co.uk/health-information/tools-calculators/calories-calculator"></i>
+							Calories Burned
+						</div>
+						<table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
+						{% for item, value in calories.items() %}
+							<tr>
+								<td>{{ item.capitalize() }}</td>
+								<td>~{{ value }} kcal</td>
+							</tr>
+						{% endfor %}
+						</table>
 					</div>
+					{% endif %}
 				</div>
 			</div>
 		</div>
