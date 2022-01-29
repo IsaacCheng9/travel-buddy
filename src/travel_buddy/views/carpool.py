@@ -140,6 +140,6 @@ def join_carpool_journey(journey_id: int):
             return redirect("/carpools/{journey_id}/")
         # Adds the user as a passenger to the carpool journey if validation
         # passed.
-        helper_carpool.add_passenger_to_carpool_journey(cur, journey_id, username)
+        helper_carpool.add_passenger_to_carpool_journey(journey_id, username)
 
     return redirect("/carpools/{journey_id}/")
