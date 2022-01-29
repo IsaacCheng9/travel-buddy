@@ -259,7 +259,6 @@ def get_carpool_details(journey_id: int) -> list:
         cur.execute("SELECT * FROM carpool_ride WHERE journey_id=?;", (journey_id,))
         conn.commit()
         carpool_details = cur.fetchone()
-
         return carpool_details
 
 
@@ -272,7 +271,7 @@ def validate_joining_carpool(journey_id: int, username: str) -> bool:
         username: The user who wants to join the carpool.
 
     Returns:
-        True if all checks have passed, or False otherwise.
+        Whether all checks have passed (True/False).
     """
     valid = True
     error_messages = []
