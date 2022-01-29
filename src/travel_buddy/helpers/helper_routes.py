@@ -62,12 +62,12 @@ def safeget(dct: dict, *keys):
     return dct
 
 
-def get_calorie_count(distance: int, calories: int) -> str:
+def get_calorie_count(distance: int, calories: int) -> int:
     """
     Returns the estimated count of calories burned by route
     """
 
-    return f"~{int(calories * (distance / 1000))} kcal"
+    return int(calories * (distance / 1000))
 
 
 def get_calorie_conversions():

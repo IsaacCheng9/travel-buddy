@@ -119,7 +119,6 @@ def routes() -> object:
                     conversions.get("cycling"),
                 ),
             }
-
         except Exception as e:
             logging.warning(f"Failed to find calorie counts - {e}")
 
