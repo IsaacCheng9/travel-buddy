@@ -19,7 +19,7 @@ DB_PATH = helper_general.get_database_path()
 
 @carpool_blueprint.route("/carpools", methods=["GET", "POST"])
 @limiter.limit("15/minute")
-def carpools():
+def show_available_carpools():
     """
     Displays carpools available to participate in, and handles user input for
     adding a new offer for carpool ride.
@@ -86,26 +86,21 @@ def view_carpool_journey(journey_id: int):
     Returns:
         The web page for viewing the selected carpool journey.
     """
-    with sqlite3.connect(DB_PATH) as conn:
-        cur = conn.cursor()
-        cur.execute("SELECT * FROM carpool_ride WHERE journey_id=?;", (journey_id,))
-        conn.commit()
-        carpool_details = cur.fetchone()
-
-        # Gets the carpool details if the journey ID exists, otherwise returns
-        # an error.
-        if not carpool_details:
-            session["error"] = "Carpool journey does not exist."
-            return render_template("view_carpool.html")
-        (
-            driver,
-            is_complete,
-            seats_available,
-            starting_point,
-            destination,
-            pickup_datetime,
-            description,
-        ) = carpool_details[0]
+    carpool_details = helper_carpool.get_carpool_details(journey_id)
+    # Gets the carpool details if the journey ID exists, otherwise returns
+    # an error.
+    if not carpool_details:
+        session["error"] = "Carpool journey does not exist."
+        return render_template("view_carpool.html")
+    (
+        driver,
+        is_complete,
+        seats_available,
+        starting_point,
+        destination,
+        pickup_datetime,
+        description,
+    ) = carpool_details[0]
 
     return render_template(
         "view_carpool.html",
