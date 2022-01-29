@@ -61,6 +61,28 @@ def safeget(dct: dict, *keys):
             return None
     return dct
 
+def get_calorie_count(distance: int, calories: tuple) -> str:
+    """
+    Returns the estimated count of calories burned by route
+    """
+    calorie_count = int(calories[0] * (distance / 1000)), int(calories[1] * (distance / 1000))
+
+    if calorie_count[0] == calorie_count[1]:
+        return str(calorie_count[0])
+    else:
+        return f"{calorie_count[0]} - {calorie_count[1]} kcal"
+
+def get_calorie_conversions():
+    """
+    Returns dictionary of conversions from transport mode to calories burned per 1km
+    """
+    conversions = {
+        "walking": (40,80),
+        "running": (60,140),
+        "cycling": (45,85)
+    }
+
+    return conversions
 
 def get_fuel_price(fuel_type: str) -> float:
     """
