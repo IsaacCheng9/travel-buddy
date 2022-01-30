@@ -53,31 +53,26 @@ def register() -> object:
         password = request.form["password1"]
         password_confirm = request.form["password2"]
 
-        # Connects to the database to perform validation.
-        with sqlite3.connect(DB_PATH) as conn:
-            cur = conn.cursor()
-            valid, message = helper_register.validate_registration(
-                cur,
-                username,
-                first_name,
-                last_name,
-                password,
-                password_confirm,
+        valid, message = helper_register.validate_registration(
+            username,
+            first_name,
+            last_name,
+            password,
+            password_confirm,
+        )
+        # Registers the user if the details are valid.
+        if valid is True:
+            # Hashes the password using bcrypt.
+            hashed_password = helper_register.hash_password(password)
+            # Inserts the user to the database tables.
+            helper_register.register_user(
+                username, hashed_password, first_name, last_name
             )
-            # Registers the user if the details are valid.
-            if valid is True:
-                # Hashes the password using bcrypt.
-                hashed_password = helper_register.hash_password(password)
-                # Inserts the user to the database tables.
-                helper_register.register_user(
-                    cur, username, hashed_password, first_name, last_name
-                )
-                conn.commit()
-                session["username"] = username
-                return redirect("/register")
-            # Displays error message(s) stating why their details are invalid.
-            else:
-                details = [username, first_name, last_name]
-                session["register_details"] = details
-                session["error"] = message
-                return redirect("/register")
+            session["username"] = username
+            return redirect("/register")
+        # Displays error message(s) stating why their details are invalid.
+        else:
+            details = [username, first_name, last_name]
+            session["register_details"] = details
+            session["error"] = message
+            return redirect("/register")

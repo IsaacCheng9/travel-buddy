@@ -2,13 +2,16 @@
 Helper functions for the user registration system and related functionality.
 """
 
+import sqlite3
 from typing import List, Tuple
 
 import bcrypt
+import travel_buddy.helpers.helper_general as helper_general
+
+DB_PATH = helper_general.get_database_path()
 
 
 def validate_registration(
-    cur,
     username: str,
     first_name: str,
     last_name: str,
@@ -20,7 +23,6 @@ def validate_registration(
     been met.
 
     Args:
-        cur: Cursor for the SQLite database.
         username: The username input by the user in the form.
         first_name: The first name input by the user in the form.
         last_name: The last name input by the user in the form.
@@ -51,15 +53,18 @@ def validate_registration(
     if username.isalnum() is False:
         message.append("Username must only contain letters and numbers!")
         valid = False
+
     # Checks that the username hasn't already been registered.
-    cur.execute("SELECT * FROM account WHERE username=?;", (username,))
-    if cur.fetchone() is not None:
-        message.append("Username has already been registered!")
-        valid = False
-    # Checks that the username exceed 20 characters.
-    if len(username) > 20:
-        message.append("Username exceeds 20 characters!")
-        valid = False
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM account WHERE username=?;", (username,))
+        if cur.fetchone() is not None:
+            message.append("Username has already been registered!")
+            valid = False
+        # Checks that the username exceed 20 characters.
+        if len(username) > 20:
+            message.append("Username exceeds 20 characters!")
+            valid = False
 
     # Checks that the first and last names don't exceed 20 characters.
     if len(first_name) > 20:
@@ -108,32 +113,35 @@ def hash_password(password: str) -> str:
 
 
 def register_user(
-    cur, username: str, hashed_password: str, first_name: str, last_name: str
+    username: str, hashed_password: str, first_name: str, last_name: str
 ) -> None:
     """
     Inserts the user in the 'account' and 'profile' tables in the database.
 
     Args:
-        cur: Cursor for the SQLite database.
         username: The username input by the user in the form.
         hashed_password: The user's password after bcrypt hashing was applied.
         first_name: The first name input by the user in the form.
         last_name: The last name input by the user in the form.
     """
-    # Creates the user account in the database.
-    cur.execute(
-        "INSERT INTO account (username, password) " "VALUES (?, ?);",
-        (
-            username,
-            hashed_password,
-        ),
-    )
-    # Creates the user profile in the database.
-    cur.execute(
-        "INSERT into profile (username, first_name, last_name) " "VALUES (?, ?, ?);",
-        (
-            username,
-            first_name,
-            last_name,
-        ),
-    )
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        # Creates the user account in the database.
+        cur.execute(
+            "INSERT INTO account (username, password) " "VALUES (?, ?);",
+            (
+                username,
+                hashed_password,
+            ),
+        )
+        # Creates the user profile in the database.
+        cur.execute(
+            "INSERT into profile (username, first_name, last_name) "
+            "VALUES (?, ?, ?);",
+            (
+                username,
+                first_name,
+                last_name,
+            ),
+        )
+        conn.commit()
