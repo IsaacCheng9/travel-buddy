@@ -128,18 +128,15 @@ def join_carpool_journey(journey_id: int):
     """
     username = session["username"]
 
-    with sqlite3.connect(DB_PATH) as conn:
-        cur = conn.cursor()
-        # Checks whether the carpool can be joined by the user.
-        valid, error_messages = helper_carpool.validate_joining_carpool(
-            journey_id, username
-        )
-
-        if not valid:
-            session["error"] = error_messages
-            return redirect("/carpools/{journey_id}/")
-        # Adds the user as a passenger to the carpool journey if validation
-        # passed.
-        helper_carpool.add_passenger_to_carpool_journey(journey_id, username)
+    # Checks whether the carpool can be joined by the user.
+    valid, error_messages = helper_carpool.validate_joining_carpool(
+        journey_id, username
+    )
+    if not valid:
+        session["error"] = error_messages
+        return redirect("/carpools/{journey_id}/")
+    # Adds the user as a passenger to the carpool journey if validation
+    # passed.
+    helper_carpool.add_passenger_to_carpool_journey(journey_id, username)
 
     return redirect("/carpools/{journey_id}/")
