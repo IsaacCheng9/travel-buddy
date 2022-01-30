@@ -203,3 +203,27 @@ def test_validate_carpool_ride():
             description,
         ) == (False, ["The pickup time must be in the future."])
         yield
+
+
+@test_steps(
+    "invalid_journey_id",
+    "invalid_driver",
+)
+def test_validate_joining_carpool():
+    """
+    Tests whether checks when joining a carpool work correctly.
+    """
+    # Tests joining a carpool with a negative journey ID, which never exists.
+    assert helper_carpool.validate_joining_carpool(-1, "johndoe") == (
+        False,
+        "Carpool journey does not exist.",
+    )
+    yield
+
+    # Tests joining a carpool with a driver with a username containing symbols,
+    # which never exists.
+    assert helper_carpool.validate_joining_carpool(-1, "@@@@@@@@") == (
+        False,
+        "Carpool journey does not exist.",
+    )
+    yield

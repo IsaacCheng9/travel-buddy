@@ -15,7 +15,7 @@ routes_blueprint = Blueprint(
 
 
 @routes_blueprint.route("/routes", methods=["GET", "POST"])
-# @limiter.limit("6/minute")
+@limiter.limit("6/minute")
 def routes() -> object:
     """
     Generates information on route details using Google Maps API functions.
@@ -121,6 +121,11 @@ def routes() -> object:
             }
         except Exception as e:
             logging.warning(f"Failed to find calorie counts - {e}")
+            calories = {
+                "walking": "N/A",
+                "running": "N/A",
+                "cycling": "N/A",
+            }
 
         # Finds the shortest and longest distances from the routes.
         try:
