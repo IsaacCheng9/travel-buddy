@@ -38,7 +38,8 @@ def routes() -> object:
         map_query = (
             f"https://www.google.com/maps/embed/v1/view"
             f"?key={keys['google_maps']}&center=50.9,-1.4&zoom=8"
-        )
+        )   
+
         return render_template(
             "routes.html",
             map_query=map_query,
@@ -150,7 +151,7 @@ def routes() -> object:
 
         # Fetches the user's car information and calculates the fuel cost and
         # consumption for the journey.
-        car_make, car_mpg, fuel_type = helper_routes.get_car(session["username"])
+        car_make, car_mpg, fuel_type, engine_size = helper_routes.get_car(session["username"])
         driving_distance = float(
             helper_routes.safeget(details, "modes", "driving", "distance", "value")
             / 1000
@@ -162,6 +163,13 @@ def routes() -> object:
         fuel_cost = round(helper_routes.calculate_fuel_cost(fuel_used, fuel_type), 2)
         fuel_price = round(helper_routes.get_fuel_price(fuel_type), 2)
 
+        this_distance = helper_routes.safeget(details, "modes", travel_mode_simple, "distance", "value")
+
+        co2 = round(helper_routes.generate_co2_emissions(this_distance, travel_mode_simple, fuel_type, engine_size), 2)
+        if co2 < 0:
+            logging.warning("Failed to find CO2 emission")
+            co2 = "Unknown"
+
         return render_template(
             "routes.html",
             distance_range=distance_range,
@@ -172,6 +180,7 @@ def routes() -> object:
             MAP_QUERY=map_query,
             AUTOCOMPLETE_QUERY=autocomplete_query,
             route_exists=True,
+            co2_emissions=co2,
             fuel_used=fuel_used,
             fuel_cost=fuel_cost,
             car_make=car_make,

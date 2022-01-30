@@ -134,13 +134,13 @@ def get_car(username) -> Tuple[str, float, str]:
     with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
         cur.execute(
-            "SELECT make, mpg, fuel_type FROM car WHERE owner=?;",
+            "SELECT make, mpg, fuel_type, engine_size FROM car WHERE owner=?;",
             (username,),
         )
         row = cur.fetchall()
     # TODO: Add error handling for when the user has no car.
-    make, mpg, fuel_type = row[0]
-    return make, mpg, fuel_type
+    make, mpg, fuel_type, engine_size = row[0]
+    return make, mpg, fuel_type, engine_size
 
 
 def convert_km_to_miles(kilometres: float) -> float:
@@ -170,6 +170,115 @@ def get_distance_range(sorted_keys, details) -> str:
         return f"{lowest} - {highest}"
 
 
-# TODO
-def validate_address(address: str) -> bool:
-    pass
+def get_co2_emissions_from_api(payload: str, api_key: str) -> int:
+    """
+    Use derived emission 
+    """
+    url = 'https://beta2.api.climatiq.io/estimate'
+    headers = {'Authorization': f"Bearer {api_key}"}
+
+    r = requests.post(url, headers=headers, json=payload)
+    print(r.json())
+    return r.json()
+
+def generate_co2_emissions(distance: int, mode: str, fuel: str = "na", engine_size: float = -1) -> float:
+
+    filename = "keys.json"
+    keys = helper_general.get_keys(filename)
+
+    if mode == "driving":
+        query = "passenger_vehicle-vehicle_type_car-fuel_source_"
+        if fuel in ("petrol", "diesel"):
+            query += fuel
+        else:
+            query += "na"
+        query += "-engine_size_"
+        #TODO: query fails with engine size specified - cannot find format to use
+        #if engine_size > 0:
+        #    query += str(engine_size)
+        #else:
+        query += "na"
+        query += "-vehicle_age_na-vehicle_weight_na"
+
+        print(query)
+
+        payload = {
+            "emission_factor": query,
+            "parameters": {
+                "distance": distance,
+                "distance_unit": "m"
+            }
+        }
+
+        carbon = get_co2_emissions_from_api(payload, keys["carbon_emissions"]).get("co2e", -1)
+        return carbon
+
+    elif mode == "public transport":
+
+        """
+        #bus
+        query_bus = "passenger_vehicle-vehicle_type_local_bus-fuel_source_na-distance_na-engine_size_na"
+
+        payload_bus = {
+            "emission_factor": query_bus,
+            "parameters": {
+                "passengers": 1,
+                "distance": distance,
+                "distance_unit": "m"
+            }
+        }
+        
+        #train
+        query_train = "passenger_train-route_type_national_rail-fuel_source_na"
+
+        payload_train = {
+            "emission_factor": query_train,
+            "parameters": {
+                "passengers": 1,
+                "distance": distance,
+                "distance_unit": "m"
+            }
+        }
+
+        print(query_bus)
+        carbon_bus = get_co2_emissions_from_api(distance, payload_bus, keys["carbon_emissions"]).get("co2e", -1)
+        print(carbon_bus)
+
+        print(query_train)
+        carbon_train = get_co2_emissions_from_api(distance, payload_train, keys["carbon_emissions"]).get("co2e", -1)
+        print(carbon_train)
+
+        if carbon_bus < 0:
+            if carbon_train < 0:
+                carbon = -1
+            else:
+                carbon = carbon_train
+        else:
+            if carbon_train < 0:
+                carbon = carbon_bus
+            else:
+                carbon = (carbon_bus + carbon_train) / 2
+        """
+
+        print(distance)
+        #bus co2 per km per person
+        bus_base = 0.10227
+        bus_emissions = bus_base * (distance/1000)
+
+        #train co2 per km per person
+        train_base = 0.00446
+        train_emissions = train_base * (distance/1000)
+
+        carbon = (bus_emissions + train_emissions) / 2
+
+        print(carbon)
+
+        return carbon
+    
+    else:
+        return 0
+
+        
+
+    
+
