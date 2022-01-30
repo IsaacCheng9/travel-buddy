@@ -17,6 +17,7 @@ def validate_carpool_request(
     starting_point: str,
     destination: str,
     pickup_datetime: datetime,
+    desired_price: float,
     description: str,
 ) -> Tuple[bool, List[str]]:
     """
@@ -28,6 +29,7 @@ def validate_carpool_request(
         destination: The end location of the carpool.
         pickup_datetime: The datetime to get picked up for the carpool.
         description: A description of the carpool.
+        desired_price: The price they are willing to pay for the carpool.
 
     Returns:
         Whether the request was valid, and the error messages to display
@@ -43,6 +45,7 @@ def validate_carpool_request(
         or not starting_point
         or not destination
         or not pickup_datetime
+        or not desired_price
     ):
         valid = False
         error_messages.append("Please fill in all required fields (marked with *).")
@@ -51,6 +54,16 @@ def validate_carpool_request(
     if num_passengers < 1:
         valid = False
         error_messages.append("Please enter a valid number of passengers (>= 1).")
+
+    # Validates that the user has entered a future start date and time.
+    if pickup_datetime <= datetime.now():
+        valid = False
+        error_messages.append("The pickup time must be in the future.")
+
+    # Checks that the user has entered a valid price.
+    if desired_price < 0:
+        valid = False
+        error_messages.append("The price must not be a negative number.")
 
     # Validates that the description is not too long.
     if len(description) > 500:
@@ -61,11 +74,6 @@ def validate_carpool_request(
         )
 
     # TODO: Validate that the user has entered a valid starting point and destination.
-
-    # Validates that the user has entered a future start date and time.
-    if pickup_datetime <= datetime.now():
-        valid = False
-        error_messages.append("The pickup time must be in the future.")
 
     return valid, error_messages
 
@@ -104,12 +112,12 @@ def add_carpool_request(
 
 
 def validate_carpool_ride(
-    cur,
     driver: str,
     seats_available: int,
     starting_point: str,
     destination: str,
     pickup_datetime: datetime,
+    price: float,
     description: str,
 ) -> Tuple[bool, List[str]]:
     """
@@ -121,6 +129,7 @@ def validate_carpool_ride(
         starting_point: The starting location of the carpool.
         destination: The end location of the carpool.
         pickup_datetime: The datetime to get picked up for the carpool.
+        price: The price they are charging passengers for the ride.
         description: A description of the carpool.
 
     Returns:
@@ -138,23 +147,36 @@ def validate_carpool_ride(
         or not starting_point
         or not destination
         or not pickup_datetime
+        or not price
     ):
         valid = False
         error_messages.append("Please fill in all required fields (marked with *).")
 
     # Validates that the driver exists in the database.
-    cur.execute(
-        "SELECT * FROM account WHERE username=?;",
-        (driver,),
-    )
-    if cur.fetchone() is None:
-        valid = False
-        error_messages.append(f"The driver '{driver}' does not exist.")
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT * FROM account WHERE username=?;",
+            (driver,),
+        )
+        if cur.fetchone() is None:
+            valid = False
+            error_messages.append(f"The driver '{driver}' does not exist.")
 
     # Validates that the user has entered a valid number of seats available.
     if seats_available < 1:
         valid = False
         error_messages.append("Please enter a valid number of seats available (>= 1).")
+
+    # Checks that the user has entered a valid price.
+    if price < 0:
+        valid = False
+        error_messages.append("The price must not be a negative number.")
+
+    # Validates that the user has entered a future start date and time.
+    if pickup_datetime <= datetime.now():
+        valid = False
+        error_messages.append("The pickup time must be in the future.")
 
     # Validates that the description is not too long.
     if len(description) > 500:
@@ -166,21 +188,16 @@ def validate_carpool_ride(
 
     # TODO: Validate that the user has entered a valid starting point and destination.
 
-    # Validates that the user has entered a future start date and time.
-    if pickup_datetime <= datetime.now():
-        valid = False
-        error_messages.append("The pickup time must be in the future.")
-
     return valid, error_messages
 
 
 def add_carpool_ride(
-    cur,
     driver: str,
     seats_available: int,
     starting_point: str,
     destination: str,
     pickup_datetime: datetime,
+    price: float,
     description: str,
 ) -> None:
     """
@@ -193,54 +210,59 @@ def add_carpool_ride(
         starting_point: The starting location of the carpool.
         destination: The end location of the carpool.
         pickup_datetime: The datetime to get picked up for the carpool.
+        price: The price they are charging passengers for the ride.
         description: A description of the carpool.
     """
-    # Adds the carpool ride to the database.
-    cur.execute(
-        "INSERT INTO carpool_ride (driver, seats_available, starting_point, "
-        "destination, pickup_datetime, description) VALUES (?, ?, ?, ?, ?, ?);",
-        (
-            driver,
-            seats_available,
-            starting_point,
-            destination,
-            pickup_datetime,
-            description,
-        ),
-    )
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        # Adds the carpool ride to the database.
+        cur.execute(
+            "INSERT INTO carpool_ride (driver, seats_available, starting_point, "
+            "destination, pickup_datetime, price, description) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?);",
+            (
+                driver,
+                seats_available,
+                starting_point,
+                destination,
+                pickup_datetime,
+                price,
+                description,
+            ),
+        )
 
 
-def get_incomplete_carpools(
-    cur,
-) -> List[Tuple[int, str, int, str, str, str, str, float, int]]:
+def get_incomplete_carpools() -> List[
+    Tuple[int, str, int, str, str, str, float, str, float, int]
+]:
     """
     Gets all incomplete carpools in the database and ratings for the driver.
-
-    Args:
-        cur: Cursor for the SQLite database.
 
     Returns:
         A list of tuples containing the carpool information.
     """
-    cur.execute(
-        """SELECT c.journey_id,
-                  c.driver,
-                  c.seats_available,
-                  c.starting_point,
-                  c.destination,
-                  c.pickup_datetime,
-                  c.description,
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        cur.execute(
+            """SELECT c.journey_id,
+                    c.driver,
+                    c.seats_available,
+                    c.starting_point,
+                    c.destination,
+                    c.pickup_datetime,
+                    c.price,
+                    c.description,
 
-                  AVG(r.rating_given),
-                  COUNT(r.rating_given)
+                    AVG(r.rating_given),
+                    COUNT(r.rating_given)
 
-        FROM carpool_ride c
-        JOIN rating r ON c.driver = r.rated_username
-        WHERE is_complete=0
-        GROUP BY c.journey_id
-        ORDER BY pickup_datetime ASC;"""
-    )
-    incomplete_carpools = cur.fetchall()
+            FROM carpool_ride c
+            JOIN rating r ON c.driver = r.rated_username
+            WHERE is_complete=0
+            GROUP BY c.journey_id
+            ORDER BY pickup_datetime ASC;"""
+        )
+        incomplete_carpools = cur.fetchall()
     return incomplete_carpools
 
 
@@ -288,6 +310,7 @@ def validate_joining_carpool(journey_id: int, username: str) -> bool:
         _,
         _,
         _,
+        _,
     ) = carpool_details[0]
     # The user cannot join their own carpool.
     if driver == username:
@@ -322,6 +345,7 @@ def add_passenger_to_carpool_journey(journey_id: int, username: str):
         starting_point,
         destination,
         pickup_datetime,
+        price,
         _,
     ) = carpool_details[0]
 
@@ -332,7 +356,7 @@ def add_passenger_to_carpool_journey(journey_id: int, username: str):
         cur.execute(
             "INSERT INTO carpool_request "
             "(requester, journey_id, num_passengers, starting_point, destination, "
-            "pickup_datetime, description) VALUES (?, ?, ?, ?, ?, ?);",
+            "pickup_datetime, price, description) VALUES (?, ?, ?, ?, ?, ?, ?);",
             (
                 username,
                 journey_id,
@@ -340,6 +364,7 @@ def add_passenger_to_carpool_journey(journey_id: int, username: str):
                 starting_point,
                 destination,
                 pickup_datetime,
+                price,
                 "Joined from the carpool listing.",
             ),
         )

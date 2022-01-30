@@ -4,8 +4,6 @@ carpool, offering carpooling, viewing carpools available, and viewing history
 of carpools participated in.
 """
 
-import sqlite3
-
 import travel_buddy.helpers.helper_carpool as helper_carpool
 import travel_buddy.helpers.helper_general as helper_general
 from flask import Blueprint, redirect, render_template, request, session
@@ -34,47 +32,44 @@ def show_available_carpools():
         return redirect("/")
 
     if request.method == "GET":
-        with sqlite3.connect(DB_PATH) as conn:
-            cur = conn.cursor()
-            incomplete_carpools = helper_carpool.get_incomplete_carpools(cur)
-            return render_template("carpools.html", carpools=incomplete_carpools)
+        incomplete_carpools = helper_carpool.get_incomplete_carpools()
+        return render_template("carpools.html", carpools=incomplete_carpools)
 
     if request.method == "POST":
-        with sqlite3.connect(DB_PATH) as conn:
-            cur = conn.cursor()
-            location_from = request.form["location-from"]
-            location_to = request.form["location-to"]
-            # Converts from date string input to date object.
-            date_from = helper_general.string_to_date(request.form["date-from"])
-            description = request.form["description"]
-            seats = int(request.form["seats"])
+        starting_point = request.form["location-from"]
+        destination = request.form["location-to"]
+        # Converts from date string input to date object.
+        pickup_datetime = helper_general.string_to_date(request.form["date-from"])
+        price = int(request.form["price"])
+        description = request.form["description"]
+        num_seats = int(request.form["seats"])
 
-            valid, errors = helper_carpool.validate_carpool_ride(
-                cur,
+        valid, errors = helper_carpool.validate_carpool_ride(
+            session["username"],
+            num_seats,
+            starting_point,
+            destination,
+            pickup_datetime,
+            price,
+            description,
+        )
+        incomplete_carpools = helper_carpool.get_incomplete_carpools()
+
+        # Displays errors if the submitted carpool ride is invalid.
+        if valid:
+            helper_carpool.add_carpool_ride(
                 session["username"],
-                seats,
-                location_from,
-                location_to,
-                date_from,
+                num_seats,
+                starting_point,
+                destination,
+                pickup_datetime,
+                price,
                 description,
             )
-            incomplete_carpools = helper_carpool.get_incomplete_carpools(cur)
-
-            # Displays errors if the submitted carpool ride is invalid.
-            if valid:
-                helper_carpool.add_carpool_ride(
-                    cur,
-                    session["username"],
-                    seats,
-                    location_from,
-                    location_to,
-                    date_from,
-                    description,
-                )
-                return render_template("carpools.html", carpools=incomplete_carpools)
-            return render_template(
-                "carpools.html", errors=errors, carpools=incomplete_carpools
-            )
+            return render_template("carpools.html", carpools=incomplete_carpools)
+        return render_template(
+            "carpools.html", errors=errors, carpools=incomplete_carpools
+        )
 
 
 @carpool_blueprint.route("/carpools/<journey_id>", methods=["GET"])
@@ -103,6 +98,7 @@ def view_carpool_journey(journey_id: int):
         starting_point,
         destination,
         pickup_datetime,
+        price,
         description,
     ) = carpool_details[0]
 
@@ -114,6 +110,7 @@ def view_carpool_journey(journey_id: int):
         starting_point=starting_point,
         destination=destination,
         pickup_datetime=pickup_datetime,
+        price=price,
         description=description,
     )
 

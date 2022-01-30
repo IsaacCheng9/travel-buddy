@@ -19,7 +19,7 @@ def test_password_hashing():
     for _ in range(5):
         password = "".join(
             random.choice(string.ascii_letters + string.digits + string.punctuation)
-            for i in range(14)
+            for _ in range(14)
         )
         hashed_password = helper_register.hash_password(password)
         is_valid = helper_login.authenticate_password(password, hashed_password)
