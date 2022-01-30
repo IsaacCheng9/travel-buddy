@@ -5,6 +5,7 @@
 <head>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+	<link rel="stylesheet" href="../static/css/mobile.css">
 
 	<link rel="stylesheet" href="../static/css/checkbox.css">
 
@@ -13,6 +14,29 @@
 
 <body>
 	<div class="ui container">
+		<div class="ui secondary pointing menu big">
+			<a class="item" href="/profile">
+				<i class="user icon"></i>
+				<div class="mobile hidden">Profile</div>
+			</a>
+			
+			<a class="item" href="/routes">
+				<i class="map icon"></i>
+				<div class="mobile hidden">Journeys</div>
+			</a>
+			<a class="item" href="/carpools">
+				<i class="car icon"></i>
+				<div class="mobile hidden">Carpools</div>
+			</a>
+			<a class="item active" href="/settings">
+				<i class="settings icon"></i>
+				<div class="mobile hidden">Settings</div>
+			</a>
+			<a class="item right" href="/logout">
+				<i class="sign out alternate icon"></i>
+				<div class="mobile hidden">Logout</div>
+			</a>
+		</div>
 		<div id="message_notification" class="ui green message">Your changes have been saved.</div>
 		<div class="ui grid">
 			<div class="four wide column">
@@ -255,7 +279,8 @@
 
 	* {
 		box-sizing: border-box;
-		font-family: Montserrat, sans-serif;
+		transition: all 0.4s;
+		font-family: "Open Sans", "Helvetica", "Montserrat", sans-serif;
 	}
 
 	.error {

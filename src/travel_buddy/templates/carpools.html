@@ -5,6 +5,7 @@
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+	<link rel="stylesheet" href="../static/css/mobile.css">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
 
@@ -15,24 +16,29 @@
     <div class="ui container">
         <!-- make a menu with options to create car pool and search car pools -->
         <div class="ui secondary pointing menu big">
-            <a class="item" href="/profile">
-                <i class="user icon"></i>
-                Profile
-            </a>
-            <a class="item active" href="/carpools">
-                <i class="car icon"></i>
-                Carpools
-            </a>
-            <div class="right menu">
-                <div class="item">
-                    <div class="ui transparent icon input">
-                        <input type="text" placeholder="Search carpools...">
-                        <i class="search link icon"></i>
-                      </div>
-                </div>
-            </div>
-        </div>
-        <div class="ui grid divided">
+			<a class="item" href="/profile">
+				<i class="user icon"></i>
+				<div class="mobile hidden">Profile</div>
+			</a>
+			
+			<a class="item" href="/routes">
+				<i class="map icon"></i>
+				<div class="mobile hidden">Journeys</div>
+			</a>
+			<a class="item active" href="/carpools">
+				<i class="car icon"></i>
+				<div class="mobile hidden">Carpools</div>
+			</a>
+			<a class="item" href="/settings">
+				<i class="settings icon"></i>
+				<div class="mobile hidden">Settings</div>
+			</a>
+			<a class="item right" href="/logout">
+				<i class="sign out alternate icon"></i>
+				<div class="mobile hidden">Logout</div>
+			</a>
+		</div>
+        <div class="ui grid divided stackable">
             {% if errors %}
             <div class="row">
                 <div class="ui negative message fluid" style="width: 100%;">
@@ -77,9 +83,10 @@
                     <input class="ui fluid button green" type="submit" value="Create car pool offer">
                 </form>
             </div>
+            <div class="ui horizontal divider"></div>
             {% for ride in carpools %}
             <div class="row">
-                <div class="ui grid" style="width: 100%;">
+                <div class="ui grid stackable" style="width: 100%;">
                     <div class="two wide column">
                         <div class="ui image fluid">
                             <img src="https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60" />
@@ -94,7 +101,7 @@
                             {{ride[7]}} ({{ride[8]}})
                         </div>
                         
-                        <div class="ui label small">
+                        <div class="ui label small fluid" style="text-align: center;">
                             <i class="icon car"></i>
                             Seats left: {{ride[2]}}
                         </div>
@@ -124,6 +131,8 @@
                     </div>
                 </div>
             </div>
+
+            <div class="ui divider"></div>
             {% endfor %}
         </div>
     </div>
@@ -144,3 +153,12 @@
 
     DescriptionCharLimit();
 </script>
+
+<style>
+    @import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
+    * {
+		box-sizing: border-box;
+		transition: all 0.4s;
+		font-family: "Open Sans", "Helvetica", "Montserrat", sans-serif;
+	}
+</style>

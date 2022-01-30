@@ -130,15 +130,7 @@ def routes() -> object:
         # Finds the shortest and longest distances from the routes.
         try:
             sorted_keys = sorted(distances, key=distances.get)
-            lowest, highest = helper_routes.safeget(
-                details, "modes", sorted_keys[0], "distance", "text"
-            ), helper_routes.safeget(
-                details, "modes", sorted_keys[-1], "distance", "text"
-            )
-            if lowest == highest:
-                distance_range = lowest
-            else:
-                distance_range = f"{lowest} - {highest}"
+            distance_range = helper_routes.get_distance_range(sorted_keys, details)
         except Exception as e:
             distance_range = "Unknown"
             logging.warning(f"Failed to find shortest and longest distances - {e}")

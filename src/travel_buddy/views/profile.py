@@ -41,6 +41,10 @@ def profile(username: str) -> object:
     Returns:
         The updated web page based on whether the details provided were valid.
     """
+
+    if "username" not in session:
+        return redirect("/")
+
     message = []
 
     # Gets the user's details from the database.

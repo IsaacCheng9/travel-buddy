@@ -5,20 +5,36 @@
 <head>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+	<link rel="stylesheet" href="../static/css/mobile.css">
+
 	<title>Travel Buddy - My Profile</title>
 </head>
 
 <body>
 	<div class="ui container" id="container">
-		
-		{% if "username" in session %}
-		<div class="ui four item menu">
-			<a href="/profile" class="active item"><i class="icon user"></i> Profile</a>
-			<a href="" class="item"><i class="icon map"></i> App</a>
-			<a href="" class="item"><i class="icon settings"></i> Settings</a>
-			<a href="/logout" class="item"><i class="icon key"></i> Logout</a>
+		<div class="ui secondary pointing menu big">
+			<a class="item active" href="/profile">
+				<i class="user icon"></i>
+				<div class="mobile hidden">Profile</div>
+			</a>
+			
+			<a class="item" href="/routes">
+				<i class="map icon"></i>
+				<div class="mobile hidden">Journeys</div>
+			</a>
+			<a class="item" href="/carpools">
+				<i class="car icon"></i>
+				<div class="mobile hidden">Carpools</div>
+			</a>
+			<a class="item" href="/settings">
+				<i class="settings icon"></i>
+				<div class="mobile hidden">Settings</div>
+			</a>
+			<a class="item right" href="/logout">
+				<i class="sign out alternate icon"></i>
+				<div class="mobile hidden">Logout</div>
+			</a>
 		</div>
-		{%endif%}
 	
 		<div class="ui grid">
 			<div class="sixteen wide column">
@@ -66,8 +82,7 @@
 	* {
 		box-sizing: border-box;
 		transition: all 0.4s;
-		
-		font-family: "Montserrat", sans-serif;
+		font-family: "Open Sans", "Helvetica", "Montserrat", sans-serif;
 	}
 	
 	.center {

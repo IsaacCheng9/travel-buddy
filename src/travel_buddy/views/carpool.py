@@ -29,6 +29,10 @@ def show_available_carpools():
         POST: Adds the carpool ride to the database and redirects to the
               updated list of available carpools.
     """
+
+    if "username" not in session:
+        return redirect("/")
+
     if request.method == "GET":
         with sqlite3.connect(DB_PATH) as conn:
             cur = conn.cursor()
