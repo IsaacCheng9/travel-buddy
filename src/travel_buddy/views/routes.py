@@ -27,22 +27,22 @@ def routes() -> object:
     if "username" not in session:
         return redirect("/")
 
-    API_KEY_FILE = "keys.json"
-    KEYS = helper_general.get_keys(API_KEY_FILE)
-    AUTOCOMPLETE_QUERY = (
+    api_key_file = "keys.json"
+    keys = helper_general.get_keys(api_key_file)
+    autocomplete_query = (
         f"https://maps.googleapis.com/maps/api/js"
-        f"?key={KEYS['google_maps']}&callback=initMap&libraries=places&v=weekly"
+        f"?key={keys['google_maps']}&callback=initMap&libraries=places&v=weekly"
     )
 
     if request.method == "GET":
-        MAP_QUERY = (
+        map_query = (
             f"https://www.google.com/maps/embed/v1/view"
-            f"?key={KEYS['google_maps']}&center=50.9,-1.4&zoom=8"
+            f"?key={keys['google_maps']}&center=50.9,-1.4&zoom=8"
         )
         return render_template(
             "routes.html",
-            MAP_QUERY=MAP_QUERY,
-            AUTOCOMPLETE_QUERY=AUTOCOMPLETE_QUERY,
+            map_query=map_query,
+            autocomplete_query=autocomplete_query,
             route_exists=False,
         )
 
@@ -59,12 +59,11 @@ def routes() -> object:
 
         # Generates the Google Maps API client to get data on routes using
         # different modes of transport.
-        map_client = helper_routes.generate_client(KEYS["google_maps"])
+        map_client = helper_routes.generate_client(keys["google_maps"])
         if map_client is None:
             # TODO error
             logging.warning(f"Failed to generate maps api client")
             return
-        route_data = {}
         modes = ("walking", "driving", "bicycling", "transit")
 
         # Gets the distances and durations for each mode of transport.
@@ -143,9 +142,9 @@ def routes() -> object:
         # Displays Google Map preview for the selected mode of transport.
         origin_convert = address1.replace(" ", "+")
         destination_convert = address2.replace(" ", "+")
-        MAP_QUERY = (
+        map_query = (
             f"https://www.google.com/maps/embed/v1/directions"
-            f"?key={KEYS['google_maps']}&origin={origin_convert}"
+            f"?key={keys['google_maps']}&origin={origin_convert}"
             f"&destination={destination_convert}&mode={travel_mode_full}&units=metric"
         )
 
@@ -170,8 +169,8 @@ def routes() -> object:
             details=details,
             origin=address1,
             destination=address2,
-            MAP_QUERY=MAP_QUERY,
-            AUTOCOMPLETE_QUERY=AUTOCOMPLETE_QUERY,
+            MAP_QUERY=map_query,
+            AUTOCOMPLETE_QUERY=autocomplete_query,
             route_exists=True,
             fuel_used=fuel_used,
             fuel_cost=fuel_cost,
