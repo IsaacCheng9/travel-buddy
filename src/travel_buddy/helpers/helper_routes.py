@@ -172,16 +172,19 @@ def get_distance_range(sorted_keys, details) -> str:
 
 def get_co2_emissions_from_api(payload: str, api_key: str) -> int:
     """
-    Use derived emission 
+    Use derived emission
     """
-    url = 'https://beta2.api.climatiq.io/estimate'
-    headers = {'Authorization': f"Bearer {api_key}"}
+    url = "https://beta2.api.climatiq.io/estimate"
+    headers = {"Authorization": f"Bearer {api_key}"}
 
     r = requests.post(url, headers=headers, json=payload)
     print(r.json())
     return r.json()
 
-def generate_co2_emissions(distance: int, mode: str, fuel: str = "na", engine_size: float = -1) -> float:
+
+def generate_co2_emissions(
+    distance: int, mode: str, fuel: str = "na", engine_size: float = -1
+) -> float:
 
     filename = "keys.json"
     keys = helper_general.get_keys(filename)
@@ -193,10 +196,10 @@ def generate_co2_emissions(distance: int, mode: str, fuel: str = "na", engine_si
         else:
             query += "na"
         query += "-engine_size_"
-        #TODO: query fails with engine size specified - cannot find format to use
-        #if engine_size > 0:
+        # TODO: query fails with engine size specified - cannot find format to use
+        # if engine_size > 0:
         #    query += str(engine_size)
-        #else:
+        # else:
         query += "na"
         query += "-vehicle_age_na-vehicle_weight_na"
 
@@ -204,13 +207,12 @@ def generate_co2_emissions(distance: int, mode: str, fuel: str = "na", engine_si
 
         payload = {
             "emission_factor": query,
-            "parameters": {
-                "distance": distance,
-                "distance_unit": "m"
-            }
+            "parameters": {"distance": distance, "distance_unit": "m"},
         }
 
-        carbon = get_co2_emissions_from_api(payload, keys["carbon_emissions"]).get("co2e", -1)
+        carbon = get_co2_emissions_from_api(payload, keys["carbon_emissions"]).get(
+            "co2e", -1
+        )
         return carbon
 
     elif mode == "public transport":
@@ -227,7 +229,7 @@ def generate_co2_emissions(distance: int, mode: str, fuel: str = "na", engine_si
                 "distance_unit": "m"
             }
         }
-        
+
         #train
         query_train = "passenger_train-route_type_national_rail-fuel_source_na"
 
@@ -261,24 +263,19 @@ def generate_co2_emissions(distance: int, mode: str, fuel: str = "na", engine_si
         """
 
         print(distance)
-        #bus co2 per km per person
+        # bus co2 per km per person
         bus_base = 0.10227
-        bus_emissions = bus_base * (distance/1000)
+        bus_emissions = bus_base * (distance / 1000)
 
-        #train co2 per km per person
+        # train co2 per km per person
         train_base = 0.00446
-        train_emissions = train_base * (distance/1000)
+        train_emissions = train_base * (distance / 1000)
 
         carbon = (bus_emissions + train_emissions) / 2
 
         print(carbon)
 
         return carbon
-    
+
     else:
         return 0
-
-        
-
-    
-
