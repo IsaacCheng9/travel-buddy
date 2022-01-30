@@ -2,8 +2,6 @@
 Handles the view for the user registration system and related functionality.
 """
 
-import sqlite3
-
 import travel_buddy.helpers.helper_general as helper_general
 import travel_buddy.helpers.helper_register as helper_register
 from flask import Blueprint, redirect, render_template, request, session
