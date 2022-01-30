@@ -4,8 +4,6 @@ carpool, offering carpooling, viewing carpools available, and viewing history
 of carpools participated in.
 """
 
-import sqlite3
-
 import travel_buddy.helpers.helper_carpool as helper_carpool
 import travel_buddy.helpers.helper_general as helper_general
 from flask import Blueprint, redirect, render_template, request, session
