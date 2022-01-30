@@ -112,7 +112,6 @@ def add_carpool_request(
 
 
 def validate_carpool_ride(
-    cur,
     driver: str,
     seats_available: int,
     starting_point: str,
@@ -154,13 +153,15 @@ def validate_carpool_ride(
         error_messages.append("Please fill in all required fields (marked with *).")
 
     # Validates that the driver exists in the database.
-    cur.execute(
-        "SELECT * FROM account WHERE username=?;",
-        (driver,),
-    )
-    if cur.fetchone() is None:
-        valid = False
-        error_messages.append(f"The driver '{driver}' does not exist.")
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT * FROM account WHERE username=?;",
+            (driver,),
+        )
+        if cur.fetchone() is None:
+            valid = False
+            error_messages.append(f"The driver '{driver}' does not exist.")
 
     # Validates that the user has entered a valid number of seats available.
     if seats_available < 1:
@@ -191,7 +192,6 @@ def validate_carpool_ride(
 
 
 def add_carpool_ride(
-    cur,
     driver: str,
     seats_available: int,
     starting_point: str,
@@ -213,55 +213,56 @@ def add_carpool_ride(
         price: The price they are charging passengers for the ride.
         description: A description of the carpool.
     """
-    # Adds the carpool ride to the database.
-    cur.execute(
-        "INSERT INTO carpool_ride (driver, seats_available, starting_point, "
-        "destination, pickup_datetime, price, description) "
-        "VALUES (?, ?, ?, ?, ?, ?, ?);",
-        (
-            driver,
-            seats_available,
-            starting_point,
-            destination,
-            pickup_datetime,
-            price,
-            description,
-        ),
-    )
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        # Adds the carpool ride to the database.
+        cur.execute(
+            "INSERT INTO carpool_ride (driver, seats_available, starting_point, "
+            "destination, pickup_datetime, price, description) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?);",
+            (
+                driver,
+                seats_available,
+                starting_point,
+                destination,
+                pickup_datetime,
+                price,
+                description,
+            ),
+        )
 
 
-def get_incomplete_carpools(
-    cur,
-) -> List[Tuple[int, str, int, str, str, str, float, str, float, int]]:
+def get_incomplete_carpools() -> List[
+    Tuple[int, str, int, str, str, str, float, str, float, int]
+]:
     """
     Gets all incomplete carpools in the database and ratings for the driver.
-
-    Args:
-        cur: Cursor for the SQLite database.
 
     Returns:
         A list of tuples containing the carpool information.
     """
-    cur.execute(
-        """SELECT c.journey_id,
-                  c.driver,
-                  c.seats_available,
-                  c.starting_point,
-                  c.destination,
-                  c.pickup_datetime,
-                  c.price,
-                  c.description,
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        cur.execute(
+            """SELECT c.journey_id,
+                    c.driver,
+                    c.seats_available,
+                    c.starting_point,
+                    c.destination,
+                    c.pickup_datetime,
+                    c.price,
+                    c.description,
 
-                  AVG(r.rating_given),
-                  COUNT(r.rating_given)
+                    AVG(r.rating_given),
+                    COUNT(r.rating_given)
 
-        FROM carpool_ride c
-        JOIN rating r ON c.driver = r.rated_username
-        WHERE is_complete=0
-        GROUP BY c.journey_id
-        ORDER BY pickup_datetime ASC;"""
-    )
-    incomplete_carpools = cur.fetchall()
+            FROM carpool_ride c
+            JOIN rating r ON c.driver = r.rated_username
+            WHERE is_complete=0
+            GROUP BY c.journey_id
+            ORDER BY pickup_datetime ASC;"""
+        )
+        incomplete_carpools = cur.fetchall()
     return incomplete_carpools
 
 

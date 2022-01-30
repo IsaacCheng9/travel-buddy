@@ -102,147 +102,17 @@ def test_validate_carpool_ride():
     Tests whether the validation for carpool rides works for different
     types of valid and invalid requests.
     """
-    with sqlite3.connect(DB_PATH) as conn:
-        cur = conn.cursor()
-        driver = "johndoe"
-        seats_available = 3
-        starting_point = (
-            "University of Exeter Forum Library, Stocker Rd, Exeter EX4 4PT"
-        )
-        destination = "Exeter Quay, Exeter EX2 4BZ"
-        pickup_datetime = datetime(
-            year=2030, month=1, day=1, hour=1, minute=1, second=1
-        )
-        price = 10.0
-        description = "This is a test description."
+    driver = "johndoe"
+    seats_available = 3
+    starting_point = "University of Exeter Forum Library, Stocker Rd, Exeter EX4 4PT"
+    destination = "Exeter Quay, Exeter EX2 4BZ"
+    pickup_datetime = datetime(year=2030, month=1, day=1, hour=1, minute=1, second=1)
+    price = 10.0
+    description = "This is a test description."
 
-        # Tests a valid carpool request.
-        assert (
-            helper_carpool.validate_carpool_ride(
-                cur,
-                driver,
-                seats_available,
-                starting_point,
-                destination,
-                pickup_datetime,
-                price,
-                description,
-            )
-            == (True, [])
-        )
-        yield
-
-        # Tests a driver that doesn't exist.
-        driver = "a" * 50
-        assert (
-            helper_carpool.validate_carpool_ride(
-                cur,
-                driver,
-                seats_available,
-                starting_point,
-                destination,
-                pickup_datetime,
-                price,
-                description,
-            )
-            == (False, [f"The driver '{driver}' does not exist."])
-        )
-        yield
-
-        # Tests an invalid number of seats available.
-        driver = "johndoe"
-        seats_available = -1
-        assert (
-            helper_carpool.validate_carpool_ride(
-                cur,
-                driver,
-                seats_available,
-                starting_point,
-                destination,
-                pickup_datetime,
-                price,
-                description,
-            )
-            == (False, ["Please enter a valid number of seats available (>= 1)."])
-        )
-        seats_available = 0
-        assert (
-            helper_carpool.validate_carpool_ride(
-                cur,
-                driver,
-                seats_available,
-                starting_point,
-                destination,
-                pickup_datetime,
-                price,
-                description,
-            )
-            == (False, ["Please enter a valid number of seats available (>= 1)."])
-        )
-        yield
-
-        # Tests a pickup time that is in the past.
-        seats_available = 3
-        pickup_datetime = datetime(
-            year=2020, month=1, day=1, hour=1, minute=1, second=1
-        )
-        assert (
-            helper_carpool.validate_carpool_ride(
-                cur,
-                driver,
-                seats_available,
-                starting_point,
-                destination,
-                pickup_datetime,
-                price,
-                description,
-            )
-            == (False, ["The pickup time must be in the future."])
-        )
-        yield
-
-        # Tests a pickup time that is in the present.
-        pickup_datetime = datetime.now()
-        assert (
-            helper_carpool.validate_carpool_ride(
-                cur,
-                driver,
-                seats_available,
-                starting_point,
-                destination,
-                pickup_datetime,
-                price,
-                description,
-            )
-            == (False, ["The pickup time must be in the future."])
-        )
-        yield
-
-        # Tests a negative price.
-        pickup_datetime = datetime(
-            year=2030, month=1, day=1, hour=1, minute=1, second=1
-        )
-        price = -0.01
-        assert (
-            helper_carpool.validate_carpool_ride(
-                cur,
-                driver,
-                seats_available,
-                starting_point,
-                destination,
-                pickup_datetime,
-                price,
-                description,
-            )
-            == (False, ["The price must not be a negative number."])
-        )
-        yield
-
-        # Tests a description that is too long.
-        price = 10.0
-        description = "a" * 501
-        assert helper_carpool.validate_carpool_ride(
-            cur,
+    # Tests a valid carpool request.
+    assert (
+        helper_carpool.validate_carpool_ride(
             driver,
             seats_available,
             starting_point,
@@ -250,14 +120,126 @@ def test_validate_carpool_ride():
             pickup_datetime,
             price,
             description,
-        ) == (
-            False,
-            [
-                "Your description is too long - it contains 501 characters, and there "
-                "is a 500 character limit."
-            ],
         )
-        yield
+        == (True, [])
+    )
+    yield
+
+    # Tests a driver that doesn't exist.
+    driver = "a" * 50
+    assert (
+        helper_carpool.validate_carpool_ride(
+            driver,
+            seats_available,
+            starting_point,
+            destination,
+            pickup_datetime,
+            price,
+            description,
+        )
+        == (False, [f"The driver '{driver}' does not exist."])
+    )
+    yield
+
+    # Tests an invalid number of seats available.
+    driver = "johndoe"
+    seats_available = -1
+    assert (
+        helper_carpool.validate_carpool_ride(
+            driver,
+            seats_available,
+            starting_point,
+            destination,
+            pickup_datetime,
+            price,
+            description,
+        )
+        == (False, ["Please enter a valid number of seats available (>= 1)."])
+    )
+    seats_available = 0
+    assert (
+        helper_carpool.validate_carpool_ride(
+            driver,
+            seats_available,
+            starting_point,
+            destination,
+            pickup_datetime,
+            price,
+            description,
+        )
+        == (False, ["Please enter a valid number of seats available (>= 1)."])
+    )
+    yield
+
+    # Tests a pickup time that is in the past.
+    seats_available = 3
+    pickup_datetime = datetime(year=2020, month=1, day=1, hour=1, minute=1, second=1)
+    assert (
+        helper_carpool.validate_carpool_ride(
+            driver,
+            seats_available,
+            starting_point,
+            destination,
+            pickup_datetime,
+            price,
+            description,
+        )
+        == (False, ["The pickup time must be in the future."])
+    )
+    yield
+
+    # Tests a pickup time that is in the present.
+    pickup_datetime = datetime.now()
+    assert (
+        helper_carpool.validate_carpool_ride(
+            driver,
+            seats_available,
+            starting_point,
+            destination,
+            pickup_datetime,
+            price,
+            description,
+        )
+        == (False, ["The pickup time must be in the future."])
+    )
+    yield
+
+    # Tests a negative price.
+    pickup_datetime = datetime(year=2030, month=1, day=1, hour=1, minute=1, second=1)
+    price = -0.01
+    assert (
+        helper_carpool.validate_carpool_ride(
+            driver,
+            seats_available,
+            starting_point,
+            destination,
+            pickup_datetime,
+            price,
+            description,
+        )
+        == (False, ["The price must not be a negative number."])
+    )
+    yield
+
+    # Tests a description that is too long.
+    price = 10.0
+    description = "a" * 501
+    assert helper_carpool.validate_carpool_ride(
+        driver,
+        seats_available,
+        starting_point,
+        destination,
+        pickup_datetime,
+        price,
+        description,
+    ) == (
+        False,
+        [
+            "Your description is too long - it contains 501 characters, and there "
+            "is a 500 character limit."
+        ],
+    )
+    yield
 
 
 @test_steps(
