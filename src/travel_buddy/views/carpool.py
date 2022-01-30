@@ -42,20 +42,22 @@ def show_available_carpools():
     if request.method == "POST":
         with sqlite3.connect(DB_PATH) as conn:
             cur = conn.cursor()
-            location_from = request.form["location-from"]
-            location_to = request.form["location-to"]
+            starting_point = request.form["location-from"]
+            destination = request.form["location-to"]
             # Converts from date string input to date object.
-            date_from = helper_general.string_to_date(request.form["date-from"])
+            pickup_datetime = helper_general.string_to_date(request.form["date-from"])
+            price = request.form["price"]
             description = request.form["description"]
-            seats = int(request.form["seats"])
+            num_seats = int(request.form["seats"])
 
             valid, errors = helper_carpool.validate_carpool_ride(
                 cur,
                 session["username"],
-                seats,
-                location_from,
-                location_to,
-                date_from,
+                num_seats,
+                starting_point,
+                destination,
+                pickup_datetime,
+                price,
                 description,
             )
             incomplete_carpools = helper_carpool.get_incomplete_carpools(cur)
@@ -65,10 +67,11 @@ def show_available_carpools():
                 helper_carpool.add_carpool_ride(
                     cur,
                     session["username"],
-                    seats,
-                    location_from,
-                    location_to,
-                    date_from,
+                    num_seats,
+                    starting_point,
+                    destination,
+                    pickup_datetime,
+                    price,
                     description,
                 )
                 return render_template("carpools.html", carpools=incomplete_carpools)
@@ -103,6 +106,7 @@ def view_carpool_journey(journey_id: int):
         starting_point,
         destination,
         pickup_datetime,
+        price,
         description,
     ) = carpool_details[0]
 
@@ -114,6 +118,7 @@ def view_carpool_journey(journey_id: int):
         starting_point=starting_point,
         destination=destination,
         pickup_datetime=pickup_datetime,
+        price=price,
         description=description,
     )
 
