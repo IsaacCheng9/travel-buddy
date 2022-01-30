@@ -42,7 +42,7 @@ def show_available_carpools():
         destination = request.form["location-to"]
         # Converts from date string input to date object.
         pickup_datetime = helper_general.string_to_date(request.form["date-from"])
-        price = request.form["price"]
+        price = int(request.form["price"])
         description = request.form["description"]
         num_seats = int(request.form["seats"])
 
@@ -59,7 +59,7 @@ def show_available_carpools():
 
         # Displays errors if the submitted carpool ride is invalid.
         if valid:
-            helper_carpool._ride(
+            helper_carpool.add_carpool_ride(
                 session["username"],
                 num_seats,
                 starting_point,
