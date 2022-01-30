@@ -188,10 +188,11 @@ def generate_co2_emissions(
     distance: int, mode: str, fuel: str = "na", engine_size: float = -1
 ) -> float:
     """
-    Prepares data in format suitable for carbon emissions api to calculate and returns carbon emission value
+    Prepares data in format suitable for carbon emissions api to calculate and
+    returns carbon emission value.
     """
-    filename = "keys.json"
-    keys = helper_general.get_keys(filename)
+    file_name = "keys.json"
+    keys = helper_general.get_keys(file_name)
 
     if mode == "driving":
         query = "passenger_vehicle-vehicle_type_car-fuel_source_"
@@ -207,13 +208,10 @@ def generate_co2_emissions(
         query += "na"
         query += "-vehicle_age_na-vehicle_weight_na"
 
-        print(query)
-
         payload = {
             "emission_factor": query,
             "parameters": {"distance": distance, "distance_unit": "m"},
         }
-
         carbon = get_co2_emissions_from_api(payload, keys["carbon_emissions"]).get(
             "co2e", -1
         )
@@ -266,7 +264,6 @@ def generate_co2_emissions(
                 carbon = (carbon_bus + carbon_train) / 2
         """
 
-        print(distance)
         # bus co2 per km per person
         bus_base = 0.10227
         bus_emissions = bus_base * (distance / 1000)
@@ -276,10 +273,6 @@ def generate_co2_emissions(
         train_emissions = train_base * (distance / 1000)
 
         carbon = (bus_emissions + train_emissions) / 2
-
-        print(carbon)
-
         return carbon
 
-    else:
-        return 0
+    return 0
