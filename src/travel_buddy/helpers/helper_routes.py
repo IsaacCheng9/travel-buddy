@@ -123,12 +123,13 @@ def calculate_fuel_cost(fuel_used: float, fuel_type: str) -> float:
     return total_cost
 
 
-def get_car(username) -> Tuple[str, float, str]:
+def get_car(username) -> Tuple[str, float, str, float]:
     """
     Fetches the user's car make, miles per gallon and fuel type
 
     Returns:
-        The make, miles per gallon, and fuel type of the user's car.
+        The make, miles per gallon, fuel type, and engine size of the user's
+        car.
     """
     # Gets the user's details from the database.
     with sqlite3.connect(DB_PATH) as conn:
