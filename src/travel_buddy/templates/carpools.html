@@ -55,7 +55,6 @@
             {% endif %}
             <div class="row">
                 <form class="ui form" style="width: 100%;" method="POST">
-                    <h4 class="dividing header ui">Location</h4>
                     <div class="two fields">
                         <div class="field">
                             <label>From</label>
@@ -66,21 +65,24 @@
                             <input type="text" required name="location-to" placeholder="City, State">
                         </div>
                     </div>
-                    <h4 class="dividing header ui">Date</h4>
+                    <div class="field">
+                        <label>Number of Seats Available</label>
+                        <input required name="seats" type="number">
+                    </div>
+                    <div class="field">
+                        <label>Price Per Passenger</label>
+                        <input required name="price" type="number">
+                    </div>
                     <div class="field">
                         <label>Journey Start Date</label>
                         <input required name="date-from" type="datetime-local">
                     </div>
                     <h4 class="dividing header ui">Extra Information</h4>
                     <div class="field">
-                        <textarea maxlength=500 required name="description" id="description_input" cols="4" rows="4" placeholder="Describe the meet up place, the journey and cost of the seat."></textarea>
+                        <textarea maxlength=500 required name="description" id="description_input" cols="4" rows="4" placeholder="Describe the pick-up point, the journey, and any additional information."></textarea>
                         <div id="description_character_limit"></div>
                     </div>
-                    <div class="field">
-                        <label>Number of seats available</label>
-                        <input required name="seats" type="number">
-                    </div>
-                    <input class="ui fluid button green" type="submit" value="Create car pool offer">
+                    <input class="ui fluid button green" type="submit" value="Create Carpool Offer">
                 </form>
             </div>
             <div class="ui horizontal divider"></div>
