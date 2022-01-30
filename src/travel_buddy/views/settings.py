@@ -3,11 +3,10 @@ Handles the view for changing user settings and related functionality.
 """
 
 import sqlite3
-import uuid
 
 import travel_buddy.helpers.helper_general as helper_general
-from travel_buddy.helpers.helper_limiter import limiter
 from flask import Blueprint, redirect, render_template, request, session
+from travel_buddy.helpers.helper_limiter import limiter
 
 settings_blueprint = Blueprint(
     "settings", __name__, static_folder="static", template_folder="templates"
@@ -95,19 +94,22 @@ def edit_avatar() -> object:
         403 - FORBIDDEN PERMISSIONS
         405 - METHOD NOT ALLOWED (invalid file type)
     """
-
     if "username" not in session:
         return "403"
 
     file = request.files["file"]
-    file_name = str(uuid.uuid4()) + ".png"
-    file.save("static/avatars/" + file_name)
+    valid, message, file_name_hashed = helper_general.hash_image(file)
 
-    with sqlite3.connect(DB_PATH) as conn:
-        cur = conn.cursor()
-        cur.execute(
-            "UPDATE profile SET photo=? WHERE username=?;",
-            (file_name, session["username"]),
-        )
+    if valid:
+        # Adds the user's avatar to the database.
+        with sqlite3.connect(DB_PATH) as conn:
+            cur = conn.cursor()
+            cur.execute(
+                "UPDATE profile SET photo=? WHERE username=?;",
+                (file_name_hashed, session["username"]),
+            )
+            conn.commit()
+        return "200"
 
-    return "200"
+    session["error"] = message
+    return "400"
