@@ -32,7 +32,7 @@
 			
 			<a class="item active" href="/routes">
 				<i class="map icon"></i>
-				<div class="mobile hidden">Journeys</div>
+				<div class="mobile hidden">Route Analysis</div>
 			</a>
 			<a class="item" href="/carpools">
 				<i class="car icon"></i>
@@ -158,13 +158,21 @@
 					<i class="fa fa-chart-area"></i>
 					Route Statistics
 				</div>
+				<table class="ui very basic celled table" style="text-align: center; width: 100%;">
+					<tr>
+						<td width=50%>
+							<i class="leaf icon"></i> CO2 Emissions:
+							<br>
+							{{co2_emissions}}{% if co2_emissions != "Unknown" %}kg{% endif %}
+						</td>
+						<td>
+							<i class="pound sign icon"></i> Fuel Cost (UK):
+							<br>
+							£xx
+						</td>
+					</tr>
+				</table>
 				<div class="ui list">
-					<div class="item">
-						CO2 Emissions
-					</div>
-					<div class="item">
-						Fuel Cost
-					</div>
 					<div class="item">
 						Average Fuel Cost (UK)
 					</div>
@@ -175,7 +183,7 @@
 					<div class="item">
 						<i class="fa fa-info-circle" data-content="Everyone burns calories at different rates depending on weight
 						and intensity of activity, but here's an estimate of how many calories you could burn.&#10;"></i>
-						Calories Burned (<a href="https://bupa.co.uk/health-information/tools-calculators/calories-calculator">Source</a>)
+						Calories Burned (<a href="https://bupa.co.uk/health-information/tools-calculators/calories-calculator" target="_blank">Source</a>)
 					</div>
 					<table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
 					{% for item, value in calories.items() %}
