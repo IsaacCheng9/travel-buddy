@@ -160,7 +160,9 @@ def convert_gallons_to_litres(gallons: float) -> float:
 
 
 def get_distance_range(sorted_keys, details) -> str:
-
+    """
+    Calculate range of distances and format as string
+    """
     lowest, highest = safeget(
         details, "modes", sorted_keys[0], "distance", "text"
     ), safeget(details, "modes", sorted_keys[-1], "distance", "text")
@@ -172,7 +174,7 @@ def get_distance_range(sorted_keys, details) -> str:
 
 def get_co2_emissions_from_api(payload: str, api_key: str) -> int:
     """
-    Use derived emission
+    Use derived emission query to find carbon emission data for route
     """
     url = "https://beta2.api.climatiq.io/estimate"
     headers = {"Authorization": f"Bearer {api_key}"}
@@ -185,7 +187,9 @@ def get_co2_emissions_from_api(payload: str, api_key: str) -> int:
 def generate_co2_emissions(
     distance: int, mode: str, fuel: str = "na", engine_size: float = -1
 ) -> float:
-
+    """
+    Prepares data in format suitable for carbon emissions api to calculate and returns carbon emission value
+    """
     filename = "keys.json"
     keys = helper_general.get_keys(filename)
 
