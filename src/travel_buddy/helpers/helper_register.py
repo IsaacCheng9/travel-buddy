@@ -147,12 +147,6 @@ def register_user(
         cur.execute(
             "INSERT into car (owner, make, mpg, fuel_type, engine_size) "
             "VALUES (?, ?, ?, ?, ?);",
-            (
-                username,
-                "Not set",
-                0,
-                0,
-                0
-            ),
+            (username, "Not set", 0, 0, 0),
         )
         conn.commit()

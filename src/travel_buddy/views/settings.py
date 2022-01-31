@@ -36,8 +36,7 @@ def settings() -> object:
         )
         first_name, last_name, is_driver, bio, photo, verified = cur.fetchone()
         cur.execute(
-            "SELECT make, mpg, fuel_type, engine_size "
-            "FROM car WHERE owner=?;",
+            "SELECT make, mpg, fuel_type, engine_size " "FROM car WHERE owner=?;",
             (session["username"],),
         )
         make, mpg, fuel_type, engine_size = cur.fetchone()
@@ -52,7 +51,7 @@ def settings() -> object:
         make=make,
         mpg=mpg,
         fuel_type=fuel_type,
-        engine_size=engine_size
+        engine_size=engine_size,
     )
 
 
@@ -91,6 +90,7 @@ def edit_user_details() -> object:
         )
 
     return "200"
+
 
 @settings_blueprint.route("/settings/edit-car-details", methods=["POST", "GET"])
 def edit_car_details() -> object:
