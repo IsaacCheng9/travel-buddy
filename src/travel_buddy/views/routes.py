@@ -162,31 +162,36 @@ def routes() -> object:
         fuel_used_driving = round(
             helper_routes.calculate_fuel_consumption(car_mpg, distance_miles), 2
         )
-        fuel_cost_driving = round(helper_routes.calculate_fuel_cost(fuel_used_driving, fuel_type), 2)
+        fuel_cost_driving = round(
+            helper_routes.calculate_fuel_cost(fuel_used_driving, fuel_type), 2
+        )
         fuel_price = round(helper_routes.get_fuel_price(fuel_type), 2)
 
         fuel_used = fuel_used_driving if travel_mode_full == "driving" else 0
         fuel_cost = fuel_cost_driving if travel_mode_full == "driving" else 0
 
-        co2_list = {
-            "walking": 0,
-            "cycling": 0,
-            "driving": 0,
-            "public transport": 0
-        }
+        co2_list = {"walking": 0, "cycling": 0, "driving": 0, "public transport": 0}
 
         for m in ("driving", "public transport"):
-            co2_list[m] = round(helper_routes.generate_co2_emissions(
-                                                distances.get(m), m, fuel_type, engine_size
-                                            ), 2,
-                                        )
+            co2_list[m] = round(
+                helper_routes.generate_co2_emissions(
+                    distances.get(m), m, fuel_type, engine_size
+                ),
+                2,
+            )
             if co2_list[m] < 0:
                 logging.warning(f"Failed to find CO2 emission for {m}")
                 co2_list[m] = "Unknown"
 
         co2 = co2_list[travel_mode_simple]
 
-        recommendations = helper_routes.get_recommendations(travel_mode_simple, details.get("modes"), co2_list, calories, fuel_cost_driving)
+        recommendations = helper_routes.get_recommendations(
+            travel_mode_simple,
+            details.get("modes"),
+            co2_list,
+            calories,
+            fuel_cost_driving,
+        )
 
         return render_template(
             "routes.html",
