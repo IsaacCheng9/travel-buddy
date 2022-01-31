@@ -192,6 +192,10 @@ def generate_co2_emissions(
     Prepares data in format suitable for carbon emissions api to calculate and
     returns carbon emission value.
     """
+
+    if distance is None:
+        return 0
+
     file_name = "keys.json"
     keys = helper_general.get_keys(file_name)
 
