@@ -378,7 +378,7 @@ def get_recommendations(
             body.append(
                 f"Is this your daily commute? Cycling this journey twice every working day would save \
                           about <b>{round(co2_list['public transport'] * 40, 2)}kg</b> of CO2 emissions over a month!<br> \
-                          - That's the same as the amount of oxygen <b>{trees}</b> trees offset in a month!"
+                          That's the same as the amount of oxygen <b>{trees}</b> trees offset in a month!"
             )
 
     if travel_mode_simple == "driving":
