@@ -205,7 +205,7 @@ def routes() -> object:
             route_exists=True,
             co2_emissions=co2,
             fuel_used=fuel_used,
-            fuel_cost=fuel_cost,
+            fuel_cost=format(fuel_cost, ".2f"),
             car_make=car_make,
             car_mpg=car_mpg,
             fuel_price=fuel_price,
