@@ -163,21 +163,39 @@
 						<td width=50%>
 							<i class="leaf icon"></i> CO2 Emissions:
 							<br>
-							{{co2_emissions}}{% if co2_emissions != "Unknown" %}kg{% endif %}
+							{{co2_emissions}}{% if co2_emissions != "Unknown" %} kg{% endif %}
 						</td>
 						<td>
-							<i class="pound sign icon"></i> Fuel Cost (UK):
+							<i class="pound sign icon"></i> Fuel Cost ({{car_make}}):
 							<br>
-							£xx
+							£{{fuel_cost}}
 						</td>
 					</tr>
 				</table>
 				<div class="ui list">
 					<div class="item">
-						Average Fuel Cost (UK)
+						<table class="ui very basic table" style="text-align: center; width: 100%;">
+							<tr>
+								<td width=50%>
+									Average Fuel Cost (UK)
+								</td>
+								<td>
+									£{{fuel_price}}
+								</td>
+							</tr>
+						</table>
 					</div>
 					<div class="item">
-						Fuel Used (Litres)
+						<table class="ui very basic table" style="text-align: center; width: 100%;">
+							<tr>
+								<td width=50%>
+									Fuel Used (Litres)
+								</td>
+								<td>
+									{{fuel_used}}
+								</td>
+							</tr>
+						</table>
 					</div>
 					<br>
 					<div class="item">
@@ -193,6 +211,16 @@
 						</tr>
 					{% endfor %}
 					</table>
+					<div class="item">
+						Recommendations
+						<div class="ui bulleted list">
+							{% for r in recommendations %}
+								<div class="item">
+								{{r|safe}}
+								</div>
+							{% endfor %}
+						</div>	
+					</div>
 				</div>
 				{% else %}
 
