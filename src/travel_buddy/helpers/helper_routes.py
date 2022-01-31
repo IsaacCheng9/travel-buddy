@@ -382,7 +382,7 @@ def get_recommendations(
             co2_list["driving"] - co2_list["public transport"], 2
         )
         if safeget(route_details, "walking", "distance", "value") > 50000:
-            if co2_saved_over_driving > 0:
+            if co2_excess_over_transit > 0:
                 body.append(
                     f"Planning to drive? This is a long journey! If you could travel with public transport instead \
                               you would save about <b>{co2_excess_over_transit}kg</b> of CO2!"
