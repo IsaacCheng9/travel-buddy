@@ -168,16 +168,34 @@
 						<td>
 							<i class="pound sign icon"></i> Fuel Cost (UK):
 							<br>
-							£xx
+							£{{fuel_cost}}
 						</td>
 					</tr>
 				</table>
 				<div class="ui list">
 					<div class="item">
-						Average Fuel Cost (UK)
+						<table class="ui very basic table" style="text-align: center; width: 100%;">
+							<tr>
+								<td width=50%>
+									Average Fuel Cost (UK)
+								</td>
+								<td>
+									£{{fuel_price}}
+								</td>
+							</tr>
+						</table>
 					</div>
 					<div class="item">
-						Fuel Used (Litres)
+						<table class="ui very basic table" style="text-align: center; width: 100%;">
+							<tr>
+								<td width=50%>
+									Fuel Used (Litres)
+								</td>
+								<td>
+									{{fuel_used}}
+								</td>
+							</tr>
+						</table>
 					</div>
 					<br>
 					<div class="item">
@@ -193,6 +211,16 @@
 						</tr>
 					{% endfor %}
 					</table>
+					<div class="item">
+						Recommendations
+						<div class="ui bulleted list">
+							{% for r in recommendations %}
+								<div class="item">
+								{{r|safe}}
+								</div>
+							{% endfor %}
+						</div>	
+					</div>
 				</div>
 				{% else %}
 
