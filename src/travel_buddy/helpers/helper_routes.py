@@ -87,9 +87,9 @@ def get_fuel_price(fuel_type: str) -> float:
     Returns:
         The price in pounds of petrol or diesel
     """
-    if fuel_type == "petrol":
+    if fuel_type.lower() == "petrol":
         url = "https://www.globalpetrolprices.com/United-Kingdom/gasoline_prices/"
-    elif fuel_type == "diesel":
+    elif fuel_type.lower() == "diesel":
         url = "https://www.globalpetrolprices.com/United-Kingdom/diesel_prices/"
     page = requests.get(url)
     tree = html.fromstring(page.content)
