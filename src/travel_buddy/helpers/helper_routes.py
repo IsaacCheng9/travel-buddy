@@ -310,7 +310,7 @@ def get_recommendations(
         trees = co2_to_trees(round(co2_list["driving"] * 40, 2), 30)
         body.append(
             f"Is this your daily commute? Cycling this journey twice every week day for one month \
-                      would save about <b>{round(co2_list.get('driving', 0) * 40, 2)}kg</b> of CO2 emissions!<br> \
+                      would save about <b>{round(co2_list.get('driving', 0) * 40, 2)} kg</b> of CO2 emissions!<br> \
                       That's the same as the amount of oxygen <b>{trees}</b> trees offset in a month!"
         )
 
@@ -322,7 +322,7 @@ def get_recommendations(
         trees = co2_to_trees(round(co2_list["driving"] * 40, 2), 30)
         body.append(
             f"Is this your daily commute? Walking this journey twice every week day for one month \
-                      would save about <b>{round(co2_list.get('driving', 0) * 40, 2)}kg</b> of CO2 emissions!<br> \
+                      would save about <b>{round(co2_list.get('driving', 0) * 40, 2)} kg</b> of CO2 emissions!<br> \
                       That's the same as the amount of oxygen <b>{trees}</b> trees offset in a month!"
         )
         time_saved = 60 * round(((time_walking * 40) - (time_cycling * 40)) / 60)
@@ -342,21 +342,21 @@ def get_recommendations(
             if co2_saved_over_driving > 0:
                 body.append(
                     f"Planning to take public transport? This is a long journey! You would be saving about \
-                              <b>{co2_saved_over_driving}kg</b> of CO2 by using public transport instead of driving."
+                              <b>{co2_saved_over_driving} kg</b> of CO2 by using public transport instead of driving."
                 )
 
         elif safeget(route_details, "walking", "distance", "value") > 10000:
             if co2_saved_over_driving > 0:
                 body.append(
                     f"Planning to take public transport? You would be saving about \
-                              <b>{co2_saved_over_driving}kg</b> of CO2 by using public transport instead of driving."
+                              <b>{co2_saved_over_driving} kg</b> of CO2 by using public transport instead of driving."
                 )
             body.append(
                 append_cycle_walk_str(time_cycling, time_public_transport, "cycle")
             )
             body[
                 -1
-            ] += f"you would save about <b>{co2_list['public transport']}kg</b> of CO2 and would \
+            ] += f"you would save about <b>{co2_list['public transport']} kg</b> of CO2 and would \
                            burn about <b>{calories['cycling']} kcal</b>!"
 
         else:
@@ -365,19 +365,19 @@ def get_recommendations(
             )
             body[
                 -1
-            ] += f"you would save about <b>{co2_list['public transport']}kg</b> of CO2 and would \
+            ] += f"you would save about <b>{co2_list['public transport']} kg</b> of CO2 and would \
                           burn about <b>{calories['cycling']} kcal</b>!"
             body.append(
                 append_cycle_walk_str(time_walking, time_public_transport, "walk")
             )
             body[
                 -1
-            ] += f"you would save about <b>{co2_list['public transport']}kg</b> of CO2 and would \
+            ] += f"you would save about <b>{co2_list['public transport']} kg</b> of CO2 and would \
                           burn <b>{calories['walking']} - {calories['running']} kcal</b>!"
             trees = co2_to_trees(round(co2_list["public transport"] * 40, 2), 30)
             body.append(
                 f"Is this your daily commute? Cycling this journey twice every working day would save \
-                          about <b>{round(co2_list['public transport'] * 40, 2)}kg</b> of CO2 emissions over a month!<br> \
+                          about <b>{round(co2_list['public transport'] * 40, 2)} kg</b> of CO2 emissions over a month!<br> \
                           That's the same as the amount of oxygen <b>{trees}</b> trees offset in a month!"
             )
 
@@ -390,13 +390,13 @@ def get_recommendations(
             if co2_excess_over_transit > 0:
                 body.append(
                     f"Planning to drive? This is a long journey! If you could travel with public transport instead \
-                              you would save about <b>{co2_excess_over_transit}kg</b> of CO2 as well as <b>£{cost}</b> of fuel!"
+                              you would save about <b>{co2_excess_over_transit} kg</b> of CO2 as well as <b>£{cost}</b> of fuel!"
                 )
 
         elif safeget(route_details, "walking", "distance", "value") > 10000:
             if co2_excess_over_transit > 0:
                 body.append(
-                    f"Planning to drive? You would save about <b>{co2_excess_over_transit}kg</b> of CO2 by using public \
+                    f"Planning to drive? You would save about <b>{co2_excess_over_transit} kg</b> of CO2 by using public \
                               transport instead of driving!"
                 )
             body.append(append_cycle_walk_str(time_cycling, time_driving, "cycle"))
