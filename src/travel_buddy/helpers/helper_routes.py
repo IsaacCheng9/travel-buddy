@@ -381,11 +381,12 @@ def get_recommendations(
         co2_excess_over_transit = round(
             co2_list["driving"] - co2_list["public transport"], 2
         )
+        cost = format(fuel_cost, ".2f")
         if safeget(route_details, "walking", "distance", "value") > 50000:
             if co2_excess_over_transit > 0:
                 body.append(
                     f"Planning to drive? This is a long journey! If you could travel with public transport instead \
-                              you would save about <b>{co2_excess_over_transit}kg</b> of CO2!"
+                              you would save about <b>{co2_excess_over_transit}kg</b> of CO2 as well as <b>£{cost}</b> of fuel!"
                 )
 
         elif safeget(route_details, "walking", "distance", "value") > 10000:
@@ -398,7 +399,7 @@ def get_recommendations(
             body[
                 -1
             ] += f"you would save about <b>{co2_list['driving']}kg</b> of CO2 and would \
-                          save <b>£{fuel_cost}</b> of fuel, as well as \
+                          save <b>£{cost}</b> of fuel, as well as \
                           burning about <b>{calories['cycling']}kcal</b>!"
 
         else:
@@ -413,9 +414,10 @@ def get_recommendations(
             ] += f"you would save about <b>{co2_list['driving']}kg</b> of CO2 and would \
                           burn <b>{calories['walking']}-{calories['running']}kcal</b>!"
             trees = co2_to_trees(round(co2_list["driving"] * 40, 2), 30)
+            cost = format((fuel_cost * 40), ".2f")
             body.append(
                 f"Is this your daily commute? Cycling this journey twice every working day would save \
-                          <b>£{round((fuel_cost * 40), 2)}</b> of fuel as well as \
+                          <b>£{cost}</b> of fuel as well as \
                           about <b>{round(co2_list['driving'] * 40, 2)}kg</b> of CO2 emissions over a month!<br> \
                           - Thats the same as the amount of oxegen <b>{trees}</b> trees offset in a month!"
             )
