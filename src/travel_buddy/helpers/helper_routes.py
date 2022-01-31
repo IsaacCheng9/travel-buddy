@@ -311,7 +311,7 @@ def get_recommendations(
         body.append(
             f"Is this your daily commute? Cycling this journey twice every week day for one month \
                       would save about <b>{round(co2_list.get('driving', 0) * 40, 2)}kg</b> of CO2 emissions!<br> \
-                      - Thats the same as the amount of oxegen <b>{trees}</b> trees offset in a month!"
+                      That's the same as the amount of oxygen <b>{trees}</b> trees offset in a month!"
         )
 
     elif travel_mode_simple == "walking":
@@ -323,7 +323,7 @@ def get_recommendations(
         body.append(
             f"Is this your daily commute? Walking this journey twice every week day for one month \
                       would save about <b>{round(co2_list.get('driving', 0) * 40, 2)}kg</b> of CO2 emissions!<br> \
-                      - Thats the same as the amount of oxegen <b>{trees}</b> trees offset in a month!"
+                      That's the same as the amount of oxygen <b>{trees}</b> trees offset in a month!"
         )
         time_saved = 60 * round(((time_walking * 40) - (time_cycling * 40)) / 60)
         time_saved_daily = 60 * round((time_walking - time_cycling) / 60)
@@ -357,7 +357,7 @@ def get_recommendations(
             body[
                 -1
             ] += f"you would save about <b>{co2_list['public transport']}kg</b> of CO2 and would \
-                           burn about <b>{calories['cycling']}kcal</b>!"
+                           burn about <b>{calories['cycling']} kcal</b>!"
 
         else:
             body.append(
@@ -366,19 +366,19 @@ def get_recommendations(
             body[
                 -1
             ] += f"you would save about <b>{co2_list['public transport']}kg</b> of CO2 and would \
-                          burn about <b>{calories['cycling']}kcal</b>!"
+                          burn about <b>{calories['cycling']} kcal</b>!"
             body.append(
                 append_cycle_walk_str(time_walking, time_public_transport, "walk")
             )
             body[
                 -1
             ] += f"you would save about <b>{co2_list['public transport']}kg</b> of CO2 and would \
-                          burn <b>{calories['walking']}-{calories['running']}kcal</b>!"
+                          burn <b>{calories['walking']} - {calories['running']} kcal</b>!"
             trees = co2_to_trees(round(co2_list["public transport"] * 40, 2), 30)
             body.append(
                 f"Is this your daily commute? Cycling this journey twice every working day would save \
                           about <b>{round(co2_list['public transport'] * 40, 2)}kg</b> of CO2 emissions over a month!<br> \
-                          - Thats the same as the amount of oxegen <b>{trees}</b> trees offset in a month!"
+                          - That's the same as the amount of oxygen <b>{trees}</b> trees offset in a month!"
             )
 
     if travel_mode_simple == "driving":
@@ -402,28 +402,28 @@ def get_recommendations(
             body.append(append_cycle_walk_str(time_cycling, time_driving, "cycle"))
             body[
                 -1
-            ] += f"you would save about <b>{co2_list['driving']}kg</b> of CO2 and would \
+            ] += f"you would save about <b>{co2_list['driving']} kg</b> of CO2 and would \
                           save <b>£{cost}</b> of fuel, as well as \
-                          burning about <b>{calories['cycling']}kcal</b>!"
+                          burning about <b>{calories['cycling']} kcal</b>!"
 
         else:
             body.append(append_cycle_walk_str(time_cycling, time_driving, "cycle"))
             body[
                 -1
-            ] += f"you would save about <b>{co2_list['driving']}kg</b> of CO2 and would \
-                          burn about <b>{calories['cycling']}kcal</b>!"
+            ] += f"you would save about <b>{co2_list['driving']} kg</b> of CO2 and would \
+                          burn about <b>{calories['cycling']} kcal</b>!"
             body.append(append_cycle_walk_str(time_walking, time_driving, "walk"))
             body[
                 -1
-            ] += f"you would save about <b>{co2_list['driving']}kg</b> of CO2 and would \
-                          burn <b>{calories['walking']}-{calories['running']}kcal</b>!"
+            ] += f"you would save about <b>{co2_list['driving']} kg</b> of CO2 and would \
+                          burn <b>{calories['walking']} - {calories['running']} kcal</b>!"
             trees = co2_to_trees(round(co2_list["driving"] * 40, 2), 30)
             cost = format((fuel_cost * 40), ".2f")
             body.append(
                 f"Is this your daily commute? Cycling this journey twice every working day would save \
                           <b>£{cost}</b> of fuel as well as \
-                          about <b>{round(co2_list['driving'] * 40, 2)}kg</b> of CO2 emissions over a month!<br> \
-                          - Thats the same as the amount of oxegen <b>{trees}</b> trees offset in a month!"
+                          about <b>{round(co2_list['driving'] * 40, 2)} kg</b> of CO2 emissions over a month!<br> \
+                          That's the same as the amount of oxygen <b>{trees}</b> trees offset in a month!"
             )
 
     return body
