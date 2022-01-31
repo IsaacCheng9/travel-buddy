@@ -35,7 +35,12 @@ def settings() -> object:
             (session["username"],),
         )
         first_name, last_name, is_driver, bio, photo, verified = cur.fetchone()
-
+        cur.execute(
+            "SELECT make, mpg, fuel_type, engine_size "
+            "FROM car WHERE owner=?;",
+            (session["username"],),
+        )
+        make, mpg, fuel_type, engine_size = cur.fetchone()
     return render_template(
         "settings.html",
         bio=bio,
@@ -44,6 +49,10 @@ def settings() -> object:
         is_driver=is_driver,
         avatar=photo,
         verified=verified,
+        make=make,
+        mpg=mpg,
+        fuel_type=fuel_type,
+        engine_size=engine_size
     )
 
 
@@ -81,6 +90,39 @@ def edit_user_details() -> object:
             (new_bio, new_f_name, new_l_name, session["username"]),
         )
 
+    return "200"
+
+@settings_blueprint.route("/settings/edit-car-details", methods=["POST", "GET"])
+def edit_car_details() -> object:
+    """
+    Modifies the user's car details and saves it to the database.
+
+    Returns:
+        200 - OK
+        403 - FORBIDDEN PERMISSIONS
+        405 - METHOD NOT ALLOWED
+    """
+
+    if "username" not in session:
+        return "403"
+
+    make = request.args.get("make")
+    mpg = request.args.get("mpg")
+    fuel_type = request.args.get("fuel")
+    engine_size = request.args.get("engine_size")
+
+    if len(make) > 50:
+        return "405"
+
+    if len(mpg) > 3 or " " in mpg:
+        return "405"
+
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        cur.execute(
+            "UPDATE car SET make=?, mpg=?, fuel_type=?, engine_size=? WHERE owner=?;",
+            (make, mpg, fuel_type, engine_size, session["username"]),
+        )
     return "200"
 
 

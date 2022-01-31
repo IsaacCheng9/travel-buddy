@@ -58,6 +58,10 @@
 						<i class="icon home"></i>
 						Account
 					</a>
+					<a class="item" onclick='OpenMenu("car_settings", this);'>
+						<i class="icon user secret"></i>
+						My Cars
+					</a>
 					<a class="item" onclick='OpenMenu("privacy_settings", this);'>
 						<i class="icon user secret"></i>
 						Privacy
@@ -91,6 +95,39 @@
 						<div class="ui field">
 							<button class="ui button blue" id="update_bio_button">Update</button>
 							<button class="ui button white" id="bio_cancel_button">Cancel</button>
+						</div>
+					</div>
+				</section>
+
+				<section id="car_settings" style="display: none;">
+					<div class="ui header">My Cars</div>
+					<div class="field">You drive a: <b>{{make}}</b></div>
+					<div class="field">Car efficiency: <b>{{mpg}}</b> mpg ({{fuel_type}})</div>
+					<div class="field">Engine size: <b>{{engine_size}}L</b></div>
+					</br>
+					<div class="ui form">
+						<div class="field">
+							<label>Car Make</label>
+							<input maxlength=50 id="car_make" value="{{make}}" type="text">
+						</div>
+						<div class="field">
+							<label>Car Efficiency (miles per gallon)</label>
+							<input maxlength=2 id="car_mpg" value="{{mpg}}" type="text">
+						</div>
+						<div class="field">
+							<label>Engine size (litres)</label>
+							<input maxlength=3 id="engine_size" value="{{engine_size}}" type="text">
+						</div>
+						<div class="field">
+							<label>Fuel Type</label>
+							<select name="" id="fuel_type">
+								<option value="Petrol">Petrol</option>
+								<option value="Diesel">Diesel</option>
+							</select>
+						</div>
+						<div class="ui field">
+							<button class="ui button blue" id="update_car_button">Update</button>
+							<button class="ui button white" id="car_cancel_button">Cancel</button>
 						</div>
 					</div>
 				</section>
@@ -153,7 +190,41 @@
 		document.getElementById("bio_input").disabled = true;
 	}
 
+	function ChangeCar(){
+		const xhttp = new XMLHttpRequest();
+		xhttp.onload = function(){
+			if (this.responseText == "200"){
+				setTimeout(function(){
+					document.getElementById("update_car_button").innerHTML = "Saved";
+					document.getElementById("update_car_button").disabled = false;
+
+					document.querySelectorAll(".changed").forEach(function(element){
+						element.defaultValue = element.value;
+						element.classList.remove("changed");
+					});
+
+					DisplayNotification("Your car settings have been saved.");
+				}, 1000);
+			} else {
+				document.getElementById("update_car_button").innerHTML = "Error";
+				document.getElementById("update_car_button").disabled = false;
+			}
+		}
+
+		const make = document.getElementById("car_make").value;
+		const mpg = document.getElementById("car_mpg").value;
+		const fuel_type = document.getElementById("fuel_type").value;
+		const engine_size = document.getElementById("engine_size").value;
+
+		xhttp.open("POST", `/settings/edit-car-details?make=${make}&mpg=${mpg}&fuel=${fuel_type}&engine_size=${engine_size}`, true);
+		xhttp.send();
+
+		document.getElementById("update_car_button").innerHTML = `<div class="ui active inline loader mini"></div>`;
+		document.getElementById("update_car_button").disabled = true;
+	}
+
 	update_bio_button.onclick = ChangeBio;
+	update_car_button.onclick = ChangeCar;
 
 	document.getElementById("file_avatar").onchange = async function(){
 		let formData = new FormData();
@@ -255,7 +326,7 @@
 	}
 	GenerateDisplayOptions();
 
-	const menus = ["account_settings","privacy_settings"];
+	const menus = ["account_settings","car_settings","privacy_settings"];
 
 	function OpenMenu(menu, elem){
 		document.querySelector("#menu .active").classList.remove("active");
