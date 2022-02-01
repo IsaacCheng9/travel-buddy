@@ -120,7 +120,7 @@ def calculate_fuel_cost(fuel_used: float, fuel_type: str) -> float:
         The cost of fuel used
     """
     fuel_price = get_fuel_price(fuel_type)
-    total_cost = convert_gallons_to_litres(fuel_used) * fuel_price
+    total_cost = fuel_used * fuel_price
     return total_cost
 
 
