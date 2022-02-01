@@ -311,7 +311,8 @@ def get_recommendations(
         body.append(
             f"Is this your daily commute? Cycling this journey twice every week day for one month \
                       would save about <b>{round(co2_list.get('driving', 0) * 40, 2)} kg</b> of CO2 emissions!<br> \
-                      That's the same as the amount of oxygen <b>{trees}</b> trees offset in a month!"
+                      That's the same as the amount of oxygen <b>{trees}</b> trees offset in a month! \
+                      (<a href='https://www.viessmann.co.uk/heating-advice/how-much-co2-does-tree-absorb' target='_blank'>Source</a>)"
         )
 
     elif travel_mode_simple == "walking":
@@ -322,8 +323,9 @@ def get_recommendations(
         trees = co2_to_trees(round(co2_list["driving"] * 40, 2), 30)
         body.append(
             f"Is this your daily commute? Walking this journey twice every week day for one month \
-                      would save about <b>{round(co2_list.get('driving', 0) * 40, 2)} kg</b> of CO2 emissions!<br> \
-                      That's the same as the amount of oxygen <b>{trees}</b> trees offset in a month!"
+                would save about <b>{round(co2_list.get('driving', 0) * 40, 2)} kg</b> of CO2 emissions!<br> \
+                That's the same as the amount of oxygen <b>{trees}</b> trees offset in a month! \
+                (<a href='https://www.viessmann.co.uk/heating-advice/how-much-co2-does-tree-absorb' target='_blank'>Source</a>)"
         )
         time_saved = 60 * round(((time_walking * 40) - (time_cycling * 40)) / 60)
         time_saved_daily = 60 * round((time_walking - time_cycling) / 60)
@@ -377,8 +379,9 @@ def get_recommendations(
             trees = co2_to_trees(round(co2_list["public transport"] * 40, 2), 30)
             body.append(
                 f"Is this your daily commute? Cycling this journey twice every working day would save \
-                          about <b>{round(co2_list['public transport'] * 40, 2)} kg</b> of CO2 emissions over a month!<br> \
-                          That's the same as the amount of oxygen <b>{trees}</b> trees offset in a month!"
+                        about <b>{round(co2_list['public transport'] * 40, 2)} kg</b> of CO2 emissions over a month!<br> \
+                        That's the same as the amount of oxygen <b>{trees}</b> trees offset in a month! \
+                        (<a href='https://www.viessmann.co.uk/heating-advice/how-much-co2-does-tree-absorb' target='_blank'>Source</a>)"
             )
 
     if travel_mode_simple == "driving":
@@ -421,9 +424,10 @@ def get_recommendations(
             cost = format((fuel_cost * 40), ".2f")
             body.append(
                 f"Is this your daily commute? Cycling this journey twice every working day would save \
-                          <b>£{cost}</b> of fuel as well as \
-                          about <b>{round(co2_list['driving'] * 40, 2)} kg</b> of CO2 emissions over a month!<br> \
-                          That's the same as the amount of oxygen <b>{trees}</b> trees offset in a month!"
+                        <b>£{cost}</b> of fuel as well as \
+                        about <b>{round(co2_list['driving'] * 40, 2)} kg</b> of CO2 emissions over a month!<br> \
+                        That's the same as the amount of oxygen <b>{trees}</b> trees offset in a month! \
+                        (<a href='https://www.viessmann.co.uk/heating-advice/how-much-co2-does-tree-absorb' target='_blank'>Source</a>)"
             )
 
     return body
