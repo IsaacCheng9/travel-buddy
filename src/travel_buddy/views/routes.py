@@ -160,18 +160,17 @@ def routes() -> object:
         )
         distance_miles = helper_routes.convert_km_to_miles(driving_distance)
         fuel_used_driving = round(
-            helper_routes.calculate_fuel_consumption(car_mpg, distance_miles), 2
+            helper_routes.calculate_fuel_used(distance_miles, car_mpg), 2
         )
+        fuel_price = helper_routes.get_fuel_price(fuel_type)
         fuel_cost_driving = round(
-            helper_routes.calculate_fuel_cost(fuel_used_driving, fuel_type), 2
+            helper_routes.calculate_fuel_cost(fuel_used_driving, fuel_price), 2
         )
-        fuel_price = round(helper_routes.get_fuel_price(fuel_type), 2)
-
         fuel_used = fuel_used_driving if travel_mode_full == "driving" else 0
         fuel_cost = fuel_cost_driving if travel_mode_full == "driving" else 0
 
+        # Finds carbon emissions for each mode.
         co2_list = {"walking": 0, "cycling": 0, "driving": 0, "public transport": 0}
-
         for m in ("driving", "public transport"):
             co2_list[m] = round(
                 helper_routes.generate_co2_emissions(
@@ -182,7 +181,6 @@ def routes() -> object:
             if co2_list[m] < 0:
                 logging.warning(f"Failed to find CO2 emission for {m}")
                 co2_list[m] = "Unknown"
-
         co2 = co2_list[travel_mode_simple]
 
         recommendations = helper_routes.get_recommendations(
@@ -208,7 +206,7 @@ def routes() -> object:
             fuel_cost=format(fuel_cost, ".2f"),
             car_make=car_make,
             car_mpg=car_mpg,
-            fuel_price=fuel_price,
+            fuel_price=format(fuel_price, ".2f"),
             calories=calories,
             recommendations=recommendations,
         )
