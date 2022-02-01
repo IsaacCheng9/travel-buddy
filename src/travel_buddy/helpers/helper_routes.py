@@ -79,6 +79,20 @@ def get_calorie_conversions():
     return conversions
 
 
+def convert_km_to_miles(kilometres: float) -> float:
+    """
+    Converts kilometres to miles (5 significant figures).
+    """
+    return kilometres * 0.621371
+
+
+def convert_gallons_to_litres(gallons: float) -> float:
+    """
+    Converts gallons to litres (5 significant figures).
+    """
+    return gallons * 4.54609
+
+
 def get_fuel_price(fuel_type: str) -> float:
     """
     Collects the current UK petrol or diesel prices from an online source.
@@ -149,20 +163,6 @@ def get_car(username) -> Tuple[str, float, str, float]:
     # TODO: Add error handling for when the user has no car.
     make, mpg, fuel_type, engine_size = row[0]
     return make, mpg, fuel_type, engine_size
-
-
-def convert_km_to_miles(kilometres: float) -> float:
-    """
-    Converts kilometres to miles (5 significant figures).
-    """
-    return kilometres * 0.621371
-
-
-def convert_gallons_to_litres(gallons: float) -> float:
-    """
-    Converts gallons to litres (5 significant figures).
-    """
-    return gallons * 4.54609
 
 
 def get_distance_range(sorted_keys, details) -> str:
