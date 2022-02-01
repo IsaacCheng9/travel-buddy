@@ -66,31 +66,33 @@ def get_calorie_count(distance: int, calories: int) -> int:
     """
     Returns the estimated count of calories burned by route
     """
-
     return int(calories * (distance / 1000))
 
 
 def get_calorie_conversions():
     """
-    Returns dictionary of conversions from transport mode to calories burned per 1km
-    Source: bupa.co.uk/health-information/tools-calculators/calories-calculator
+    Returns dictionary of conversions from transport mode to calories burned
+    per 1km.
     """
+    # Source: bupa.co.uk/health-information/tools-calculators/calories-calculator
     conversions = {"walking": 35, "running": 91, "cycling": 47}
-
     return conversions
 
 
 def get_fuel_price(fuel_type: str) -> float:
     """
-    Collects the current UK petrol or diesel prices from an online source
+    Collects the current UK petrol or diesel prices from an online source.
+
+    Args:
+        fuel_type: The type of fuel (petrol or diesel).
 
     Returns:
-        The price in pounds of petrol or diesel per litre
+        The price (£) of petrol or diesel per litre.
     """
-    if fuel_type.lower() == "petrol":
-        url = "https://www.globalpetrolprices.com/United-Kingdom/gasoline_prices/"
-    elif fuel_type.lower() == "diesel":
+    if fuel_type.lower() == "diesel":
         url = "https://www.globalpetrolprices.com/United-Kingdom/diesel_prices/"
+    else:
+        url = "https://www.globalpetrolprices.com/United-Kingdom/gasoline_prices/"
     page = requests.get(url)
     tree = html.fromstring(page.content)
     price = float(
@@ -99,28 +101,33 @@ def get_fuel_price(fuel_type: str) -> float:
     return price
 
 
-def calculate_fuel_consumption(mpg: float, distance: float) -> float:
+def calculate_fuel_used(distance_miles: float, mpg: float) -> float:
     """
     Calculates the fuel consumption in one journey given the miles per
-    gallon of the car and the distance travelled in the journey
+    gallon of the car and the distance travelled in the journey.
+
+    Args:
+        distance_miles: The distance travelled in the journey.
+        mpg: The miles per gallon of the car.
 
     Returns:
         The number of litres of fuel used
     """
-    # TODO: Add a test for this.
-    return convert_gallons_to_litres(distance / mpg)
+    return convert_gallons_to_litres(distance_miles / mpg)
 
 
-def calculate_fuel_cost(fuel_used: float, fuel_type: str) -> float:
+def calculate_fuel_cost(fuel_used: float, fuel_price: float) -> float:
     """
-    Calculates the cost of fuel used in pounds, for one journey
+    Calculates the cost of fuel (£) for the given journey.
+
+    Args:
+        fuel_used: The number of litres of fuel used.
+        fuel_price: The price of the fuel per litre.
 
     Returns:
-        The cost of fuel used
+        The cost (£) of fuel used.
     """
-    fuel_price = get_fuel_price(fuel_type)
-    total_cost = fuel_used * fuel_price
-    return total_cost
+    return fuel_used * fuel_price
 
 
 def get_car(username) -> Tuple[str, float, str, float]:
@@ -146,17 +153,15 @@ def get_car(username) -> Tuple[str, float, str, float]:
 
 def convert_km_to_miles(kilometres: float) -> float:
     """
-    Converts kilometres to miles
+    Converts kilometres to miles (5 significant figures).
     """
-    # TODO: Add a test for this.
     return kilometres * 0.621371
 
 
 def convert_gallons_to_litres(gallons: float) -> float:
     """
-    Converts gallons to litres
+    Converts gallons to litres (5 significant figures).
     """
-    # TODO: Add a test for this.
     return gallons * 4.54609
 
 
