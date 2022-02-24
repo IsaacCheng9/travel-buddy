@@ -9,7 +9,6 @@ import travel_buddy.helpers.helper_general as helper_general
 from flask import Blueprint, redirect, render_template, request, session
 from travel_buddy.helpers.helper_limiter import limiter
 from random import randint
-from datetime import timedelta
 
 carpool_blueprint = Blueprint(
     "carpool", __name__, static_folder="static", template_folder="templates"
@@ -37,8 +36,7 @@ def show_available_carpools():
         incomplete_carpools = helper_carpool.get_incomplete_carpools()
         for i in range(len(incomplete_carpools)):
             incomplete_carpools[i] = list(incomplete_carpools[i])
-            secs = round(randint(100,2000) / 30) * 30
-            incomplete_carpools[i].append(str(timedelta(seconds=secs)))
+            incomplete_carpools[i].append(str(randint(1,60)))
             incomplete_carpools[i] = tuple(incomplete_carpools[i])
         return render_template("carpools.html", carpools=incomplete_carpools)
 
