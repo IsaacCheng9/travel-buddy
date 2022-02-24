@@ -37,7 +37,7 @@ def show_available_carpools():
         incomplete_carpools = helper_carpool.get_incomplete_carpools()
         for i in range(len(incomplete_carpools)):
             incomplete_carpools[i] = list(incomplete_carpools[i])
-            secs = round(randint(100,2000) / 30) * 30
+            secs = round(randint(100, 2000) / 30) * 30
             incomplete_carpools[i].append(str(timedelta(seconds=secs)))
             incomplete_carpools[i] = tuple(incomplete_carpools[i])
         return render_template("carpools.html", carpools=incomplete_carpools)
