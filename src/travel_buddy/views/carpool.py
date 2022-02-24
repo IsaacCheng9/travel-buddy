@@ -59,6 +59,10 @@ def show_available_carpools():
             description,
         )
         incomplete_carpools = helper_carpool.get_incomplete_carpools()
+        for i in range(len(incomplete_carpools)):
+            incomplete_carpools[i] = list(incomplete_carpools[i])
+            incomplete_carpools[i].append(str(randint(1, 60)))
+            incomplete_carpools[i] = tuple(incomplete_carpools[i])
 
         # Displays errors if the submitted carpool ride is invalid.
         if valid:
