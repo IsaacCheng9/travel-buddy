@@ -3,6 +3,11 @@
 [![code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 ![CI](https://github.com/IsaacCheng9/travel-buddy/actions/workflows/main.yml/badge.svg)
 
+<img width="485" alt="image" src="https://user-images.githubusercontent.com/47993930/155595195-0c91e4a4-57a9-4a88-850a-9899c11f0ec1.png">
+
+A travel companion to help plan your journey while saving both money and the
+planet by providing route analysis and a carpool marketplace.
+
 ## Installation
 
 ### Python Version
@@ -20,7 +25,7 @@ To run the application, you should follow the following steps:
 4. Install the code as a package on your local machine with the command:
    `pip install -e .`
 5. Run the application with the command: `python -m travel_buddy.app`
-6. Navigate to http://127.0.0.1:5000/ in your web browser.
+6. Navigate to <http://127.0.0.1:5000/> in your web browser.
 
 ### Running Tests Locally
 
