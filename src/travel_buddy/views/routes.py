@@ -29,7 +29,9 @@ def routes() -> object:
 
     api_key_file = "keys.json"
     keys = helper_general.get_keys(api_key_file)
-    autocomplete_query = helper_general.get_autocomplete_query(key=keys['google_maps'], func="initMap")
+    autocomplete_query = helper_general.get_autocomplete_query(
+        key=keys["google_maps"], func="initMap"
+    )
 
     if request.method == "GET":
         map_query = (

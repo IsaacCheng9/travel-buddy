@@ -8,7 +8,8 @@ import travel_buddy.helpers.helper_carpool as helper_carpool
 import travel_buddy.helpers.helper_general as helper_general
 from flask import Blueprint, redirect, render_template, request, session
 from travel_buddy.helpers.helper_limiter import limiter
-#from random import randint
+
+# from random import randint
 
 carpool_blueprint = Blueprint(
     "carpool", __name__, static_folder="static", template_folder="templates"
@@ -31,12 +32,18 @@ def show_available_carpools():
 
     if "username" not in session:
         return redirect("/")
-    
-    autocomplete_query = helper_general.get_autocomplete_query(filename="keys.json", func="autocomple_no_map")
+
+    autocomplete_query = helper_general.get_autocomplete_query(
+        filename="keys.json", func="autocomple_no_map"
+    )
 
     if request.method == "GET":
         incomplete_carpools = helper_carpool.get_incomplete_carpools()
-        return render_template("carpools.html", carpools=incomplete_carpools, autocomplete_query=autocomplete_query)
+        return render_template(
+            "carpools.html",
+            carpools=incomplete_carpools,
+            autocomplete_query=autocomplete_query,
+        )
 
     if request.method == "POST":
         starting_point = request.form["location-from"].strip()
@@ -46,7 +53,9 @@ def show_available_carpools():
         price = int(request.form["price"])
         description = request.form["description"]
         num_seats = int(request.form["seats"])
-        distance, duration, co2 = helper_carpool.estimate_carpool_details(starting_point, destination, "keys.json")
+        distance, duration, co2 = helper_carpool.estimate_carpool_details(
+            starting_point, destination, "keys.json"
+        )
 
         valid, errors = helper_carpool.validate_carpool_ride(
             session["username"],
@@ -58,7 +67,7 @@ def show_available_carpools():
             description,
             distance,
             duration,
-            co2
+            co2,
         )
         incomplete_carpools = helper_carpool.get_incomplete_carpools()
 
@@ -74,11 +83,18 @@ def show_available_carpools():
                 description,
                 distance,
                 duration,
-                co2
+                co2,
             )
-            return render_template("carpools.html", carpools=incomplete_carpools, autocomplete_query=autocomplete_query)
+            return render_template(
+                "carpools.html",
+                carpools=incomplete_carpools,
+                autocomplete_query=autocomplete_query,
+            )
         return render_template(
-            "carpools.html", errors=errors, carpools=incomplete_carpools, autocomplete_query=autocomplete_query
+            "carpools.html",
+            errors=errors,
+            carpools=incomplete_carpools,
+            autocomplete_query=autocomplete_query,
         )
 
 
