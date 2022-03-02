@@ -122,7 +122,7 @@ def validate_carpool_ride(
     description: str,
     distance: str,
     duration: str,
-    co2: str,
+    co2: int,
 ) -> Tuple[bool, List[str]]:
     """
     Validates that a carpool ride has valid details.
@@ -203,7 +203,7 @@ def add_carpool_ride(
     description: str,
     distance: str,
     duration: str,
-    co2: str,
+    co2: int,
 ) -> None:
     """
     Adds a valid carpool request to the database.
