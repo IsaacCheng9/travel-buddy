@@ -109,8 +109,8 @@ def test_validate_carpool_ride():
     pickup_datetime = datetime(year=2030, month=1, day=1, hour=1, minute=1, second=1)
     price = 10.0
     description = "This is a test description."
-    distance = "10 km",
-    duration = "10 minutes",
+    distance = ("10 km",)
+    duration = ("10 minutes",)
     co2 = 1
 
     # Tests a valid carpool request.
