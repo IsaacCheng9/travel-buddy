@@ -9,6 +9,9 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
 
+    <script src="../static/javascript/autocomplete.js"></script>
+    <script src={{autocomplete_query}} async></script>
+
     <title>Travel Buddy - Carpools</title>
 </head>
 
@@ -58,11 +61,11 @@
                     <div class="two fields">
                         <div class="field">
                             <label>From</label>
-                            <input type="text" required name="location-from" placeholder="City, State">
+                            <input id="input-1" type="text" name="location-from">
                         </div>
                         <div class="field">
                             <label>To</label>
-                            <input type="text" required name="location-to" placeholder="City, State">
+                            <input id="input-2" type="text" name="location-to">
                         </div>
                     </div>
                     <div class="field">
@@ -100,7 +103,7 @@
                             <div class="ui star rating" data-max-rating="1">
                                 <i class="icon active"></i>
                             </div>
-                            ({{ride[8]}})
+                            ({{ride[11]}})
                         </div>
                         <div style="text-align: center;">
                             Price: £{{ride[6]}}
@@ -122,7 +125,11 @@
                             <a class="step">
                                 <div class="content">
                                     <div class="title">{{ride[4]}}</div>
-                                    <div class="description">{{ride[10]}} minutes</div>
+                                    <div class="description">
+                                        <i class="fa fa-route"></i><b>&nbsp;{{ride[8]}}</b><br>
+                                        <i class="icon stopwatch"></i><b>{{ride[9]}}</b><br>
+                                        <i class="icon leaf"></i><b>{{ride[10]}}kg of CO2</b>
+                                    </div>
                                 </div>
                             </a>
                         </div>

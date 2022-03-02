@@ -8,7 +8,7 @@ import travel_buddy.helpers.helper_carpool as helper_carpool
 import travel_buddy.helpers.helper_general as helper_general
 from flask import Blueprint, redirect, render_template, request, session
 from travel_buddy.helpers.helper_limiter import limiter
-from random import randint
+#from random import randint
 
 carpool_blueprint = Blueprint(
     "carpool", __name__, static_folder="static", template_folder="templates"
@@ -31,23 +31,22 @@ def show_available_carpools():
 
     if "username" not in session:
         return redirect("/")
+    
+    autocomplete_query = helper_general.get_autocomplete_query(filename="keys.json", func="autocomple_no_map")
 
     if request.method == "GET":
         incomplete_carpools = helper_carpool.get_incomplete_carpools()
-        for i in range(len(incomplete_carpools)):
-            incomplete_carpools[i] = list(incomplete_carpools[i])
-            incomplete_carpools[i].append(str(randint(1, 60)))
-            incomplete_carpools[i] = tuple(incomplete_carpools[i])
-        return render_template("carpools.html", carpools=incomplete_carpools)
+        return render_template("carpools.html", carpools=incomplete_carpools, autocomplete_query=autocomplete_query)
 
     if request.method == "POST":
-        starting_point = request.form["location-from"]
-        destination = request.form["location-to"]
+        starting_point = request.form["location-from"].strip()
+        destination = request.form["location-to"].strip()
         # Converts from date string input to date object.
         pickup_datetime = helper_general.string_to_date(request.form["date-from"])
         price = int(request.form["price"])
         description = request.form["description"]
         num_seats = int(request.form["seats"])
+        distance, duration, co2 = helper_carpool.estimate_carpool_details(starting_point, destination, "keys.json")
 
         valid, errors = helper_carpool.validate_carpool_ride(
             session["username"],
@@ -57,12 +56,11 @@ def show_available_carpools():
             pickup_datetime,
             price,
             description,
+            distance,
+            duration,
+            co2
         )
         incomplete_carpools = helper_carpool.get_incomplete_carpools()
-        for i in range(len(incomplete_carpools)):
-            incomplete_carpools[i] = list(incomplete_carpools[i])
-            incomplete_carpools[i].append(str(randint(1, 60)))
-            incomplete_carpools[i] = tuple(incomplete_carpools[i])
 
         # Displays errors if the submitted carpool ride is invalid.
         if valid:
@@ -74,10 +72,13 @@ def show_available_carpools():
                 pickup_datetime,
                 price,
                 description,
+                distance,
+                duration,
+                co2
             )
-            return render_template("carpools.html", carpools=incomplete_carpools)
+            return render_template("carpools.html", carpools=incomplete_carpools, autocomplete_query=autocomplete_query)
         return render_template(
-            "carpools.html", errors=errors, carpools=incomplete_carpools
+            "carpools.html", errors=errors, carpools=incomplete_carpools, autocomplete_query=autocomplete_query
         )
 
 

@@ -96,3 +96,12 @@ def hash_image(file) -> Tuple[bool, List[str], str]:
         file_name_hashed = ""
 
     return valid, message, file_name_hashed
+
+def get_autocomplete_query(**kwargs):
+    """
+    Get maps autocomplete query
+    """
+    if any((kwargs.get('key'), kwargs.get('filename'))):
+        if not kwargs.get('key'):
+            kwargs['key'] = get_keys(kwargs.get('filename')).get("google_maps")
+        return f"https://maps.googleapis.com/maps/api/js?key={kwargs['key']}&callback={kwargs.get('func')}&libraries=places&v=weekly"
