@@ -117,6 +117,7 @@ def view_carpool_journey(journey_id: int):
         session["error"] = "Carpool journey does not exist."
         return render_template("view_carpool.html")
     (
+        _,
         driver,
         is_complete,
         seats_available,
@@ -125,7 +126,12 @@ def view_carpool_journey(journey_id: int):
         pickup_datetime,
         price,
         description,
-    ) = carpool_details[0]
+        distance,
+        distance_text,
+        estimate_duration,
+        estimate_duration_text,
+        estimate_co2,
+    ) = carpool_details
 
     return render_template(
         "view_carpool.html",
@@ -137,6 +143,11 @@ def view_carpool_journey(journey_id: int):
         pickup_datetime=pickup_datetime,
         price=price,
         description=description,
+        distance=distance,
+        distance_text=distance_text,
+        estimate_duration=estimate_duration,
+        estimate_duration_text=estimate_duration_text,
+        estimate_co2=estimate_co2,
     )
 
 
