@@ -435,21 +435,23 @@ def get_recommendations(
                     f"you would save about <b>{co2_list['driving']} kg</b> of CO2 and "
                     f"would burn about <b>{calories['cycling']} kcal</b>!"
                 )
-            body.append(append_cycle_walk_str(time_walking, time_driving, "walk"))
-            body[-1] += (
-                f"you would save about <b>{co2_list['driving']} kg</b> of CO2 and "
-                f"would burn <b>{calories['walking']} - {calories['running']} kcal</b>!"
-            )
+            if abs(extra_time) > 60:
+                body.append(append_cycle_walk_str(time_walking, time_driving, "walk"))
+                body[-1] += (
+                    f"you would save about <b>{co2_list['driving']} kg</b> of CO2 and "
+                    f"would burn <b>{calories['walking']} - {calories['running']} kcal</b>!"
+                )
             trees = co2_to_trees(round(co2_list["driving"] * 40, 2), 30)
             cost = format((fuel_cost * 40), ".2f")
-            body.append(
-                "Is this your daily commute? Cycling this journey twice every working "
-                f"day would save <b>£{cost}</b> of fuel as well as about "
-                f"<b>{round(co2_list['driving'] * 40, 2)} kg</b> of CO2 emissions over "
-                f"a month!<br> That's the same as the amount of oxygen <b>{trees}</b> "
-                "trees offset in a month! "
-                "(<a href='https://www.viessmann.co.uk/heating-advice/how-much-co2-does-tree-absorb' target='_blank'>Source</a>)"
-            )
+            if trees >= 1 and cost > 0.0 and round(co2_list['driving'] * 40, 2) > 0.0:
+                body.append(
+                    "Is this your daily commute? Cycling this journey twice every working "
+                    f"day would save <b>£{cost}</b> of fuel as well as about "
+                    f"<b>{round(co2_list['driving'] * 40, 2)} kg</b> of CO2 emissions over "
+                    f"a month!<br> That's the same as the amount of oxygen <b>{trees}</b> "
+                    "trees offset in a month! "
+                    "(<a href='https://www.viessmann.co.uk/heating-advice/how-much-co2-does-tree-absorb' target='_blank'>Source</a>)"
+                    )
 
     return body
 

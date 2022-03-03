@@ -206,29 +206,26 @@
 					<table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
 					{% for item, value in calories.items() %}
 						<tr>
-							<td>{{ item.capitalize() }}</td>
 							{% if item.capitalize() == 'Walking' %}
-								{% if details['modes']['walking']['distance']['value'] > 5000 %}
-									<td>This route is too far for walking. Consider alternative transport methods</td>
-								{% else %}
+								{% if details['modes']['walking']['distance']['value'] < 5000 %}
+									<td>{{ item.capitalize() }}</td>
 									<td>~ {{ value }} kcal</td>
 								{% endif %}
 							{% elif item.capitalize() == 'Running' %}
-								{% if details['modes']['walking']['distance']['value'] > 10000 %}
-									<td>This route is too far for running. Consider alternative transport methods</td>
-								{% else %}
+								{% if details['modes']['walking']['distance']['value'] < 10000 %}
+									<td>{{ item.capitalize() }}</td>
 									<td>~ {{ value }} kcal</td>
 								{% endif %}
 							{% elif item.capitalize() == 'Cycling' %}
-								{% if details['modes']['cycling']['distance']['value'] > 25000 %}
-									<td>This route is too far for cycling. Consider alternative transport methods</td>
-								{% else %}
+								{% if details['modes']['cycling']['distance']['value'] < 25000 %}
+									<td>{{ item.capitalize() }}</td>
 									<td>~ {{ value }} kcal</td>
 								{% endif %}
 							{% endif %}
 						</tr>
 					{% endfor %}
 					</table>
+					{% if recommendations|length > 0 %}
 					<div class="item">
 						Recommendations
 						<div class="ui bulleted list">
@@ -239,6 +236,7 @@
 							{% endfor %}
 						</div>	
 					</div>
+					{% endif %}
 				</div>
 				{% else %}
 
