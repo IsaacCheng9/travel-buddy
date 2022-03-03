@@ -122,7 +122,7 @@ def validate_carpool_ride(
     description: str,
     distance: str,
     duration: str,
-    co2: str
+    co2: str,
 ) -> Tuple[bool, List[str]]:
     """
     Validates that a carpool ride has valid details.
@@ -203,7 +203,7 @@ def add_carpool_ride(
     description: str,
     distance: str,
     duration: str,
-    co2: str
+    co2: str,
 ) -> None:
     """
     Adds a valid carpool request to the database.
@@ -235,7 +235,7 @@ def add_carpool_ride(
                 description,
                 distance,
                 duration,
-                co2
+                co2,
             ),
         )
 
@@ -386,6 +386,7 @@ def add_passenger_to_carpool_journey(journey_id: int, username: str):
             (journey_id,),
         )
 
+
 def estimate_carpool_details(start_point, end_point, filename):
     """
     Fetch the estimated distance, duration, and co2 emissions of a carpooling journey
@@ -393,13 +394,20 @@ def estimate_carpool_details(start_point, end_point, filename):
     key = helper_general.get_keys(filename).get("google_maps")
     map_client = helper_routes.generate_client(key)
     details = helper_routes.run_api(map_client, start_point, end_point, "driving")
-    distance = helper_routes.safeget(details, "rows", 0, "elements", 0, "distance", "text")
-    duration = helper_routes.safeget(details, "rows", 0, "elements", 0, "duration", "text")
+    distance = helper_routes.safeget(
+        details, "rows", 0, "elements", 0, "distance", "text"
+    )
+    duration = helper_routes.safeget(
+        details, "rows", 0, "elements", 0, "duration", "text"
+    )
     co2 = round(
-                helper_routes.generate_co2_emissions(
-                    helper_routes.safeget(details, "rows", 0, "elements", 0, "distance", "value"),
-                    "driving", "petrol"
-                ),
-                2,
-            )
+        helper_routes.generate_co2_emissions(
+            helper_routes.safeget(
+                details, "rows", 0, "elements", 0, "distance", "value"
+            ),
+            "driving",
+            "petrol",
+        ),
+        2,
+    )
     return (distance, duration, co2)
