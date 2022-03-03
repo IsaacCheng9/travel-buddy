@@ -135,6 +135,9 @@ def view_carpool_journey(journey_id: int):
     # Displays price with two decimal places.
     price = format(price, ".2f")
 
+    # Gets the list of passengers for the carpool.
+    passenger_list = helper_carpool.get_passenger_list(journey_id)
+
     return render_template(
         "view_carpool.html",
         driver=driver,
@@ -150,6 +153,7 @@ def view_carpool_journey(journey_id: int):
         estimate_duration=estimate_duration,
         estimate_duration_text=estimate_duration_text,
         estimate_co2=estimate_co2,
+        passenger_list=passenger_list,
     )
 
 
