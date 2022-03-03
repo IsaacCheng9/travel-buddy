@@ -17,8 +17,15 @@ function initMap() {
   
     autocomplete1.bindTo("bounds", map);
     autocomplete2.bindTo("bounds", map);
+
+    const marker = new google.maps.Marker({
+      map,
+      anchorPoint: new google.maps.Point(0, -29),
+    });
   
     autocomplete1.addListener("place_changed", () => {
+
+      marker.setVisible(false);
 
       const place = autocomplete1.getPlace();
   
@@ -34,9 +41,14 @@ function initMap() {
         map.setCenter(place.geometry.location);
         map.setZoom(17);
       }
+
+      marker.setPosition(place.geometry.location);
+      marker.setVisible(true);
     });
 
     autocomplete2.addListener("place_changed", () => {
+
+      marker.setVisible(false);
   
       const place = autocomplete2.getPlace();
   
@@ -58,6 +70,9 @@ function initMap() {
   
     autocomplete1.bindTo("bounds", map);
     autocomplete2.bindTo("bounds", map);
+
+    marker.setPosition(place.geometry.location);
+    marker.setVisible(true);
 }
 
 function autocomplete_no_map() {
