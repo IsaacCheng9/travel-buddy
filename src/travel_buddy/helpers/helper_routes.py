@@ -443,7 +443,7 @@ def get_recommendations(
                 )
             trees = co2_to_trees(round(co2_list["driving"] * 40, 2), 30)
             cost = format((fuel_cost * 40), ".2f")
-            if trees >= 1 and cost > 0.0 and round(co2_list['driving'] * 40, 2) > 0.0:
+            if trees >= 1 and cost > 0.0 and round(co2_list["driving"] * 40, 2) > 0.0:
                 body.append(
                     "Is this your daily commute? Cycling this journey twice every working "
                     f"day would save <b>£{cost}</b> of fuel as well as about "
@@ -451,7 +451,7 @@ def get_recommendations(
                     f"a month!<br> That's the same as the amount of oxygen <b>{trees}</b> "
                     "trees offset in a month! "
                     "(<a href='https://www.viessmann.co.uk/heating-advice/how-much-co2-does-tree-absorb' target='_blank'>Source</a>)"
-                    )
+                )
 
     return body
 
