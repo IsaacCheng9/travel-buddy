@@ -449,7 +449,7 @@ def get_recommendations(
                 f"a month!<br> That's the same as the amount of oxygen <b>{trees}</b> "
                 "trees offset in a month! "
                 "(<a href='https://www.viessmann.co.uk/heating-advice/how-much-co2-does-tree-absorb' target='_blank'>Source</a>)"
-                )
+            )
 
     return body
 
