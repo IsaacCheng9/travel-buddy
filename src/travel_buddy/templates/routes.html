@@ -197,6 +197,7 @@
 							</tr>
 						</table>
 					</div>
+					{% if details['modes']['cycling']['distance']['value'] < 25000 %}
 					<br>
 					<div class="item">
 						<i class="fa fa-info-circle" data-content="Everyone burns calories at different rates depending on weight
@@ -225,6 +226,7 @@
 						</tr>
 					{% endfor %}
 					</table>
+					{% endif %}
 					{% if recommendations|length > 0 %}
 					<div class="item">
 						Recommendations
