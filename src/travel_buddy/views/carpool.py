@@ -59,13 +59,19 @@ def show_available_carpools():
             destination,
             pickup_datetime,
             price,
-            description
+            description,
         )
         incomplete_carpools = helper_carpool.get_incomplete_carpools()
 
         # Displays errors if the submitted carpool ride is invalid.
         if valid:
-            distance, distance_text, duration, duration_text, co2 = helper_carpool.estimate_carpool_details(
+            (
+                distance,
+                distance_text,
+                duration,
+                duration_text,
+                co2,
+            ) = helper_carpool.estimate_carpool_details(
                 starting_point, destination, "keys.json"
             )
             helper_carpool.add_carpool_ride(
@@ -82,7 +88,7 @@ def show_available_carpools():
                 duration_text,
                 co2,
             )
-            return redirect('/carpools')
+            return redirect("/carpools")
         return render_template(
             "carpools.html",
             errors=errors,

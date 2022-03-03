@@ -390,7 +390,9 @@ def add_passenger_to_carpool_journey(journey_id: int, username: str):
         )
 
 
-def estimate_carpool_details(start_point: str, end_point: str, filename: str) -> Tuple[int, str, int, str, str]:
+def estimate_carpool_details(
+    start_point: str, end_point: str, filename: str
+) -> Tuple[int, str, int, str, str]:
     """
     Fetch the estimated distance, duration, and co2 emissions of a carpooling journey
     """
