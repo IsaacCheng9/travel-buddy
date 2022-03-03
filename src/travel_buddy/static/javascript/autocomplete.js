@@ -60,7 +60,7 @@ function initMap() {
     autocomplete2.bindTo("bounds", map);
 }
 
-function autocomple_no_map() {
+function autocomplete_no_map() {
 
   const input1 = document.getElementById("input-1");
   const input2 = document.getElementById("input-2");

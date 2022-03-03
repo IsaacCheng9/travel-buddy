@@ -120,9 +120,6 @@ def validate_carpool_ride(
     pickup_datetime: datetime,
     price: float,
     description: str,
-    distance: str,
-    duration: str,
-    co2: int,
 ) -> Tuple[bool, List[str]]:
     """
     Validates that a carpool ride has valid details.
@@ -201,8 +198,10 @@ def add_carpool_ride(
     pickup_datetime: datetime,
     price: float,
     description: str,
-    distance: str,
-    duration: str,
+    distance: int,
+    distance_text: str,
+    duration: int,
+    duration_text: str,
     co2: int,
 ) -> None:
     """
@@ -223,8 +222,9 @@ def add_carpool_ride(
         # Adds the carpool ride to the database.
         cur.execute(
             "INSERT INTO carpool_ride (driver, seats_available, starting_point, "
-            "destination, pickup_datetime, price, description, distance, estimate_duration, estimate_co2) "
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
+            "destination, pickup_datetime, price, description, "
+            "distance, distance_text, estimate_duration, estimate_duration_text, estimate_co2) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
             (
                 driver,
                 seats_available,
@@ -234,7 +234,9 @@ def add_carpool_ride(
                 price,
                 description,
                 distance,
+                distance_text,
                 duration,
+                duration_text,
                 co2,
             ),
         )
@@ -260,16 +262,17 @@ def get_incomplete_carpools() -> List[
                     c.pickup_datetime,
                     c.price,
                     c.description,
-                    c.distance,
-                    c.estimate_duration,
+                    c.distance_text,
+                    c.estimate_duration_text,
                     c.estimate_co2,
 
                     AVG(r.rating_given),
                     COUNT(r.rating_given)
 
             FROM carpool_ride c
-            JOIN rating r ON c.driver = r.rated_username
-            WHERE is_complete=0
+            LEFT JOIN rating r ON c.driver = r.rated_username
+            WHERE c.is_complete=0
+            AND CURRENT_TIMESTAMP < c.pickup_datetime
             GROUP BY c.journey_id
             ORDER BY pickup_datetime ASC;"""
         )
@@ -387,7 +390,7 @@ def add_passenger_to_carpool_journey(journey_id: int, username: str):
         )
 
 
-def estimate_carpool_details(start_point, end_point, filename):
+def estimate_carpool_details(start_point: str, end_point: str, filename: str) -> Tuple[int, str, int, str, str]:
     """
     Fetch the estimated distance, duration, and co2 emissions of a carpooling journey
     """
@@ -395,9 +398,15 @@ def estimate_carpool_details(start_point, end_point, filename):
     map_client = helper_routes.generate_client(key)
     details = helper_routes.run_api(map_client, start_point, end_point, "driving")
     distance = helper_routes.safeget(
+        details, "rows", 0, "elements", 0, "distance", "value"
+    )
+    distance_text = helper_routes.safeget(
         details, "rows", 0, "elements", 0, "distance", "text"
     )
     duration = helper_routes.safeget(
+        details, "rows", 0, "elements", 0, "duration", "value"
+    )
+    duration_text = helper_routes.safeget(
         details, "rows", 0, "elements", 0, "duration", "text"
     )
     co2 = round(
@@ -410,4 +419,4 @@ def estimate_carpool_details(start_point, end_point, filename):
         ),
         2,
     )
-    return (distance, duration, co2)
+    return (distance, distance_text, duration, duration_text, co2)

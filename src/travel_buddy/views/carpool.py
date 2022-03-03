@@ -32,7 +32,7 @@ def show_available_carpools():
         return redirect("/")
 
     autocomplete_query = helper_general.get_autocomplete_query(
-        filename="keys.json", func="autocomple_no_map"
+        filename="keys.json", func="autocomplete_no_map"
     )
 
     if request.method == "GET":
@@ -51,9 +51,6 @@ def show_available_carpools():
         price = int(request.form["price"])
         description = request.form["description"]
         num_seats = int(request.form["seats"])
-        distance, duration, co2 = helper_carpool.estimate_carpool_details(
-            starting_point, destination, "keys.json"
-        )
 
         valid, errors = helper_carpool.validate_carpool_ride(
             session["username"],
@@ -62,15 +59,15 @@ def show_available_carpools():
             destination,
             pickup_datetime,
             price,
-            description,
-            distance,
-            duration,
-            co2,
+            description
         )
         incomplete_carpools = helper_carpool.get_incomplete_carpools()
 
         # Displays errors if the submitted carpool ride is invalid.
         if valid:
+            distance, distance_text, duration, duration_text, co2 = helper_carpool.estimate_carpool_details(
+                starting_point, destination, "keys.json"
+            )
             helper_carpool.add_carpool_ride(
                 session["username"],
                 num_seats,
@@ -80,14 +77,12 @@ def show_available_carpools():
                 price,
                 description,
                 distance,
+                distance_text,
                 duration,
+                duration_text,
                 co2,
             )
-            return render_template(
-                "carpools.html",
-                carpools=incomplete_carpools,
-                autocomplete_query=autocomplete_query,
-            )
+            return redirect('/carpools')
         return render_template(
             "carpools.html",
             errors=errors,
