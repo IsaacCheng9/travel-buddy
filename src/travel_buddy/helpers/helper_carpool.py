@@ -8,6 +8,7 @@ from datetime import datetime
 from typing import List, Tuple
 
 import travel_buddy.helpers.helper_general as helper_general
+import travel_buddy.helpers.helper_routes as helper_routes
 
 DB_PATH = helper_general.get_database_path()
 
@@ -186,8 +187,6 @@ def validate_carpool_ride(
             "characters, and there is a 500 character limit."
         )
 
-    # TODO: Validate that the user has entered a valid starting point and destination.
-
     return valid, error_messages
 
 
@@ -199,6 +198,11 @@ def add_carpool_ride(
     pickup_datetime: datetime,
     price: float,
     description: str,
+    distance: int,
+    distance_text: str,
+    duration: int,
+    duration_text: str,
+    co2: int,
 ) -> None:
     """
     Adds a valid carpool request to the database.
@@ -218,8 +222,9 @@ def add_carpool_ride(
         # Adds the carpool ride to the database.
         cur.execute(
             "INSERT INTO carpool_ride (driver, seats_available, starting_point, "
-            "destination, pickup_datetime, price, description) "
-            "VALUES (?, ?, ?, ?, ?, ?, ?);",
+            "destination, pickup_datetime, price, description, "
+            "distance, distance_text, estimate_duration, estimate_duration_text, estimate_co2) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
             (
                 driver,
                 seats_available,
@@ -228,12 +233,17 @@ def add_carpool_ride(
                 pickup_datetime,
                 price,
                 description,
+                distance,
+                distance_text,
+                duration,
+                duration_text,
+                co2,
             ),
         )
 
 
 def get_incomplete_carpools() -> List[
-    Tuple[int, str, int, str, str, str, float, str, float, int]
+    Tuple[int, str, int, str, str, str, float, str, float, int, str, str, int]
 ]:
     """
     Gets all incomplete carpools in the database and ratings for the driver.
@@ -252,13 +262,17 @@ def get_incomplete_carpools() -> List[
                     c.pickup_datetime,
                     c.price,
                     c.description,
+                    c.distance_text,
+                    c.estimate_duration_text,
+                    c.estimate_co2,
 
                     AVG(r.rating_given),
                     COUNT(r.rating_given)
 
             FROM carpool_ride c
-            JOIN rating r ON c.driver = r.rated_username
-            WHERE is_complete=0
+            LEFT JOIN rating r ON c.driver = r.rated_username
+            WHERE c.is_complete=0
+            AND CURRENT_TIMESTAMP < c.pickup_datetime
             GROUP BY c.journey_id
             ORDER BY pickup_datetime ASC;"""
         )
@@ -374,3 +388,37 @@ def add_passenger_to_carpool_journey(journey_id: int, username: str):
             "WHERE journey_id=?;",
             (journey_id,),
         )
+
+
+def estimate_carpool_details(
+    start_point: str, end_point: str, filename: str
+) -> Tuple[int, str, int, str, str]:
+    """
+    Fetch the estimated distance, duration, and co2 emissions of a carpooling journey
+    """
+    key = helper_general.get_keys(filename).get("google_maps")
+    map_client = helper_routes.generate_client(key)
+    details = helper_routes.run_api(map_client, start_point, end_point, "driving")
+    distance = helper_routes.safeget(
+        details, "rows", 0, "elements", 0, "distance", "value"
+    )
+    distance_text = helper_routes.safeget(
+        details, "rows", 0, "elements", 0, "distance", "text"
+    )
+    duration = helper_routes.safeget(
+        details, "rows", 0, "elements", 0, "duration", "value"
+    )
+    duration_text = helper_routes.safeget(
+        details, "rows", 0, "elements", 0, "duration", "text"
+    )
+    co2 = round(
+        helper_routes.generate_co2_emissions(
+            helper_routes.safeget(
+                details, "rows", 0, "elements", 0, "distance", "value"
+            ),
+            "driving",
+            "petrol",
+        ),
+        2,
+    )
+    return (distance, distance_text, duration, duration_text, co2)
