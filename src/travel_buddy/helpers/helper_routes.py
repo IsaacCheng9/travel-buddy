@@ -339,7 +339,7 @@ def get_recommendations(
         )
         time_saved = 60 * round(((time_walking * 40) - (time_cycling * 40)) / 60)
         time_saved_daily = 60 * round((time_walking - time_cycling) / 60)
-        if time_saved > 0:
+        if time_saved > 120:
             time_saved = timedelta(seconds=time_saved)
             body.append(
                 "If you were to cycle this route instead, you could also save about "
@@ -428,11 +428,13 @@ def get_recommendations(
             )
 
         else:
-            body.append(append_cycle_walk_str(time_cycling, time_driving, "cycle"))
-            body[-1] += (
-                f"you would save about <b>{co2_list['driving']} kg</b> of CO2 and "
-                f"would burn about <b>{calories['cycling']} kcal</b>!"
-            )
+            extra_time = 60 * round((time_cycling - time_driving) / 60)
+            if abs(extra_time) > 120:
+                body.append(append_cycle_walk_str(time_cycling, time_driving, "cycle"))
+                body[-1] += (
+                    f"you would save about <b>{co2_list['driving']} kg</b> of CO2 and "
+                    f"would burn about <b>{calories['cycling']} kcal</b>!"
+                )
             body.append(append_cycle_walk_str(time_walking, time_driving, "walk"))
             body[-1] += (
                 f"you would save about <b>{co2_list['driving']} kg</b> of CO2 and "
@@ -447,7 +449,7 @@ def get_recommendations(
                 f"a month!<br> That's the same as the amount of oxygen <b>{trees}</b> "
                 "trees offset in a month! "
                 "(<a href='https://www.viessmann.co.uk/heating-advice/how-much-co2-does-tree-absorb' target='_blank'>Source</a>)"
-            )
+                )
 
     return body
 

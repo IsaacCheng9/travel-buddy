@@ -190,7 +190,6 @@ def routes() -> object:
             calories,
             fuel_cost_driving,
         )
-
         return render_template(
             "routes.html",
             distance_range=distance_range,
