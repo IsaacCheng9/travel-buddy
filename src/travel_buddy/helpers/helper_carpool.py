@@ -257,7 +257,7 @@ def get_incomplete_carpools() -> List[
                     c.seats_available,
                     c.starting_point,
                     c.destination,
-                    c.pickup_datetime,
+                    strftime('%H:%M', c.pickup_datetime),
                     c.price,
                     c.description,
                     c.distance,

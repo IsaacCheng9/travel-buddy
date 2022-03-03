@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 	<link rel="stylesheet" href="../static/css/mobile.css">
+    <link rel="stylesheet" href="../static/css/carpools.css">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
 
@@ -89,64 +90,57 @@
                 </form>
             </div>
             <div class="ui horizontal divider"></div>
+            
             {% for ride in carpools %}
-            <div class="row">
-                <div class="ui grid stackable" style="width: 100%;">
-                    <div class="two wide column">
-                        <div class="ui image fluid">
-                            <img src="https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60" />
+            <div class="custom-card">
+                <div class="ui grid">
+                    <div class="ten wide column">
+                        <div class="city">
+                            <span class="left">{{ride[5]}}</span>
+                            <span class="right">{{ride[3]}}</span>
                         </div>
-                        <div style="text-align: center;">
-                            {{ride[1]}}
-                        </div>
-                        <div style="text-align: center;">
-                            <div class="ui star rating" data-max-rating="1">
-                                <i class="icon active"></i>
-                            </div>
-                            ({{ride[11]}})
-                        </div>
-                        <div style="text-align: center;">
-                            Price: £{{ride[6]}}
-                        </div>
-                        
-                        <div class="ui label small fluid" style="text-align: center;">
-                            <i class="icon car"></i>
-                            Seats left: {{ride[2]}}
+                        <div class="city">
+                            <span class="left">12:00</span>
+                            <span class="right">{{ride[4]}}</span>
                         </div>
                     </div>
-                    <div class="fourteen wide column">
-                        <div class="ui steps fluid">
-                            <a class="active step">
-                                <div class="content">
-                                    <div class="title">{{ride[3]}}</div>
-                                    <div class="description">{{ride[5]}}</div>
-                                </div>
-                            </a>
-                            <a class="step">
-                                <div class="content">
-                                    <div class="title">{{ride[4]}}</div>
-                                    <div class="description">
-                                        <i class="fa fa-route"></i><b>&nbsp;{{ride[8]}}</b><br>
-                                        <i class="icon stopwatch"></i><b>{{ride[9]}}</b><br>
-                                        <i class="icon leaf"></i><b>{{ride[10]}}kg of CO2</b>
-                                    </div>
-                                </div>
-                            </a>
+                    <div class="four wide column">
+                        <div class="ui list">
+                            <div class="item">
+                                &#128186; {{ride[2]}}
+                            </div>
+                            <div class="item">
+                                <i class="fa fa-route"></i> {{ride[8]}}
+                            </div>
+                            <div class="item">
+                                <i class="icon stopwatch"></i> {{ride[9]}}
+                            </div>
+                            <div class="item">
+                                <i class="icon leaf"></i> {{ride[10]}}kg of CO2 saved
+                            </div>
                         </div>
-
- 
-                        <p>{{ride[7]}}</p>
-
-                        <button class="ui button fluid">
-                            <i class="icon car"></i>
-                            I'm interested
-                        </button>
+                    </div>
+                    <div class="two wide column" style="text-align: right;">£{{ride[6]}}</div>
+                    <div class="one wide column" style="text-align: center;">
+                        <img src="https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60" alt="" class="ui avatar fluid image">
+                    </div>
+                    <div class="ten wide column">
+                        {{ride[1]}}
+                        <br>
+                        <div class="ui star rating" data-max-rating="1">
+                            <i class="icon active"></i>
+                        </div>
+                        {{ride[11]}} ({{ride[12]}})
+                    </div>
+                    <div class="five wide column" style="text-align: right;">
+                        <i class="fa-solid fa-ban-smoking"></i>
+                        <i class="fa-solid fa-joint"></i>
+                        <i class="fa-solid fa-bong"></i>
                     </div>
                 </div>
             </div>
-
-            <div class="ui divider"></div>
-            {% endfor %}
+            <div class="ui horizontal divider hidden"></div>
+            {%endfor%}
         </div>
     </div>
 </body>

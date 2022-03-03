@@ -1,0 +1,23 @@
+
+
+.custom-card {
+    width: 100%;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    -webkit-box-pack: justify;
+    box-shadow: 0 0 5px #aeaeae;
+    border-radius: 1em;
+    font-size: 1.3em;
+}
+
+.city {
+    padding: 0.3em;
+}
+
+.city .left {
+    display: inline-block;
+    text-align: center;
+    width: 50px;
+}
