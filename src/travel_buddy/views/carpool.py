@@ -132,6 +132,8 @@ def view_carpool_journey(journey_id: int):
         estimate_duration_text,
         estimate_co2,
     ) = carpool_details
+    # Displays price with two decimal places.
+    price = format(price, ".2f")
 
     return render_template(
         "view_carpool.html",
