@@ -157,7 +157,7 @@ def validate_carpool_ride(
     with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
         cur.execute(
-            "SELECT * FROM account WHERE username=?;",
+            "SELECT username FROM account WHERE username=? LIMIT 1;",
             (driver,),
         )
         if cur.fetchone() is None:
@@ -293,7 +293,6 @@ def get_carpool_details(journey_id: int) -> list:
     with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
         cur.execute("SELECT * FROM carpool_ride WHERE journey_id=?;", (journey_id,))
-        conn.commit()
         carpool_details = cur.fetchone()
         return carpool_details
 
@@ -388,6 +387,7 @@ def add_passenger_to_carpool_journey(journey_id: int, username: str):
             "WHERE journey_id=?;",
             (journey_id,),
         )
+        conn.commit()
 
 
 def estimate_carpool_details(
