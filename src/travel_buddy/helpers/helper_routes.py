@@ -1,6 +1,6 @@
 import logging
 import sqlite3
-from datetime import timedelta
+from datetime import timedelta, datetime
 from time import sleep
 from typing import Tuple
 
@@ -480,3 +480,73 @@ def co2_to_trees(co2: float, days: int) -> float:
     daily_offset = yearly_offset / 365
     required_trees = co2 / (daily_offset * days)
     return round(required_trees, 2)
+
+def save_route(username: str, origin: str, destination: str):
+    """
+    Save a specific route search to a user
+    """
+    with sqlite3.connect(DB_PATH) as conn:
+        route_id = get_route_id(conn, origin, destination)
+        if not route_id:
+            route_id = register_route(conn, origin, destination)
+            logging.debug(f"Registered new route with ID - {route_id}")
+        
+        add_route_to_user(conn, username, route_id)  
+
+def get_route_id(conn, origin: str, destination: str) -> int:
+    """
+    Get route ID if exists, else return None
+    """
+    cur = conn.cursor()
+    cur.execute(
+        "SELECT route_id FROM route_list "
+        "WHERE origin=? AND destination=?;",
+        (origin,destination),
+    )
+    id = cur.fetchone()
+    if id:
+        return id[0]
+    return None
+
+def register_route(conn, origin: str, destination: str):
+    """
+    Register a route in the databse
+    """
+    cur = conn.cursor()
+    cur.execute(
+        "INSERT INTO route_list "
+        "(origin, destination) "
+        "VALUES (?, ?);",
+        (origin,destination),
+    )
+    conn.commit()
+    return get_route_id(conn, origin, destination)
+
+def add_route_to_user(conn, username: str, route_id: int):
+    """
+    Increment count of searches for this route on a user,
+    or add a new row if the user has not searched this before
+    """
+    cur = conn.cursor()
+    cur.execute(
+        "SELECT search_count, last_searched_ts FROM route_searches "
+        "WHERE route_id=?;",
+        (route_id,),
+    )
+    r = cur.fetchone()
+    if r:
+        if datetime.strptime(r[1], "%Y-%m-%d %H:%M:%S") < datetime.now() - timedelta(minutes=5):
+            cur.execute(
+                "UPDATE route_searches "
+                "SET search_count=?, last_searched_ts=CURRENT_TIMESTAMP "
+                "WHERE username=? AND route_id=?;",
+                (r[0]+1, username, route_id),
+            )
+    else:
+        cur.execute(
+            "INSERT INTO route_searches "
+            "(username, route_id, search_count, last_searched_ts) "
+            "VALUES (?, ?, ?, CURRENT_TIMESTAMP);",
+            (username, route_id, 1),
+        )
+        conn.commit()
