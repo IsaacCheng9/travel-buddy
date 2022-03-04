@@ -99,13 +99,14 @@ def hash_image(file) -> Tuple[bool, List[str], str]:
 
     return valid, message, file_name_hashed
 
+
 def get_user_avatar(username):
     """
     Get user avatar
 
-    Args: 
+    Args:
         The username (not id)
-    
+
     Returns:
         The avatar url
     """
@@ -117,6 +118,7 @@ def get_user_avatar(username):
         cursor.execute("SELECT photo FROM profile WHERE username = ?", (username,))
         avatar = cursor.fetchone()
         return avatar[0]
+
 
 def is_user_verified(username):
     """
@@ -136,13 +138,14 @@ def is_user_verified(username):
         verified = cursor.fetchone()
         return verified[0] == 1
 
+
 def get_user_rating(username):
     """
     Get user rating
 
     Args:
         The username (not id)
-    
+
     Returns:
         The average user rating, in range [1,5] and amount of ratings
     """
@@ -150,7 +153,10 @@ def get_user_rating(username):
 
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
-        cursor.execute("SELECT AVG(rating_given), COUNT(rating_given) FROM rating WHERE rated_username = ?", (username,))
+        cursor.execute(
+            "SELECT AVG(rating_given), COUNT(rating_given) FROM rating WHERE rated_username = ?",
+            (username,),
+        )
         rating = cursor.fetchone()
         return rating[0], rating[1]
 

@@ -47,7 +47,9 @@ def show_available_carpools():
             "carpools.html",
             carpools=incomplete_carpools,
             autocomplete_query=autocomplete_query,
-            interested_list=helper_carpool.get_user_interested_carpools(session["username"]),
+            interested_list=helper_carpool.get_user_interested_carpools(
+                session["username"]
+            ),
         )
 
     if request.method == "POST":
@@ -94,15 +96,20 @@ def show_available_carpools():
                 "carpools.html",
                 carpools=incomplete_carpools,
                 autocomplete_query=autocomplete_query,
-                interested_list=helper_carpool.get_user_interested_carpools(session["username"]),
+                interested_list=helper_carpool.get_user_interested_carpools(
+                    session["username"]
+                ),
             )
         return render_template(
             "carpools.html",
             errors=errors,
             carpools=incomplete_carpools,
             autocomplete_query=autocomplete_query,
-            interested_list=helper_carpool.get_user_interested_carpools(session["username"]),
+            interested_list=helper_carpool.get_user_interested_carpools(
+                session["username"]
+            ),
         )
+
 
 @carpool_blueprint.route("/toggle_carpool_interest/<id>", methods=["GET"])
 @limiter.limit("2/second")
@@ -121,15 +128,11 @@ def toggle_carpool_interest(id):
 
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
-        cursor.execute(
-            "SELECT * FROM carpool_interest WHERE journey_id=?", (id,)
-        )
+        cursor.execute("SELECT * FROM carpool_interest WHERE journey_id=?", (id,))
         interested = cursor.fetchone()
 
         if interested:
-            cursor.execute(
-                "DELETE FROM carpool_interest WHERE journey_id=?", (id,)
-            )
+            cursor.execute("DELETE FROM carpool_interest WHERE journey_id=?", (id,))
         else:
             cursor.execute(
                 "INSERT INTO carpool_interest (journey_id, username) VALUES (?, ?)",
@@ -139,6 +142,7 @@ def toggle_carpool_interest(id):
         conn.commit()
 
     return str(not interested)
+
 
 @carpool_blueprint.route("/carpools/<journey_id>", methods=["GET"])
 @limiter.limit("15/minute")
@@ -154,16 +158,27 @@ def view_carpool_journey(journey_id: int):
         The web page for viewing the selected carpool journey.
     """
     carpool_details = helper_carpool.get_carpool_details(journey_id)
-    
+
     # Gets the carpool details if the journey ID exists, otherwise returns
     # an error.
     if not carpool_details:
         session["error"] = "Carpool journey does not exist."
         return render_template("view_carpool.html")
-    
-    (id, driver, is_complete, seats_available,
-    starting_point, destination, pickup_datetime,
-    price, description, distance, duration, estimate_co2) = carpool_details
+
+    (
+        id,
+        driver,
+        is_complete,
+        seats_available,
+        starting_point,
+        destination,
+        pickup_datetime,
+        price,
+        description,
+        distance,
+        duration,
+        estimate_co2,
+    ) = carpool_details
 
     rating_average, rating_count = helper_general.get_user_rating(driver)
 
@@ -183,7 +198,7 @@ def view_carpool_journey(journey_id: int):
         avatar=helper_general.get_user_avatar(driver),
         is_verified=helper_general.is_user_verified(driver),
         rating_average=rating_average,
-        rating_count=rating_count
+        rating_count=rating_count,
     )
 
 
