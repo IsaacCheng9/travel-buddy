@@ -15,7 +15,7 @@ routes_blueprint = Blueprint(
 
 
 @routes_blueprint.route("/routes", methods=["GET", "POST"])
-@limiter.limit("6/minute")
+@limiter.limit("10/minute")
 def routes() -> object:
     """
     Generates information on route details using Google Maps API functions.
@@ -189,6 +189,8 @@ def routes() -> object:
             calories,
             fuel_cost_driving,
         )
+
+        helper_routes.save_route(session.get("username", "unknown"), address1, address2)
 
         return render_template(
             "routes.html",
