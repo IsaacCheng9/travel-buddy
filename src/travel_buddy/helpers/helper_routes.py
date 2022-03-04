@@ -530,7 +530,7 @@ def add_route_to_user(conn, username: str, route_id: int):
     """
     cur = conn.cursor()
     cur.execute(
-        "SELECT search_count, last_searched_timestamp FROM route_searches "
+        "SELECT search_count, last_searched_timestamp FROM route_search "
         "WHERE route_id=?;",
         (route_id,),
     )
@@ -540,14 +540,14 @@ def add_route_to_user(conn, username: str, route_id: int):
             route_search[1], "%Y-%m-%d %H:%M:%S"
         ) < datetime.now() - timedelta(minutes=5):
             cur.execute(
-                "UPDATE route_searches "
+                "UPDATE route_search "
                 "SET search_count=?, last_searched_timestamp=CURRENT_TIMESTAMP "
                 "WHERE username=? AND route_id=?;",
                 (route_search[0] + 1, username, route_id),
             )
     else:
         cur.execute(
-            "INSERT INTO route_searches "
+            "INSERT INTO route_search "
             "(username, route_id, search_count, last_searched_timestamp) "
             "VALUES (?, ?, ?, CURRENT_TIMESTAMP);",
             (username, route_id, 1),
