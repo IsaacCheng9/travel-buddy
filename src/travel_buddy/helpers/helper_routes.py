@@ -1,6 +1,6 @@
 import logging
 import sqlite3
-from datetime import timedelta, datetime
+from datetime import datetime, timedelta
 from time import sleep
 from typing import Tuple
 
@@ -501,7 +501,7 @@ def get_route_id(conn, origin: str, destination: str) -> int:
     """
     cur = conn.cursor()
     cur.execute(
-        "SELECT route_id FROM route_list WHERE origin=? AND destination=?;",
+        "SELECT route_id FROM route WHERE origin=? AND destination=?;",
         (origin, destination),
     )
     id = cur.fetchone()
@@ -516,7 +516,7 @@ def register_route(conn, origin: str, destination: str):
     """
     cur = conn.cursor()
     cur.execute(
-        "INSERT INTO route_list (origin, destination) VALUES (?, ?);",
+        "INSERT INTO route (origin, destination) VALUES (?, ?);",
         (origin, destination),
     )
     conn.commit()
@@ -530,7 +530,7 @@ def add_route_to_user(conn, username: str, route_id: int):
     """
     cur = conn.cursor()
     cur.execute(
-        "SELECT search_count, last_searched_ts FROM route_searches "
+        "SELECT search_count, last_searched_timestamp FROM route_searches "
         "WHERE route_id=?;",
         (route_id,),
     )
@@ -541,14 +541,14 @@ def add_route_to_user(conn, username: str, route_id: int):
         ) < datetime.now() - timedelta(minutes=5):
             cur.execute(
                 "UPDATE route_searches "
-                "SET search_count=?, last_searched_ts=CURRENT_TIMESTAMP "
+                "SET search_count=?, last_searched_timestamp=CURRENT_TIMESTAMP "
                 "WHERE username=? AND route_id=?;",
                 (route_search[0] + 1, username, route_id),
             )
     else:
         cur.execute(
             "INSERT INTO route_searches "
-            "(username, route_id, search_count, last_searched_ts) "
+            "(username, route_id, search_count, last_searched_timestamp) "
             "VALUES (?, ?, ?, CURRENT_TIMESTAMP);",
             (username, route_id, 1),
         )
