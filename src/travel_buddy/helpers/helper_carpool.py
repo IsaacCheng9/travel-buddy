@@ -282,7 +282,7 @@ def get_incomplete_carpools() -> List[
 
 def get_carpool_details(journey_id: int) -> list:
     """
-    Gets the details of a carpool journey from the database.
+    Gets the details of a carpool journey from the database if not expired.
 
     Args:
         journey_id: The unique identifier for the selected carpool.
@@ -292,7 +292,11 @@ def get_carpool_details(journey_id: int) -> list:
     """
     with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
-        cur.execute("SELECT * FROM carpool_ride WHERE journey_id=?;", (journey_id,))
+        cur.execute(
+            "SELECT * FROM carpool_ride "
+            "WHERE journey_id=? AND CURRENT_TIMESTAMP < pickup_datetime;",
+            (journey_id,),
+        )
         conn.commit()
         carpool_details = cur.fetchone()
         return carpool_details
