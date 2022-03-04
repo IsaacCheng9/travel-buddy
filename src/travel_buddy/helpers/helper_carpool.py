@@ -276,6 +276,7 @@ def get_incomplete_carpools() -> List[
         incomplete_carpools = cur.fetchall()
     return incomplete_carpools
 
+
 def get_user_interested_carpools(username: str) -> list:
     """
     Gets all carpools that the user is interested in.
@@ -294,9 +295,10 @@ def get_user_interested_carpools(username: str) -> list:
             (username,),
         )
         interested_carpools = cur.fetchall()
-    
+
     # change list of tupples [('22',), ('23',)] to list of ints [22, 23]
     return list(map(lambda x: int(x[0]), interested_carpools))
+
 
 def get_carpool_details(journey_id: int) -> list:
     """
