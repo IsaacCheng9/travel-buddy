@@ -155,8 +155,10 @@ def routes() -> object:
             session["username"]
         )
 
-        driving_distance = helper_routes.safeget(details, "modes", "driving", "distance", "value")
-        
+        driving_distance = helper_routes.safeget(
+            details, "modes", "driving", "distance", "value"
+        )
+
         # initialise values to prevent crash later
         fuel_used_driving = 0
         fuel_cost_driving = 0.0
