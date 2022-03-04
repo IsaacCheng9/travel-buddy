@@ -15,7 +15,7 @@ routes_blueprint = Blueprint(
 
 
 @routes_blueprint.route("/routes", methods=["GET", "POST"])
-@limiter.limit("6/minute")
+@limiter.limit("10/minute")
 def routes() -> object:
     """
     Generates information on route details using Google Maps API functions.
@@ -29,9 +29,8 @@ def routes() -> object:
 
     api_key_file = "keys.json"
     keys = helper_general.get_keys(api_key_file)
-    autocomplete_query = (
-        f"https://maps.googleapis.com/maps/api/js"
-        f"?key={keys['google_maps']}&callback=initMap&libraries=places&v=weekly"
+    autocomplete_query = helper_general.get_autocomplete_query(
+        key=keys["google_maps"], func="initMap"
     )
 
     if request.method == "GET":
@@ -197,6 +196,9 @@ def routes() -> object:
             calories,
             fuel_cost_driving,
         )
+
+        helper_routes.save_route(session.get("username", "unknown"), address1, address2)
+
         return render_template(
             "routes.html",
             distance_range=distance_range,
