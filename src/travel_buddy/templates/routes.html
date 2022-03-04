@@ -197,35 +197,37 @@
 							</tr>
 						</table>
 					</div>
-					{% if details['modes']['cycling']['distance']['value'] < 25000 %}
-					<br>
-					<div class="item">
-						<i class="fa fa-info-circle" data-content="Everyone burns calories at different rates depending on weight
-						and intensity of activity, but here's an estimate of how many calories you could burn.&#10;"></i>
-						Calories Burned (<a href="https://bupa.co.uk/health-information/tools-calculators/calories-calculator" target="_blank">Source</a>)
-					</div>
-					<table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
-					{% for item, value in calories.items() %}
-						<tr>
-							{% if item.capitalize() == 'Walking' %}
-								{% if details['modes']['walking']['distance']['value'] < 5000 %}
-									<td>{{ item.capitalize() }}</td>
-									<td>~ {{ value }} kcal</td>
-								{% endif %}
-							{% elif item.capitalize() == 'Running' %}
-								{% if details['modes']['walking']['distance']['value'] < 10000 %}
-									<td>{{ item.capitalize() }}</td>
-									<td>~ {{ value }} kcal</td>
-								{% endif %}
-							{% elif item.capitalize() == 'Cycling' %}
-								{% if details['modes']['cycling']['distance']['value'] < 25000 %}
-									<td>{{ item.capitalize() }}</td>
-									<td>~ {{ value }} kcal</td>
-								{% endif %}
-							{% endif %}
-						</tr>
-					{% endfor %}
-					</table>
+					{% if min_distance != -1 %}
+						{% if min_distance < 25000 %}
+							<br>
+							<div class="item">
+								<i class="fa fa-info-circle" data-content="Everyone burns calories at different rates depending on weight
+								and intensity of activity, but here's an estimate of how many calories you could burn.&#10;"></i>
+								Calories Burned (<a href="https://bupa.co.uk/health-information/tools-calculators/calories-calculator" target="_blank">Source</a>)
+							</div>
+							<table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
+							{% for item, value in calories.items() %}
+								<tr>
+									{% if item.capitalize() == 'Walking' %}
+										{% if details['modes']['walking']['distance'] is not none and details['modes']['walking']['distance']['value'] < 5000 %}
+											<td>{{ item.capitalize() }}</td>
+											<td>~ {{ value }} kcal</td>
+										{% endif %}
+									{% elif item.capitalize() == 'Running' %}
+										{% if details['modes']['walking']['distance'] is not none and details['modes']['walking']['distance']['value'] < 10000 %}
+											<td>{{ item.capitalize() }}</td>
+											<td>~ {{ value }} kcal</td>
+										{% endif %}
+									{% elif item.capitalize() == 'Cycling' %}
+										{% if details['modes']['walking']['distance'] is not none and details['modes']['cycling']['distance']['value'] < 25000 %}
+											<td>{{ item.capitalize() }}</td>
+											<td>~ {{ value }} kcal</td>
+										{% endif %}
+									{% endif %}
+								</tr>
+							{% endfor %}
+							</table>
+						{% endif %}
 					{% endif %}
 					{% if recommendations|length > 0 %}
 					<div class="item">

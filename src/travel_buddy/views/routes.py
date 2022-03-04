@@ -154,6 +154,7 @@ def routes() -> object:
         car_make, car_mpg, fuel_type, engine_size = helper_routes.get_car(
             session["username"]
         )
+        print(details)
         driving_distance = float(
             helper_routes.safeget(details, "modes", "driving", "distance", "value")
             / 1000
@@ -205,6 +206,7 @@ def routes() -> object:
             fuel_cost=format(fuel_cost, ".2f"),
             car_make=car_make,
             car_mpg=car_mpg,
+            min_distance=helper_routes.get_min_distance(details),
             fuel_price=format(fuel_price, ".2f"),
             calories=calories,
             recommendations=recommendations,

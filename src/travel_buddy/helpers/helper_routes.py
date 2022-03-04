@@ -443,7 +443,7 @@ def get_recommendations(
                 )
             trees = co2_to_trees(round(co2_list["driving"] * 40, 2), 30)
             cost = format((fuel_cost * 40), ".2f")
-            if trees >= 1 and cost > 0.0 and round(co2_list["driving"] * 40, 2) > 0.0:
+            if float(trees) >= 1 and float(cost) > 0.0 and round(co2_list["driving"] * 40, 2) > 0.0:
                 body.append(
                     "Is this your daily commute? Cycling this journey twice every working "
                     f"day would save <b>£{cost}</b> of fuel as well as about "
@@ -455,6 +455,10 @@ def get_recommendations(
 
     return body
 
+
+def get_min_distance(details: dict) -> float:
+    distances = [distance['distance']['value'] for distance in details['modes'].values() if distance['distance'] is not None]
+    return min(distances, default=-1)
 
 def append_cycle_walk_str(time_1: int, time_2: int, mode: str) -> str:
     """
