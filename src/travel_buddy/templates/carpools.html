@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 	<link rel="stylesheet" href="../static/css/mobile.css">
     <link rel="stylesheet" href="../static/css/carpools.css">
+    
+    <link rel="stylesheet" href="../static/css/theme.css">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
 
@@ -61,39 +63,43 @@
                 <form class="ui form" style="width: 100%;" method="POST">
                     <div class="two fields">
                         <div class="field">
-                            <label>From</label>
+                            <label><i class="fa-solid fa-location-dot"></i> From</label>
                             <input id="input-1" type="text" name="location-from">
                         </div>
                         <div class="field">
-                            <label>To</label>
+                            <label><i class="fa-solid fa-map-location-dot"></i> To</label>
                             <input id="input-2" type="text" name="location-to">
                         </div>
                     </div>
-                    <div class="field">
-                        <label>Number of Seats Available</label>
-                        <input required name="seats" type="number">
+                    <div class="three fields">
+                        <div class="field">
+                            <label><i class="fa-solid fa-car"></i> Number of Seats Available</label>
+                            <input required name="seats" type="number" value="1">
+                        </div>
+                        <div class="field">
+                            <label><i class="fa-solid fa-money-bill"></i> Price Per Passenger (£)</label>
+                            <input required name="price" type="number" value="15">
+                        </div>
+                        <div class="field">
+                            <label><i class="fa-solid fa-calendar-days"></i> Journey Start Date</label>
+                            <input required name="date-from" type="datetime-local">
+                        </div>
                     </div>
-                    <div class="field">
-                        <label>Price Per Passenger</label>
-                        <input required name="price" type="number">
-                    </div>
-                    <div class="field">
-                        <label>Journey Start Date</label>
-                        <input required name="date-from" type="datetime-local">
-                    </div>
-                    <h4 class="dividing header ui">Extra Information</h4>
+                    <h4 class="dividing header ui"><i class="fa-solid fa-book"></i> Extra Information</h4>
                     <div class="field">
                         <textarea maxlength=500 name="description" id="description_input" cols="4" rows="4" placeholder="Describe the pick-up point, the journey, and any additional information."></textarea>
                         <div id="description_character_limit"></div>
                     </div>
-                    <input class="ui fluid button green" type="submit" value="Create Carpool Offer">
+                    <!-- <input class="ui fluid button green" type="submit" value="Create"> -->
+                    <button class="ui button fluid green theme-4" type="submit"><i class="fa-solid fa-bolt" style="color: white !important;"></i> Create Carpool</button>
                 </form>
             </div>
-            <div class="ui horizontal divider"></div>
-            
+        </div>
+        
+        <div class="ui grid stackable">
             {% for ride in carpools %}
-            <div class="custom-card">
-                <div class="ui grid stackable">
+            <a class="custom-card" id="card-{{ride[0]}}">
+                <div class="ui grid stackable" style="width: 100%;">
                     <div class="ten wide column">
                         <div class="city">
                             <span class="left">{{ride[5]}}</span>
@@ -107,7 +113,7 @@
                     <div class="four wide column">
                         <div class="ui list">
                             <div class="item">
-                                &#128186; {{ride[2]}}
+                                <i class="fa-solid fa-car"></i> {{ride[2]}}
                             </div>
                             <div class="item">
                                 <i class="fa fa-route"></i> {{ride[8]}}
@@ -127,9 +133,7 @@
                     <div class="ten wide column">
                         {{ride[1]}}
                         <br>
-                        <div class="ui star rating" data-max-rating="1">
-                            <i class="icon active"></i>
-                        </div>
+                        <i class="icon star"></i>
                         {{ride[11]}} ({{ride[12]}})
                     </div>
                     <div class="five wide column" style="text-align: right;">
@@ -138,7 +142,14 @@
                         <i class="fa-solid fa-bong"></i>
                     </div>
                 </div>
-            </div>
+                <div class="ui buttons">
+                    <button onclick='window.location="/carpools/{{ride[0]}}"' class="ui button green theme-4"><i class="fa-solid fa-circle-info"></i> See Details</button>
+                    <div class="ui or"></div>
+                    <button onclick="ToggleInterest('{{ride[0]}}');"
+                            id="interest-btn-{{ride[0]}}"
+                            class="ui button green theme-4"><i class="fa-solid fa-bolt"></i> Show Interest</button>
+                </div>
+            </a>
             <div class="ui horizontal divider hidden"></div>
             {%endfor%}
         </div>
@@ -161,11 +172,51 @@
     DescriptionCharLimit();
 </script>
 
+<script>
+    const current_interested_ids = {{interested_list | tojson}};
+
+    for (var id of current_interested_ids){
+        ToggleInterestUI(id, true);
+    }
+
+    function ToggleInterest(journey_id){
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("interest-btn-" + journey_id).disabled = true;
+                document.getElementById("interest-btn-" + journey_id).innerHTML = '<i class="fa-solid fa-spinner"></i>';
+
+                var responseText = this.responseText;
+
+                setTimeout(function(){
+                    document.getElementById("interest-btn-" + journey_id).disabled = false;
+                    ToggleInterestUI(journey_id, responseText == "True")
+                },500);
+            }
+        };
+        xhttp.open("GET", "/toggle_carpool_interest/" + journey_id, true);
+        xhttp.send();
+    }
+
+    function ToggleInterestUI(journey_id, state){
+        if (state){
+            document.getElementById("card-"+journey_id).classList.add("active");
+            document.getElementById("interest-btn-"+journey_id).innerHTML = "<i class='fa-solid fa-check'></i> Interested";
+        } else {
+            document.getElementById("card-"+journey_id).classList.remove("active");
+            document.getElementById("interest-btn-"+journey_id).innerHTML = "<i class='fa-solid fa-bolt'></i> Show Interest";
+        }
+    }
+</script>
+
 <style>
     @import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
     * {
 		box-sizing: border-box;
-		transition: all 0.4s;
 		font-family: "Open Sans", "Helvetica", "Montserrat", sans-serif;
 	}
+
+    .fa-spinner {
+        animation: fa-spin 2s infinite linear;
+    }
 </style>

@@ -9,6 +9,8 @@ import uuid
 from base64 import b64decode
 from typing import List, Tuple
 
+import sqlite3
+
 from PIL import Image
 
 
@@ -96,6 +98,61 @@ def hash_image(file) -> Tuple[bool, List[str], str]:
         file_name_hashed = ""
 
     return valid, message, file_name_hashed
+
+def get_user_avatar(username):
+    """
+    Get user avatar
+
+    Args: 
+        The username (not id)
+    
+    Returns:
+        The avatar url
+    """
+
+    DB_PATH = get_database_path()
+
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT photo FROM profile WHERE username = ?", (username,))
+        avatar = cursor.fetchone()
+        return avatar[0]
+
+def is_user_verified(username):
+    """
+    Check if user is verified
+
+    Args:
+        The username (not id)
+
+    Returns:
+        True if verified, False otherwise
+    """
+    DB_PATH = get_database_path()
+
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT verified FROM profile WHERE username = ?", (username,))
+        verified = cursor.fetchone()
+        return verified[0] == 1
+
+def get_user_rating(username):
+    """
+    Get user rating
+
+    Args:
+        The username (not id)
+    
+    Returns:
+        The average user rating, in range [1,5] and amount of ratings
+    """
+    DB_PATH = get_database_path()
+
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT AVG(rating_given), COUNT(rating_given) FROM rating WHERE rated_username = ?", (username,))
+        rating = cursor.fetchone()
+        return rating[0], rating[1]
 
 
 def get_autocomplete_query(**kwargs):

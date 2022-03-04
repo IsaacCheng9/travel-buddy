@@ -276,6 +276,27 @@ def get_incomplete_carpools() -> List[
         incomplete_carpools = cur.fetchall()
     return incomplete_carpools
 
+def get_user_interested_carpools(username: str) -> list:
+    """
+    Gets all carpools that the user is interested in.
+
+    Args:
+        username: The username of the user.
+
+    Returns:
+        A list of tuples containing the carpool ids.
+    """
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        cur.execute(
+            """SELECT journey_id FROM carpool_interest
+            WHERE username=?;""",
+            (username,),
+        )
+        interested_carpools = cur.fetchall()
+    
+    # change list of tupples [('22',), ('23',)] to list of ints [22, 23]
+    return list(map(lambda x: int(x[0]), interested_carpools))
 
 def get_carpool_details(journey_id: int) -> list:
     """
