@@ -534,16 +534,16 @@ def add_route_to_user(conn, username: str, route_id: int):
         "WHERE route_id=?;",
         (route_id,),
     )
-    r = cur.fetchone()
-    if r:
-        if datetime.strptime(r[1], "%Y-%m-%d %H:%M:%S") < datetime.now() - timedelta(
-            minutes=5
-        ):
+    route_search = cur.fetchone()
+    if route_search:
+        if datetime.strptime(
+            route_search[1], "%Y-%m-%d %H:%M:%S"
+        ) < datetime.now() - timedelta(minutes=5):
             cur.execute(
                 "UPDATE route_searches "
                 "SET search_count=?, last_searched_ts=CURRENT_TIMESTAMP "
                 "WHERE username=? AND route_id=?;",
-                (r[0] + 1, username, route_id),
+                (route_search[0] + 1, username, route_id),
             )
     else:
         cur.execute(
