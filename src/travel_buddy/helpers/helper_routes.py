@@ -432,13 +432,17 @@ def get_recommendations(
             else:
                 extra_time = 60 * round((time_cycling - time_driving) / 60)
                 if abs(extra_time) > 120:
-                    body.append(append_cycle_walk_str(time_cycling, time_driving, "cycle"))
+                    body.append(
+                        append_cycle_walk_str(time_cycling, time_driving, "cycle")
+                    )
                     body[-1] += (
                         f"you would save about <b>{co2_list['driving']} kg</b> of CO2 and "
                         f"would burn about <b>{calories['cycling']} kcal</b>!"
                     )
                 if abs(extra_time) > 60:
-                    body.append(append_cycle_walk_str(time_walking, time_driving, "walk"))
+                    body.append(
+                        append_cycle_walk_str(time_walking, time_driving, "walk")
+                    )
                     body[-1] += (
                         f"you would save about <b>{co2_list['driving']} kg</b> of CO2 and "
                         f"would burn <b>{calories['walking']} - {calories['running']} kcal</b>!"
