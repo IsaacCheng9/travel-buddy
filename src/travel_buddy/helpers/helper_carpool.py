@@ -157,7 +157,7 @@ def validate_carpool_ride(
     with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
         cur.execute(
-            "SELECT username FROM account WHERE username=? " "LIMIT 1;",
+            "SELECT username FROM account WHERE username=? LIMIT 1;",
             (driver,),
         )
         if cur.fetchone() is None:

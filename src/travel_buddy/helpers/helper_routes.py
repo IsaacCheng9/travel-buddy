@@ -501,7 +501,7 @@ def get_route_id(conn, origin: str, destination: str) -> int:
     """
     cur = conn.cursor()
     cur.execute(
-        "SELECT route_id FROM route_list " "WHERE origin=? AND destination=?;",
+        "SELECT route_id FROM route_list WHERE origin=? AND destination=?;",
         (origin, destination),
     )
     id = cur.fetchone()
@@ -516,7 +516,7 @@ def register_route(conn, origin: str, destination: str):
     """
     cur = conn.cursor()
     cur.execute(
-        "INSERT INTO route_list " "(origin, destination) " "VALUES (?, ?);",
+        "INSERT INTO route_list (origin, destination) VALUES (?, ?);",
         (origin, destination),
     )
     conn.commit()
