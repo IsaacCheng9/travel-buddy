@@ -50,6 +50,7 @@ def routes() -> object:
         origins = request.form["start_point"].strip()
         destinations = request.form["destination"].strip()
         travel_mode_full = request.form["mode"]
+
         if travel_mode_full == "bicycling":
             travel_mode_simple = "cycling"
         elif travel_mode_full == "transit":

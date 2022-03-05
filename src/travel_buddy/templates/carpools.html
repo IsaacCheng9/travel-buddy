@@ -141,6 +141,15 @@
                             <i class="icon car"></i>
                             I'm interested
                         </button>
+                        <form action="/routes" method="POST">
+                            <input type="hidden" value="{{ride[3]}}" name="start_point">
+                            <input type="hidden" value="{{ride[4]}}" name="destination">
+                            <input type="hidden" value="driving" name="mode">
+                            <button class="ui button">
+                                <i class="icon map"></i>
+                                View estimated route
+                            </button>
+                        </form>               
                     </div>
                 </div>
             </div>
