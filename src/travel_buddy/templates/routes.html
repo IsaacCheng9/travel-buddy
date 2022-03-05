@@ -141,6 +141,15 @@
 						{% endif %}
 					</table>
 					<div class="ui label big fluid" style="text-align: center; background-color: #AED6F1;">{{distance_range}} <i class="fa fa-info-circle" data-content="Distance range for the above transport modes."></i></div>
+					<br><br>
+					<div class="ui grid">
+						<div class="eight wide column">
+							<button class="ui button black fluid" id="search_carpool_btn" style="font-size: 1em;">Create a Carpool Request</button>
+						</div>
+						<div class="eight wide column">
+							<button class="ui button black fluid" id="create_carpool_btn" style="font-size: 1em;">Create a Carpool Offer</button>
+						</div>
+					</div>
 					{% endif %}
 				</div>
 			</div>
@@ -318,6 +327,18 @@
 		background: #ff416c;
 		background: -webkit-linear-gradient(to right, #ff4b2b, #ff416c);
 		background: linear-gradient(to right, #ff4b2b, #ff416c);
+	}
+
+	#search_carpool_btn {
+		background: #216437;
+		background: -webkit-linear-gradient(to right, #2f8f4f, #216437);
+		background: linear-gradient(to right, #2f8f4f, #216437);
+	}
+
+	#create_carpool_btn {
+		background: #2f8f4f;
+		background: -webkit-linear-gradient(to right, #216437, #2f8f4f);
+		background: linear-gradient(to right, #216437, #2f8f4f);
 	}
 
 	#map_iframe {
