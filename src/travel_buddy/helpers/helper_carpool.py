@@ -464,3 +464,44 @@ def get_total_carpools_drove(username: str) -> int:
         )
         total_carpools_drove = cur.fetchone()[0]
     return total_carpools_drove
+
+
+def get_total_distance_carpooled(username: str) -> int:
+    """
+    Gets the total distance carpooled (joined and drove) by the user.
+
+    Args:
+        username: The user to calculate the statistic for.
+
+    Returns:
+        The total distance carpooled by the user.
+    """
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        # Gets total distance drove by the user for a carpool.
+        cur.execute(
+            "SELECT SUM(distance) FROM carpool_ride "
+            "WHERE driver=? AND is_complete=1;",
+            (username,),
+        )
+        total_distance_drove = cur.fetchone()[0]
+        if total_distance_drove:
+            total_distance_drove /= 1000
+        else:
+            total_distance_drove = 0
+
+        # Gets total distance rode by the user for a carpool that they joined.
+        cur.execute(
+            "SELECT SUM(distance) FROM carpool_request WHERE requester=?;",
+            (username,),
+        )
+        total_distance_joined = cur.fetchone()[0]
+        if total_distance_joined:
+            total_distance_joined /= 1000
+        else:
+            total_distance_joined = 0
+
+        total_distance_carpooled = round(
+            total_distance_drove + total_distance_joined, 2
+        )
+    return total_distance_carpooled

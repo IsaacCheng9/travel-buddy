@@ -74,6 +74,7 @@ def profile(username: str) -> object:
         # Calculates statistics on their usage of the app.
         total_carpools_joined = helper_carpool.get_total_carpools_joined(username)
         total_carpools_drove = helper_carpool.get_total_carpools_drove(username)
+        total_distance_carpooled = helper_carpool.get_total_distance_carpooled(username)
         (
             total_unique_routes_searched,
             total_routes_searched,
@@ -89,6 +90,7 @@ def profile(username: str) -> object:
         verified=verified,
         total_carpools_joined=total_carpools_joined,
         total_carpools_drove=total_carpools_drove,
+        total_distance_carpooled=total_distance_carpooled,
         total_routes_searched=total_routes_searched,
         total_unique_routes_searched=total_unique_routes_searched,
     )
