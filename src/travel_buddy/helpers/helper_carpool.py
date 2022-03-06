@@ -438,7 +438,8 @@ def get_total_carpools_joined(username: str) -> list:
         cur = conn.cursor()
         cur.execute(
             "SELECT COUNT(request_id) FROM carpool_request "
-            "WHERE requester=? AND journey_id IS NOT NULL;", (username,)
+            "WHERE requester=? AND journey_id IS NOT NULL;",
+            (username,),
         )
         total_carpools_joined = cur.fetchone()[0]
     return total_carpools_joined
