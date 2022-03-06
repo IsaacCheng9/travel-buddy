@@ -6,11 +6,15 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 	<link rel="stylesheet" href="../static/css/mobile.css">
-
-	<title>Travel Buddy - My Profile</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/popup.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/transition.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/transition.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/popup.min.js"></script>
+	<title>Travel Buddy - Profile</title>
 </head>
 
-<body>
+<body onload="generate_stats()">
 	<div class="ui container" id="container">
 		<div class="ui secondary pointing menu big">
 			<a class="item active" href="/profile">
@@ -58,21 +62,130 @@
 				<div class="bio">
 					{{ bio }}
 				</div>
-				<div class="ui horizontal divider"><i class="bar chart icon"></i> Top Statistics</div>
-				
-				<div class="ui equal width grid">
-					<br>
-					<div class="ui list divided" style="width: 100%;">
-						<div class="item">Carpools participated in: <p class="right-align">5</p></div>
-						<div class="item">Total distance carpooled: <p class="right-align">103.85km</p></div>
-						<div class="item">Estimated CO2 emissions saved: <p class="right-align">~30.5kg</p></div>
-					</div>
-				</div>
-				
+				<div class="ui horizontal divider"><i class="bar chart icon"></i> User Statistics</div>
+				<table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;" id="stats_table"></table>
 			</div>
 		</div>
 	</div>
+	
 </body>
+<script>
+	function generate_stats() {
+		var is_driver='{{is_driver}}', verified='{{verified}}', distance_travelled='{{distance_travelled}}', carpools_driven='{{carpools_driven}}'
+		var carpools_joined='{{carpools_joined}}', fuel_money_saved='{{fuel_money_saved}}', co2_saved='{{co2_saved}}', tree_offset='{{tree_offset}}'
+		var join_date='{{join_date}}', routes_searched='{{routes_searched}}', unique_routes_searched='{{unique_routes_searched}}'
+		var count = 0
+		var items_per_row = 3
+		var html = `<tr>`
+		if (join_date) {
+			count += 1
+			html += `<td width=33%>
+						<h2>
+							${join_date}
+						</h2>
+						<div>
+							Join date
+						</div>
+					</td>`
+			html += add_row(count, items_per_row)
+		}
+		if (carpools_driven != 0) {
+			count += 1
+			html += `<td width=33%>
+						<h2>
+							${carpools_driven}
+						</h2>
+						<div>
+							Carpools drove
+						</div>
+					</td>`
+			html += add_row(count, items_per_row)
+		}
+		if (carpools_joined != 0) {
+			count += 1
+			html += `<td width=33%>
+						<h2>
+							${carpools_joined}
+						</h2>
+						<div>
+							Carpools joined
+						</div>
+					</td>`
+			html += add_row(count, items_per_row)
+		}
+		if (distance_travelled != 0) {
+			count += 1
+			html += `<td width=33%>
+						<h2>
+							${parseFloat(distance_travelled).toFixed(1)} km
+						</h2>
+						<div>
+							Total distance carpooled
+						</div>
+					</td>`
+			html += add_row(count, items_per_row)
+		}
+		if (co2_saved != 0) {
+			count += 1
+			html += `<td width=33%>
+						<h2>
+							~${parseFloat(co2_saved).toFixed(1)} kg
+						</h2>
+						<div>
+							CO2 emissions saved from carpooling
+						</div>
+					</td>`
+			html += add_row(count, items_per_row)
+		}
+		if (tree_offset != 0) {
+			count += 1
+			//<i class="fa fa-info-circle" data-content="Estimate number of trees required to offset ${co2_saved}kg of CO2 in one year"></i>
+			html += `<td width=33%>
+						<h2>
+							~${parseFloat(tree_offset).toFixed(1)}
+						</h2>
+						<div>
+							Number of trees to match your total carbon savings over a year
+						</div>
+					</td>`
+			html += add_row(count, items_per_row)
+		}
+		if (fuel_money_saved != 0) {
+			count += 1
+			html += `<td width=33%>
+						<h2>
+							~ £${parseFloat(fuel_money_saved).toFixed(2)}
+						</h2>
+						<div>
+							Saved from carpooling
+						</div>
+					</td>`
+			html += add_row(count, items_per_row)
+		}
+		if (routes_searched != 0) {
+			count += 1
+			html += `<td width=33%>
+						<h2>
+							${routes_searched} (${unique_routes_searched})
+						</h2>
+						<div>
+							Routes searched (unique)
+						</div>
+					</td>`
+			html += add_row(count, items_per_row)
+		}
+		html += `</tr>`
+		document.getElementById("stats_table").innerHTML += html
+	}
+	function add_row(count, items_per_row) {
+		if (count % items_per_row == 0) {
+			return `</tr><tr>`
+		}
+		return ``
+	}
+
+	$('*[data-content]').popup();
+</script>
 
 </html>
 
