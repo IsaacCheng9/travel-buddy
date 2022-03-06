@@ -75,8 +75,8 @@ def profile(username: str) -> object:
         total_carpools_joined = helper_carpool.get_total_carpools_joined(username)
         total_carpools_drove = helper_carpool.get_total_carpools_drove(username)
         (
-            total_routes_searched,
             total_unique_routes_searched,
+            total_routes_searched,
         ) = helper_routes.get_total_routes_searched(username)
 
     return render_template(
