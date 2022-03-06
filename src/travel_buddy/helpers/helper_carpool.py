@@ -422,3 +422,23 @@ def estimate_carpool_details(
         2,
     )
     return (distance, distance_text, duration, duration_text, co2)
+
+
+def get_total_carpools_joined(username: str) -> list:
+    """
+    Gets the total number of carpools joined by the user.
+
+    Args:
+        username: The user to add to the carpool journey.
+
+    Returns:
+        The number of carpools joined by the user.
+    """
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT COUNT(request_id) FROM carpool_request "
+            "WHERE requester=? AND journey_id IS NOT NULL;", (username,)
+        )
+        total_carpools_joined = cur.fetchone()[0]
+    return total_carpools_joined
