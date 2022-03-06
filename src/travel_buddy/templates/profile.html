@@ -89,7 +89,7 @@
 					</td>`
 			html += add_row(count, items_per_row)
 		}
-		if (carpools_driven) {
+		if (carpools_driven != 0) {
 			count += 1
 			html += `<td width=33%>
 						<h2>
@@ -113,7 +113,7 @@
 					</td>`
 			html += add_row(count, items_per_row)
 		}
-		if (distance_travelled) {
+		if (distance_travelled != 0) {
 			count += 1
 			html += `<td width=33%>
 						<h2>
@@ -125,7 +125,7 @@
 					</td>`
 			html += add_row(count, items_per_row)
 		}
-		if (co2_saved) {
+		if (co2_saved != 0) {
 			count += 1
 			html += `<td width=33%>
 						<h2>
@@ -137,7 +137,7 @@
 					</td>`
 			html += add_row(count, items_per_row)
 		}
-		if (tree_offset) {
+		if (tree_offset != 0) {
 			count += 1
 			//<i class="fa fa-info-circle" data-content="Estimate number of trees required to offset ${co2_saved}kg of CO2 in one year"></i>
 			html += `<td width=33%>
@@ -150,7 +150,7 @@
 					</td>`
 			html += add_row(count, items_per_row)
 		}
-		if (fuel_money_saved) {
+		if (fuel_money_saved != 0) {
 			count += 1
 			html += `<td width=33%>
 						<h2>
