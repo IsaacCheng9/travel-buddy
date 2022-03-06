@@ -259,3 +259,12 @@ def test_get_total_carpools_drove():
     """
     # The username '@' isn't allowed, so it should have no carpools drove.
     assert helper_carpool.get_total_carpools_drove("@") == 0
+
+
+def test_get_total_distance_carpooled():
+    """
+    Tests whether the number of total distance carpooled is calculated
+    correctly.
+    """
+    # The username '@' isn't allowed, so it should have 0 km carpooled.
+    assert helper_carpool.get_total_distance_carpooled("@") == 0
