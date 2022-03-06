@@ -70,9 +70,10 @@ def show_available_carpools():
                 distance_text,
                 duration,
                 duration_text,
-                co2,
+                co2_pp,
+                co2_saved,
             ) = helper_carpool.estimate_carpool_details(
-                starting_point, destination, "keys.json"
+                starting_point, destination, num_seats+1, "keys.json"
             )
             helper_carpool.add_carpool_ride(
                 session["username"],
@@ -86,7 +87,8 @@ def show_available_carpools():
                 distance_text,
                 duration,
                 duration_text,
-                co2,
+                co2_pp,
+                co2_saved,
             )
             return redirect("/carpools")
         return render_template(
@@ -119,24 +121,34 @@ def view_carpool_journey(journey_id: int):
     (
         driver,
         is_complete,
+        seats_initial,
         seats_available,
         starting_point,
         destination,
         pickup_datetime,
         price,
         description,
+        distance_text,
+        duration_text,
+        co2_pp,
+        co2_saved,
     ) = carpool_details[0]
 
     return render_template(
         "view_carpool.html",
         driver=driver,
         is_complete=is_complete,
+        seats_initial=seats_initial,
         seats_available=seats_available,
         starting_point=starting_point,
         destination=destination,
         pickup_datetime=pickup_datetime,
         price=price,
         description=description,
+        distance_text=distance_text,
+        duration_text=duration_text,
+        co2_pp=co2_pp,
+        co2_saved=co2_saved,
     )
 
 

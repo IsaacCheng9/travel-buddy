@@ -192,7 +192,7 @@ def validate_carpool_ride(
 
 def add_carpool_ride(
     driver: str,
-    seats_available: int,
+    seats_initial: int,
     starting_point: str,
     destination: str,
     pickup_datetime: datetime,
@@ -202,7 +202,8 @@ def add_carpool_ride(
     distance_text: str,
     duration: int,
     duration_text: str,
-    co2: int,
+    co2_pp: float,
+    co2_saved: float,
 ) -> None:
     """
     Adds a valid carpool request to the database.
@@ -221,13 +222,14 @@ def add_carpool_ride(
         cur = conn.cursor()
         # Adds the carpool ride to the database.
         cur.execute(
-            "INSERT INTO carpool_ride (driver, seats_available, starting_point, "
-            "destination, pickup_datetime, price, description, "
-            "distance, distance_text, estimate_duration, estimate_duration_text, estimate_co2) "
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
+            "INSERT INTO carpool_ride (driver, seats_initial, seats_available, starting_point, "
+            "destination, pickup_datetime, price, description, distance, distance_text, "
+            "estimate_duration, estimate_duration_text, estimate_co2_per_person, estimate_co2_saved) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
             (
                 driver,
-                seats_available,
+                seats_initial,
+                seats_initial,
                 starting_point,
                 destination,
                 pickup_datetime,
@@ -237,13 +239,14 @@ def add_carpool_ride(
                 distance_text,
                 duration,
                 duration_text,
-                co2,
+                co2_pp,
+                co2_saved,
             ),
         )
 
 
 def get_incomplete_carpools() -> List[
-    Tuple[int, str, int, str, str, str, float, str, float, int, str, str, int]
+    Tuple[int, str, int, str, str, str, float, str, float, int, float, float, str, int]
 ]:
     """
     Gets all incomplete carpools in the database and ratings for the driver.
@@ -264,7 +267,8 @@ def get_incomplete_carpools() -> List[
                     c.description,
                     c.distance_text,
                     c.estimate_duration_text,
-                    c.estimate_co2,
+                    c.estimate_co2_per_person,
+                    c.estimate_co2_saved,
 
                     AVG(r.rating_given),
                     COUNT(r.rating_given)
@@ -292,7 +296,13 @@ def get_carpool_details(journey_id: int) -> list:
     """
     with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
-        cur.execute("SELECT * FROM carpool_ride WHERE journey_id=?;", (journey_id,))
+        cur.execute(
+            "SELECT driver, is_complete, seats_initial, seats_available, starting_point, "
+            "destination, pickup_datetime, price, description, distance_text, "
+            "duration_text, co2_pp, co2_saved "
+            "FROM carpool_ride WHERE journey_id=?;",
+            (journey_id,)
+            )
         carpool_details = cur.fetchone()
         return carpool_details
 
@@ -391,7 +401,7 @@ def add_passenger_to_carpool_journey(journey_id: int, username: str):
 
 
 def estimate_carpool_details(
-    start_point: str, end_point: str, filename: str
+    start_point: str, end_point: str, seats: int, filename: str
 ) -> Tuple[int, str, int, str, str]:
     """
     Fetch the estimated distance, duration, and co2 emissions of a carpooling journey
@@ -411,14 +421,13 @@ def estimate_carpool_details(
     duration_text = helper_routes.safeget(
         details, "rows", 0, "elements", 0, "duration", "text"
     )
-    co2 = round(
-        helper_routes.generate_co2_emissions(
+    co2 = helper_routes.generate_co2_emissions(
             helper_routes.safeget(
                 details, "rows", 0, "elements", 0, "distance", "value"
             ),
             "driving",
             "petrol",
-        ),
-        2,
-    )
-    return (distance, distance_text, duration, duration_text, co2)
+        )
+    co2_pp = round(co2/(seats), 2)
+    co2_saved = round(co2-(co2/(seats)), 2)
+    return (distance, distance_text, duration, duration_text, co2_pp, co2_saved)
