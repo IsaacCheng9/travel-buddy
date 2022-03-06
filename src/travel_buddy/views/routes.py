@@ -157,7 +157,13 @@ def routes() -> object:
             session["username"]
         )
 
-        fuel_used_driving, fuel_cost_driving, fuel_price = helper_routes.calculate_total_fuel_cost(driving_distance, car_mpg, fuel_type)
+        (
+            fuel_used_driving,
+            fuel_cost_driving,
+            fuel_price,
+        ) = helper_routes.calculate_total_fuel_cost(
+            driving_distance, car_mpg, fuel_type
+        )
 
         fuel_used = fuel_used_driving if travel_mode_full == "driving" else 0
         fuel_cost = fuel_cost_driving if travel_mode_full == "driving" else 0

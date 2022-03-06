@@ -53,11 +53,11 @@ def profile(username: str) -> object:
     # Gets the user's details from the database.
     with sqlite3.connect(DB_PATH) as conn:
 
-        profile_data, message = get_profile(conn, username, message)   
+        profile_data, message = get_profile(conn, username, message)
         if message:
             # TODO: Add HTML template for error page.
             return "".join([f"<h1>{m}</h1>" for m in message])
-        
+
     first_name, last_name, is_driver, bio, photo, verified, join_date = profile_data
 
     carpools_joined = helper_carpool.get_total_carpools_joined(username)
@@ -66,7 +66,9 @@ def profile(username: str) -> object:
     co2_saved = helper_carpool.get_total_co2_saved(username)
     fuel_money_saved = helper_carpool.get_money_saved(username)
     tree_offset = helper_general.co2_to_trees(co2_saved, 365)
-    routes_searched, unique_routes_searched = helper_routes.get_total_routes_searched(username)
+    routes_searched, unique_routes_searched = helper_routes.get_total_routes_searched(
+        username
+    )
 
     return render_template(
         "profile.html",
@@ -88,7 +90,9 @@ def profile(username: str) -> object:
     )
 
 
-def get_profile(conn, username: str, message: List[str]) -> Tuple[Tuple[str,str,int,str,str,int,str], List[str]]:
+def get_profile(
+    conn, username: str, message: List[str]
+) -> Tuple[Tuple[str, str, int, str, str, int, str], List[str]]:
     """
     Fetch the profile details of the user from the 'profile' table
     """
@@ -106,6 +110,6 @@ def get_profile(conn, username: str, message: List[str]) -> Tuple[Tuple[str,str,
             "have entered the name correctly."
         )
         session["prev-page"] = request.url
-        #session["error"] = message
+        # session["error"] = message
 
     return row, message

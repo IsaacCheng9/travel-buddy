@@ -430,6 +430,7 @@ def estimate_carpool_details(
     co2_saved = round(co2 - (co2 / (seats)), 2)
     return (distance, distance_text, duration, duration_text, co2_pp, co2_saved)
 
+
 def get_total_carpools_joined(username: str) -> int:
     """
     Gets the total number of carpools joined by the user.
@@ -507,6 +508,7 @@ def get_total_distance_carpooled(username: str) -> int:
         )
     return total_distance_carpooled
 
+
 def get_total_co2_saved(username: str) -> float:
     """
     Gets the total co2 saved from carpooling (joined and drove) by the user.
@@ -535,9 +537,7 @@ def get_total_co2_saved(username: str) -> float:
         if not total_co2_saved_passenger:
             total_co2_saved_passenger = 0
 
-        total_co2_saved = round(
-            total_co2_saved_driver + total_co2_saved_passenger, 2
-        )
+        total_co2_saved = round(total_co2_saved_driver + total_co2_saved_passenger, 2)
     return total_co2_saved
 
 
@@ -549,9 +549,7 @@ def get_money_saved(username: str) -> float:
     """
     # TODO: Calculate cost savings based on car used for each trip rather than
     # just the user's car
-    _, car_mpg, fuel_type, _ = helper_routes.get_car(
-            username
-        )
+    _, car_mpg, fuel_type, _ = helper_routes.get_car(username)
 
     with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
@@ -568,7 +566,9 @@ def get_money_saved(username: str) -> float:
             for c in carpools_driven:
                 print(c)
                 if all(c):
-                    money_saved_driving += helper_routes.calculate_total_fuel_cost(c[0], car_mpg, fuel_type)[1]
+                    money_saved_driving += helper_routes.calculate_total_fuel_cost(
+                        c[0], car_mpg, fuel_type
+                    )[1]
 
         # Gets total distance rode by the user for a carpool that they joined.
         cur.execute(
@@ -583,10 +583,10 @@ def get_money_saved(username: str) -> float:
             for c in carpools_joined:
                 print(c)
                 if all(c):
-                    money_saved_joining += helper_routes.calculate_total_fuel_cost(c[0], car_mpg, fuel_type)[1]
+                    money_saved_joining += helper_routes.calculate_total_fuel_cost(
+                        c[0], car_mpg, fuel_type
+                    )[1]
 
-    total_money_saved = round(
-        money_saved_driving + money_saved_joining, 2
-    )
+    total_money_saved = round(money_saved_driving + money_saved_joining, 2)
 
     return total_money_saved
