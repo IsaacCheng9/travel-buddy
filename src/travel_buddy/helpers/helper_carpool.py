@@ -492,7 +492,8 @@ def get_total_distance_carpooled(username: str) -> int:
 
         # Gets total distance rode by the user for a carpool that they joined.
         cur.execute(
-            "SELECT SUM(distance) FROM carpool_request WHERE requester=?;",
+            "SELECT SUM(distance) FROM carpool_request "
+            "WHERE requester=? AND journey_id IS NOT NULL;",
             (username,),
         )
         total_distance_joined = cur.fetchone()[0]
