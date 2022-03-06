@@ -560,11 +560,9 @@ def get_money_saved(username: str) -> float:
             (username,),
         )
         carpools_driven = cur.fetchall()
-        print(carpools_driven)
         money_saved_driving = 0
         if carpools_driven:
             for c in carpools_driven:
-                print(c)
                 if all(c):
                     money_saved_driving += helper_routes.calculate_total_fuel_cost(
                         c[0], car_mpg, fuel_type
@@ -577,11 +575,9 @@ def get_money_saved(username: str) -> float:
             (username,),
         )
         carpools_joined = cur.fetchall()
-        print(carpools_joined)
         money_saved_joining = 0
         if carpools_joined:
             for c in carpools_joined:
-                print(c)
                 if all(c):
                     money_saved_joining += helper_routes.calculate_total_fuel_cost(
                         c[0], car_mpg, fuel_type
