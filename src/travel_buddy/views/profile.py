@@ -51,17 +51,24 @@ def profile(username: str) -> object:
     # Gets the user's details from the database.
     with sqlite3.connect(DB_PATH) as conn:
 
-        profile_data, message = get_profile(conn, username, message) 
+        profile_data, message = get_profile(conn, username, message)
         profile_stats, message = get_stats(conn, username, message)
-        
+
         if message:
             # TODO: Add HTML template for error page.
             return "".join([f"<h1>{m}</h1>" for m in message])
-        
+
         search_count = helper_register.get_route_search_count(conn, username)
 
     first_name, last_name, is_driver, bio, photo, verified = profile_data
-    distance_travelled, carpools_driven, carpools_rode, money_saved, co2_saved, join_date = profile_stats
+    (
+        distance_travelled,
+        carpools_driven,
+        carpools_rode,
+        money_saved,
+        co2_saved,
+        join_date,
+    ) = profile_stats
     tree_offset = helper_general.co2_to_trees(co2_saved, 365)
 
     return render_template(
@@ -81,6 +88,7 @@ def profile(username: str) -> object:
         search_count=search_count,
         tree_offset=tree_offset,
     )
+
 
 def get_stats(conn, username, message):
     cur = conn.cursor()
@@ -116,6 +124,6 @@ def get_profile(conn, username, message):
             "have entered the name correctly."
         )
         session["prev-page"] = request.url
-        #session["error"] = message
+        # session["error"] = message
 
     return row, message

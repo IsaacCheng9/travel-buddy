@@ -156,11 +156,11 @@ def register_user(
         )
         conn.commit()
 
+
 def get_route_search_count(conn, username):
     cur = conn.cursor()
     cur.execute(
-        "SELECT SUM(search_count) "
-        "FROM route_search WHERE username=?;",
+        "SELECT SUM(search_count) " "FROM route_search WHERE username=?;",
         (username,),
     )
     row = cur.fetchone()

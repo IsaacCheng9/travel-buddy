@@ -390,7 +390,9 @@ def get_recommendations(
                 f"CO2 and would burn <b>{calories['walking']} - {calories['running']} "
                 "kcal</b>!"
             )
-            trees = helper_general.co2_to_trees(round(co2_list["public transport"] * 40, 2), 30)
+            trees = helper_general.co2_to_trees(
+                round(co2_list["public transport"] * 40, 2), 30
+            )
             body.append(
                 f"Is this your daily commute? Cycling this journey twice every working "
                 f"day would save about <b>{round(co2_list['public transport'] * 40, 2)}"
@@ -447,7 +449,9 @@ def get_recommendations(
                         f"you would save about <b>{co2_list['driving']} kg</b> of CO2 and "
                         f"would burn <b>{calories['walking']} - {calories['running']} kcal</b>!"
                     )
-                trees = helper_general.co2_to_trees(round(co2_list["driving"] * 40, 2), 30)
+                trees = helper_general.co2_to_trees(
+                    round(co2_list["driving"] * 40, 2), 30
+                )
                 cost = format((fuel_cost * 40), ".2f")
                 if (
                     float(trees) >= 1
@@ -492,6 +496,7 @@ def append_cycle_walk_str(time_1: int, time_2: int, mode: str) -> str:
             f"If you were to {mode} this journey instead then you would be able to "
             f"complete the journey <b>{extra_time} faster</b>! Also, "
         )
+
 
 def save_route(username: str, origin: str, destination: str):
     """

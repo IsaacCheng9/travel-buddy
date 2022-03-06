@@ -301,8 +301,8 @@ def get_carpool_details(journey_id: int) -> list:
             "destination, pickup_datetime, price, description, distance_text, "
             "duration_text, co2_pp, co2_saved "
             "FROM carpool_ride WHERE journey_id=?;",
-            (journey_id,)
-            )
+            (journey_id,),
+        )
         carpool_details = cur.fetchone()
         return carpool_details
 
@@ -422,12 +422,10 @@ def estimate_carpool_details(
         details, "rows", 0, "elements", 0, "duration", "text"
     )
     co2 = helper_routes.generate_co2_emissions(
-            helper_routes.safeget(
-                details, "rows", 0, "elements", 0, "distance", "value"
-            ),
-            "driving",
-            "petrol",
-        )
-    co2_pp = round(co2/(seats), 2)
-    co2_saved = round(co2-(co2/(seats)), 2)
+        helper_routes.safeget(details, "rows", 0, "elements", 0, "distance", "value"),
+        "driving",
+        "petrol",
+    )
+    co2_pp = round(co2 / (seats), 2)
+    co2_saved = round(co2 - (co2 / (seats)), 2)
     return (distance, distance_text, duration, duration_text, co2_pp, co2_saved)

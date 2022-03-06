@@ -73,7 +73,7 @@ def show_available_carpools():
                 co2_pp,
                 co2_saved,
             ) = helper_carpool.estimate_carpool_details(
-                starting_point, destination, num_seats+1, "keys.json"
+                starting_point, destination, num_seats + 1, "keys.json"
             )
             helper_carpool.add_carpool_ride(
                 session["username"],
