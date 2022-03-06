@@ -6,6 +6,7 @@ import sqlite3
 
 import travel_buddy.helpers.helper_general as helper_general
 import travel_buddy.helpers.helper_carpool as helper_carpool
+import travel_buddy.helpers.helper_routes as helper_routes
 from flask import Blueprint, redirect, render_template, request, session
 from travel_buddy.helpers.helper_limiter import limiter
 
@@ -73,6 +74,10 @@ def profile(username: str) -> object:
         # Calculates statistics on their usage of the app.
         total_carpools_joined = helper_carpool.get_total_carpools_joined(username)
         total_carpools_drove = helper_carpool.get_total_carpools_drove(username)
+        (
+            total_routes_searched,
+            total_unique_routes_searched,
+        ) = helper_routes.get_total_routes_searched(username)
 
     return render_template(
         "profile.html",
@@ -84,4 +89,6 @@ def profile(username: str) -> object:
         verified=verified,
         total_carpools_joined=total_carpools_joined,
         total_carpools_drove=total_carpools_drove,
+        total_routes_searched=total_routes_searched,
+        total_unique_routes_searched=total_unique_routes_searched,
     )

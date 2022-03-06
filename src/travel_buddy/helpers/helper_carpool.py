@@ -424,12 +424,12 @@ def estimate_carpool_details(
     return (distance, distance_text, duration, duration_text, co2)
 
 
-def get_total_carpools_joined(username: str) -> list:
+def get_total_carpools_joined(username: str) -> int:
     """
     Gets the total number of carpools joined by the user.
 
     Args:
-        username: The user to add to the carpool journey.
+        username: The user to calculate the statistic for.
 
     Returns:
         The number of carpools joined by the user.
@@ -445,12 +445,12 @@ def get_total_carpools_joined(username: str) -> list:
     return total_carpools_joined
 
 
-def get_total_carpools_drove(username: str) -> list:
+def get_total_carpools_drove(username: str) -> int:
     """
     Gets the total number of carpools drove by the user.
 
     Args:
-        username: The user to add to the carpool journey.
+        username: The user to calculate the statistic for.
 
     Returns:
         The number of carpools drove by the user.
