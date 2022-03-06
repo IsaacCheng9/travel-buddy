@@ -459,7 +459,8 @@ def get_total_carpools_drove(username: str) -> list:
         cur = conn.cursor()
         cur.execute(
             "SELECT COUNT(journey_id) FROM carpool_ride "
-            "WHERE driver=? AND is_complete=1;", (username,)
+            "WHERE driver=? AND is_complete=1;",
+            (username,),
         )
         total_carpools_drove = cur.fetchone()[0]
     return total_carpools_drove
