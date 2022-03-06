@@ -442,3 +442,23 @@ def get_total_carpools_joined(username: str) -> list:
         )
         total_carpools_joined = cur.fetchone()[0]
     return total_carpools_joined
+
+
+def get_total_carpools_drove(username: str) -> list:
+    """
+    Gets the total number of carpools drove by the user.
+
+    Args:
+        username: The user to add to the carpool journey.
+
+    Returns:
+        The number of carpools drove by the user.
+    """
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT COUNT(journey_id) FROM carpool_ride "
+            "WHERE driver=? AND is_complete=1;", (username,)
+        )
+        total_carpools_drove = cur.fetchone()[0]
+    return total_carpools_drove
