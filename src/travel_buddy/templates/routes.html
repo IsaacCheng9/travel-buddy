@@ -141,6 +141,15 @@
 						{% endif %}
 					</table>
 					<div class="ui label big fluid" style="text-align: center; background-color: #AED6F1;">{{distance_range}} <i class="fa fa-info-circle" data-content="Distance range for the above transport modes."></i></div>
+					<br><br>
+					<div class="ui grid">
+						<div class="eight wide column">
+							<button class="ui button black fluid" id="search_carpool_btn" style="font-size: 1em;">Search for Carpools</button>
+						</div>
+						<div class="eight wide column">
+							<button class="ui button black fluid" id="create_carpool_btn" style="font-size: 1em;">Create a Carpool Offer</button>
+						</div>
+					</div>
 					{% endif %}
 				</div>
 			</div>
@@ -197,20 +206,39 @@
 							</tr>
 						</table>
 					</div>
-					<br>
-					<div class="item">
-						<i class="fa fa-info-circle" data-content="Everyone burns calories at different rates depending on weight
-						and intensity of activity, but here's an estimate of how many calories you could burn.&#10;"></i>
-						Calories Burned (<a href="https://bupa.co.uk/health-information/tools-calculators/calories-calculator" target="_blank">Source</a>)
-					</div>
-					<table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
-					{% for item, value in calories.items() %}
-						<tr>
-							<td>{{ item.capitalize() }}</td>
-							<td>~ {{ value }} kcal</td>
-						</tr>
-					{% endfor %}
-					</table>
+					{% if min_distance != -1 %}
+						{% if min_distance < 25000 %}
+							<br>
+							<div class="item">
+								<i class="fa fa-info-circle" data-content="Everyone burns calories at different rates depending on weight
+								and intensity of activity, but here's an estimate of how many calories you could burn.&#10;"></i>
+								Calories Burned (<a href="https://bupa.co.uk/health-information/tools-calculators/calories-calculator" target="_blank">Source</a>)
+							</div>
+							<table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
+							{% for item, value in calories.items() %}
+								<tr>
+									{% if item.capitalize() == 'Walking' %}
+										{% if details['modes']['walking']['distance'] is not none and details['modes']['walking']['distance']['value'] < 5000 %}
+											<td>{{ item.capitalize() }}</td>
+											<td>~ {{ value }} kcal</td>
+										{% endif %}
+									{% elif item.capitalize() == 'Running' %}
+										{% if details['modes']['walking']['distance'] is not none and details['modes']['walking']['distance']['value'] < 10000 %}
+											<td>{{ item.capitalize() }}</td>
+											<td>~ {{ value }} kcal</td>
+										{% endif %}
+									{% elif item.capitalize() == 'Cycling' %}
+										{% if details['modes']['walking']['distance'] is not none and details['modes']['cycling']['distance']['value'] < 25000 %}
+											<td>{{ item.capitalize() }}</td>
+											<td>~ {{ value }} kcal</td>
+										{% endif %}
+									{% endif %}
+								</tr>
+							{% endfor %}
+							</table>
+						{% endif %}
+					{% endif %}
+					{% if recommendations|length > 0 %}
 					<div class="item">
 						Recommendations
 						<div class="ui bulleted list">
@@ -221,6 +249,7 @@
 							{% endfor %}
 						</div>	
 					</div>
+					{% endif %}
 				</div>
 				{% else %}
 
@@ -298,6 +327,18 @@
 		background: #ff416c;
 		background: -webkit-linear-gradient(to right, #ff4b2b, #ff416c);
 		background: linear-gradient(to right, #ff4b2b, #ff416c);
+	}
+
+	#search_carpool_btn {
+		background: #216437;
+		background: -webkit-linear-gradient(to right, #2f8f4f, #216437);
+		background: linear-gradient(to right, #2f8f4f, #216437);
+	}
+
+	#create_carpool_btn {
+		background: #2f8f4f;
+		background: -webkit-linear-gradient(to right, #216437, #2f8f4f);
+		background: linear-gradient(to right, #216437, #2f8f4f);
 	}
 
 	#map_iframe {
