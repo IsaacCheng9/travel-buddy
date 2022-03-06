@@ -92,6 +92,26 @@ def convert_gallons_to_litres(gallons: float) -> float:
     """
     return gallons * 4.54609
 
+def calculate_total_fuel_cost(driving_distance, car_mpg, fuel_type):
+    """
+    Fetches the user's car information and calculates the fuel cost and
+    consumption for the journey.
+    """
+    # initialise values to prevent crash later
+    fuel_used_driving = 0
+    fuel_cost_driving = 0.0
+    fuel_price = get_fuel_price(fuel_type)
+    if driving_distance is not None:
+        driving_distance = float(driving_distance / 1000)
+        distance_miles = convert_km_to_miles(driving_distance)
+        fuel_used_driving = round(
+            calculate_fuel_used(distance_miles, car_mpg), 2
+        )
+        fuel_cost_driving = round(
+            calculate_fuel_cost(fuel_used_driving, fuel_price), 2
+        )
+    return fuel_used_driving, fuel_cost_driving, fuel_price
+
 
 def get_fuel_price(fuel_type: str) -> float:
     """
@@ -571,9 +591,37 @@ def add_route_to_user(conn, username: str, route_id: int):
             )
     else:
         cur.execute(
-            "INSERT INTO route_search "
-            "(username, route_id, search_count, last_searched_timestamp, last_updated_timestamp) "
+            "INSERT INTO route_search (username, route_id, search_count, "
+            "last_searched_timestamp, last_updated_timestamp) "
             "VALUES (?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);",
             (username, route_id, 1),
         )
         conn.commit()
+
+def get_total_routes_searched(username: str) -> Tuple[int, int]:
+    """
+    Gets the number of routes searched by the user (unique and total).
+    Args:
+        username: The user to calculate the statistic for.
+    Returns:
+        The unique and total number of routes searched by the user.
+    """
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        # Queries the total unique routes searched.
+        cur.execute(
+            "SELECT COUNT(route_id) FROM route_search WHERE username=?;",
+            (username,),
+        )
+        total_unique_routes_searched = cur.fetchone()[0]
+        # Prevents 0, None from being returned when there are no routes searched.
+        if total_unique_routes_searched == 0:
+            return 0, 0
+
+        # Queries the total number of routes searched.
+        cur.execute(
+            "SELECT SUM(search_count) FROM route_search WHERE username=?;",
+            (username,),
+        )
+        total_routes_searched = cur.fetchone()[0]
+    return total_routes_searched, total_unique_routes_searched

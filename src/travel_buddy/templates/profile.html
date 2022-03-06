@@ -72,7 +72,8 @@
 <script>
 	function generate_stats() {
 		var is_driver='{{is_driver}}', verified='{{verified}}', distance_travelled='{{distance_travelled}}', carpools_driven='{{carpools_driven}}'
-		var carpools_rode='{{carpools_rode}}', money_saved='{{money_saved}}', co2_saved='{{co2_saved}}', tree_offset='{{tree_offset}}', join_date='{{join_date}}'
+		var carpools_joined='{{carpools_joined}}', fuel_money_saved='{{fuel_money_saved}}', co2_saved='{{co2_saved}}', tree_offset='{{tree_offset}}'
+		var join_date='{{join_date}}', routes_searched='{{routes_searched}}', unique_routes_searched='{{unique_routes_searched}}'
 		var count = 0
 		var items_per_row = 3
 		var html = `<tr>`
@@ -120,11 +121,11 @@
 					</td>`
 			html += add_row(count, items_per_row)
 		}
-		if (carpools_rode) {
+		if (carpools_joined) {
 			count += 1
 			html += `<td width=33%>
 						<h2>
-							${carpools_rode}
+							${carpools_joined}
 						</h2>
 						<div>
 							Carpools Rode
@@ -136,7 +137,7 @@
 			count += 1
 			html += `<td width=33%>
 						<h2>
-							${(parseFloat(distance_travelled)/1000).toFixed(1)}km
+							${parseFloat(distance_travelled).toFixed(1)}km
 						</h2>
 						<div>
 							Total Distance Carpooling
@@ -169,14 +170,26 @@
 					</td>`
 			html += add_row(count, items_per_row)
 		}
-		if (money_saved) {
+		if (fuel_money_saved) {
 			count += 1
 			html += `<td width=33%>
 						<h2>
-							£${parseFloat(money_saved).toFixed(2)}
+							£${parseFloat(fuel_money_saved).toFixed(2)}
 						</h2>
 						<div>
 							Estimate Carpooling Fuel Cost Saved
+						</div>
+					</td>`
+			html += add_row(count, items_per_row)
+		}
+		if (routes_searched) {
+			count += 1
+			html += `<td width=33%>
+						<h2>
+							${routes_searched}(${unique_routes_searched})
+						</h2>
+						<div>
+							Routes searched (Unique)
 						</div>
 					</td>`
 			html += add_row(count, items_per_row)

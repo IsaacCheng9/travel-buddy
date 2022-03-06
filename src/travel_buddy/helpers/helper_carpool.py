@@ -299,7 +299,7 @@ def get_carpool_details(journey_id: int) -> list:
         cur.execute(
             "SELECT driver, is_complete, seats_initial, seats_available, starting_point, "
             "destination, pickup_datetime, price, description, distance_text, "
-            "duration_text, co2_pp, co2_saved "
+            "estimate_duration_text, estimate_co2_per_person, estimate_co2_saved "
             "FROM carpool_ride WHERE journey_id=?;",
             (journey_id,),
         )
@@ -429,3 +429,164 @@ def estimate_carpool_details(
     co2_pp = round(co2 / (seats), 2)
     co2_saved = round(co2 - (co2 / (seats)), 2)
     return (distance, distance_text, duration, duration_text, co2_pp, co2_saved)
+
+def get_total_carpools_joined(username: str) -> int:
+    """
+    Gets the total number of carpools joined by the user.
+    Args:
+        username: The user to calculate the statistic for.
+    Returns:
+        The number of carpools joined by the user.
+    """
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT COUNT(request_id) FROM carpool_request "
+            "WHERE requester=? AND journey_id IS NOT NULL;",
+            (username,),
+        )
+        total_carpools_joined = cur.fetchone()[0]
+    return total_carpools_joined
+
+
+def get_total_carpools_drove(username: str) -> int:
+    """
+    Gets the total number of carpools drove by the user.
+    Args:
+        username: The user to calculate the statistic for.
+    Returns:
+        The number of carpools drove by the user.
+    """
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT COUNT(journey_id) FROM carpool_ride "
+            "WHERE driver=? AND is_complete=1;",
+            (username,),
+        )
+        total_carpools_drove = cur.fetchone()[0]
+    return total_carpools_drove
+
+
+def get_total_distance_carpooled(username: str) -> int:
+    """
+    Gets the total distance carpooled (joined and drove) by the user.
+    Args:
+        username: The user to calculate the statistic for.
+    Returns:
+        The total distance carpooled by the user.
+    """
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        # Gets total distance drove by the user for a carpool.
+        cur.execute(
+            "SELECT SUM(distance) FROM carpool_ride "
+            "WHERE driver=? AND is_complete=1;",
+            (username,),
+        )
+        total_distance_drove = cur.fetchone()[0]
+        if total_distance_drove:
+            total_distance_drove /= 1000
+        else:
+            total_distance_drove = 0
+
+        # Gets total distance rode by the user for a carpool that they joined.
+        cur.execute(
+            "SELECT SUM(distance) FROM carpool_request "
+            "WHERE requester=? AND journey_id IS NOT NULL;",
+            (username,),
+        )
+        total_distance_joined = cur.fetchone()[0]
+        if total_distance_joined:
+            total_distance_joined /= 1000
+        else:
+            total_distance_joined = 0
+
+        total_distance_carpooled = round(
+            total_distance_drove + total_distance_joined, 2
+        )
+    return total_distance_carpooled
+
+def get_total_co2_saved(username: str) -> float:
+    """
+    Gets the total co2 saved from carpooling (joined and drove) by the user.
+    Args:
+        username: The user to calculate the statistic for.
+    """
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        # Gets total distance drove by the user for a carpool.
+        cur.execute(
+            "SELECT SUM(estimate_co2_saved) FROM carpool_ride "
+            "WHERE driver=? AND is_complete=1;",
+            (username,),
+        )
+        total_co2_saved_driver = cur.fetchone()[0]
+        if not total_co2_saved_driver:
+            total_co2_saved_driver = 0
+
+        # Gets total distance rode by the user for a carpool that they joined.
+        cur.execute(
+            "SELECT SUM(estimate_co2_saved) FROM carpool_request "
+            "WHERE requester=? AND journey_id IS NOT NULL;",
+            (username,),
+        )
+        total_co2_saved_passenger = cur.fetchone()[0]
+        if not total_co2_saved_passenger:
+            total_co2_saved_passenger = 0
+
+        total_co2_saved = round(
+            total_co2_saved_driver + total_co2_saved_passenger, 2
+        )
+    return total_co2_saved
+
+
+def get_money_saved(username: str) -> float:
+    """
+    Gets an estimate for the total fuel money saved from carpooling (joined and drove) by the user.
+    Args:
+        username: The user to calculate the statistic for.
+    """
+    # TODO: Calculate cost savings based on car used for each trip rather than
+    # just the user's car
+    _, car_mpg, fuel_type, _ = helper_routes.get_car(
+            username
+        )
+
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        # Gets total distance drove by the user for a carpool.
+        cur.execute(
+            "SELECT distance, seats_initial FROM carpool_ride "
+            "WHERE driver=? AND is_complete=1;",
+            (username,),
+        )
+        carpools_driven = cur.fetchall()
+        print(carpools_driven)
+        money_saved_driving = 0
+        if carpools_driven:
+            for c in carpools_driven:
+                print(c)
+                if all(c):
+                    money_saved_driving += helper_routes.calculate_total_fuel_cost(c[0], car_mpg, fuel_type)[1]
+
+        # Gets total distance rode by the user for a carpool that they joined.
+        cur.execute(
+            "SELECT distance, num_passengers FROM carpool_request "
+            "WHERE requester=? AND journey_id IS NOT NULL;",
+            (username,),
+        )
+        carpools_joined = cur.fetchall()
+        print(carpools_joined)
+        money_saved_joining = 0
+        if carpools_joined:
+            for c in carpools_joined:
+                print(c)
+                if all(c):
+                    money_saved_joining += helper_routes.calculate_total_fuel_cost(c[0], car_mpg, fuel_type)[1]
+
+    total_money_saved = round(
+        money_saved_driving + money_saved_joining, 2
+    )
+
+    return total_money_saved
