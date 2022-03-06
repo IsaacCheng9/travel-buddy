@@ -63,9 +63,14 @@
 				<div class="ui equal width grid">
 					<br>
 					<div class="ui list divided" style="width: 100%;">
-						<div class="item">Carpools participated in: <p class="right-align">5</p></div>
-						<div class="item">Total distance carpooled: <p class="right-align">103.85km</p></div>
-						<div class="item">Estimated CO2 emissions saved: <p class="right-align">~30.5kg</p></div>
+						<div class="item">Total Carpools Joined: <p class="right-align">{{ total_carpools_joined }}</p></div>
+						<div class="item">Total Carpools Drove: <p class="right-align">{{ total_carpools_drove }}</p></div>
+						<div class="item">
+							Total Routes Searched (Unique):
+							<p class="right-align">
+								{{ total_routes_searched }} ({{ total_unique_routes_searched }})
+							</p>
+						</div>
 					</div>
 				</div>
 				
