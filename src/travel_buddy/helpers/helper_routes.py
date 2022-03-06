@@ -578,8 +578,8 @@ def add_route_to_user(conn, username: str, route_id: int):
             )
     else:
         cur.execute(
-            "INSERT INTO route_search "
-            "(username, route_id, search_count, last_searched_timestamp, last_updated_timestamp) "
+            "INSERT INTO route_search (username, route_id, search_count, "
+            "last_searched_timestamp, last_updated_timestamp) "
             "VALUES (?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);",
             (username, route_id, 1),
         )
