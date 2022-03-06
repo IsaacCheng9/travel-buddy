@@ -77,16 +77,6 @@
 		var count = 0
 		var items_per_row = 3
 		var html = `<tr>`
-		if (verified == 1) {
-			count += 1
-			html += `<td width=33%>
-						<i class=" huge check circle icon" data-content="Verified User" style="color: #3498DB;"></i>
-						<div>
-							Verified Account
-						</div>
-					</td>`
-			html += add_row(count, items_per_row)
-		}
 		if (join_date) {
 			count += 1
 			html += `<td width=33%>
