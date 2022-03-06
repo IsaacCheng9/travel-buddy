@@ -588,7 +588,7 @@ def add_route_to_user(conn, username: str, route_id: int):
 
 def get_total_routes_searched(username: str) -> Tuple[int, int]:
     """
-    Gets the total number of routes searched by the user (total and unique).
+    Gets the number of routes searched by the user (total and unique).
 
     Args:
         username: The user to calculate the statistic for.
@@ -598,16 +598,20 @@ def get_total_routes_searched(username: str) -> Tuple[int, int]:
     """
     with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
-        # Queries the total number of routes searched.
-        cur.execute(
-            "SELECT SUM(search_count) FROM route_search WHERE username=?;",
-            (username,),
-        )
-        total_routes_searched = cur.fetchone()[0]
         # Queries the total unique routes searched.
         cur.execute(
             "SELECT COUNT(route_id) FROM route_search WHERE username=?;",
             (username,),
         )
         total_unique_routes_searched = cur.fetchone()[0]
-    return total_routes_searched, total_unique_routes_searched
+        # Prevents 0, None from being returned when there are no routes searched.
+        if total_unique_routes_searched == 0:
+            return 0, 0
+
+        # Queries the total number of routes searched.
+        cur.execute(
+            "SELECT SUM(search_count) FROM route_search WHERE username=?;",
+            (username,),
+        )
+        total_routes_searched = cur.fetchone()[0]
+    return total_unique_routes_searched, total_routes_searched

@@ -41,3 +41,11 @@ def test_calculate_fuel_cost():
     assert helper_routes.calculate_fuel_cost(10, 1.5) == 15
     assert helper_routes.calculate_fuel_cost(0, 10) == 0
     assert helper_routes.calculate_fuel_cost(10, 0) == 0
+
+
+def test_get_total_routes_searched():
+    """
+    Tests that the number of routes (total and unique) is calculated correctly.
+    """
+    # The username '@' isn't allowed, so it should have no carpools searched.
+    assert helper_routes.get_total_routes_searched("@") == (0, 0)
