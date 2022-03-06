@@ -62,7 +62,7 @@
 				<div class="bio">
 					{{ bio }}
 				</div>
-				<div class="ui horizontal divider"><i class="bar chart icon"></i>Statistics</div>
+				<div class="ui horizontal divider"><i class="bar chart icon"></i> User Statistics</div>
 				<table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;" id="stats_table"></table>
 			</div>
 		</div>
@@ -94,7 +94,7 @@
 							${join_date}
 						</h2>
 						<div>
-							Member Since
+							Join date
 						</div>
 					</td>`
 			html += add_row(count, items_per_row)
@@ -116,19 +116,19 @@
 							${carpools_driven}
 						</h2>
 						<div>
-							Carpools Driven
+							Carpools drove
 						</div>
 					</td>`
 			html += add_row(count, items_per_row)
 		}
-		if (carpools_joined) {
+		if (carpools_joined != 0) {
 			count += 1
 			html += `<td width=33%>
 						<h2>
 							${carpools_joined}
 						</h2>
 						<div>
-							Carpools Rode
+							Carpools joined
 						</div>
 					</td>`
 			html += add_row(count, items_per_row)
@@ -137,10 +137,10 @@
 			count += 1
 			html += `<td width=33%>
 						<h2>
-							${parseFloat(distance_travelled).toFixed(1)}km
+							${parseFloat(distance_travelled).toFixed(1)} km
 						</h2>
 						<div>
-							Total Distance Carpooling
+							Total distance carpooled
 						</div>
 					</td>`
 			html += add_row(count, items_per_row)
@@ -149,10 +149,10 @@
 			count += 1
 			html += `<td width=33%>
 						<h2>
-							${parseFloat(co2_saved).toFixed(1)}kg
+							~${parseFloat(co2_saved).toFixed(1)} kg
 						</h2>
 						<div>
-							Estimate Carpooling CO2 Saved
+							CO2 emissions saved from carpooling
 						</div>
 					</td>`
 			html += add_row(count, items_per_row)
@@ -162,10 +162,10 @@
 			//<i class="fa fa-info-circle" data-content="Estimate number of trees required to offset ${co2_saved}kg of CO2 in one year"></i>
 			html += `<td width=33%>
 						<h2>
-							${parseFloat(tree_offset).toFixed(1)}
+							~${parseFloat(tree_offset).toFixed(1)}
 						</h2>
 						<div>
-							Estimate Offset Equivalent Trees (yearly)
+							Number of trees to match your total carbon savings over a year
 						</div>
 					</td>`
 			html += add_row(count, items_per_row)
@@ -174,22 +174,22 @@
 			count += 1
 			html += `<td width=33%>
 						<h2>
-							£${parseFloat(fuel_money_saved).toFixed(2)}
+							~ £${parseFloat(fuel_money_saved).toFixed(2)}
 						</h2>
 						<div>
-							Estimate Carpooling Fuel Cost Saved
+							Saved from carpooling
 						</div>
 					</td>`
 			html += add_row(count, items_per_row)
 		}
-		if (routes_searched) {
+		if (routes_searched != 0) {
 			count += 1
 			html += `<td width=33%>
 						<h2>
-							${routes_searched}(${unique_routes_searched})
+							${routes_searched} (${unique_routes_searched})
 						</h2>
 						<div>
-							Routes searched (Unique)
+							Routes searched (unique)
 						</div>
 					</td>`
 			html += add_row(count, items_per_row)
