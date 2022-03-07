@@ -39,6 +39,7 @@ def show_available_carpools():
         incomplete_carpools = helper_carpool.get_incomplete_carpools()
         return render_template(
             "carpools.html",
+            username=session.get("username"),
             carpools=incomplete_carpools,
             autocomplete_query=autocomplete_query,
         )
@@ -93,6 +94,7 @@ def show_available_carpools():
             return redirect("/carpools")
         return render_template(
             "carpools.html",
+            username=session.get("username"),
             errors=errors,
             carpools=incomplete_carpools,
             autocomplete_query=autocomplete_query,
@@ -142,6 +144,7 @@ def view_carpool_journey(journey_id: int):
 
     return render_template(
         "view_carpool.html",
+        username=session.get("username"),
         driver=driver,
         is_complete=is_complete,
         seats_initial=seats_initial,

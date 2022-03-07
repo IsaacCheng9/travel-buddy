@@ -42,6 +42,7 @@ def settings() -> object:
         make, mpg, fuel_type, engine_size = cur.fetchone()
     return render_template(
         "settings.html",
+        username=session.get("username"),
         bio=bio,
         first_name=first_name,
         last_name=last_name,
