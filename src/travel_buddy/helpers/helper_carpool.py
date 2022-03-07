@@ -286,7 +286,7 @@ def get_incomplete_carpools() -> List[
 
 def get_carpool_details(journey_id: int) -> list:
     """
-    Gets the details of a carpool journey from the database.
+    Gets the details of a carpool journey from the database if not expired.
 
     Args:
         journey_id: The unique identifier for the selected carpool.
@@ -429,6 +429,26 @@ def estimate_carpool_details(
     co2_pp = round(co2 / (seats), 2)
     co2_saved = round(co2 - (co2 / (seats)), 2)
     return (distance, distance_text, duration, duration_text, co2_pp, co2_saved)
+
+
+def get_passenger_list(journey_id: int) -> list:
+    """
+    Gets the list of passengers for a carpool journey from the database.
+
+    Args:
+        journey_id: The unique identifier for the selected carpool.
+
+    Returns:
+        The list of passengers for the carpool.
+    """
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT requester FROM carpool_request WHERE journey_id=?;", (journey_id,)
+        )
+        conn.commit()
+        passenger_list = cur.fetchall()
+    return passenger_list
 
 
 def get_total_carpools_joined(username: str) -> int:

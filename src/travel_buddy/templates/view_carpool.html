@@ -1,0 +1,33 @@
+<head>
+  <title>Travel Buddy - Carpool</title>
+</head>
+
+<body>
+  <p>Driver: {{ driver }}</p>
+  <p>Seats Available: {{ seats_available }}</p>
+  <p>Origin: {{ starting_point }}</p>
+  <p>Destination: {{ destination }}</p>
+  <p>Pick-up: {{ pickup_datetime }}</p>
+  <p>Price: £{{ price }}</p>
+  <p>Distance: {{ distance_text }}</p>
+  <p>Estimated Duration: {{ estimate_duration_text }}</p>
+  <p>Estimated CO2 Emissions: {{ estimate_co2 }}</p>
+  <p>Description: {{ description }} <br /><br /></p>
+
+  <!-- Displays list of passengers if it exists. -->
+  <p>Passengers:</p>
+  {% if passengers %}
+  <ul class="list">
+    {% for passenger in passengers %}
+    <li>{{ passenger }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  <!-- If there aren't passengers, let the user know instead of displaying an
+   empty list.-->
+  {% if not passengers %}
+  <p>No passengers have joined this carpool yet.</p>
+  {% endif %}
+
+  <button type="button">Join/Leave Carpool</button>
+</body>
