@@ -606,4 +606,3 @@ def get_money_saved(username: str) -> float:
     total_money_saved = round(money_saved_driving + money_saved_joining, 2)
 
     return total_money_saved
->>>>>>> main
