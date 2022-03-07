@@ -136,8 +136,8 @@ def register_user(
         )
         # Creates the user profile in the database.
         cur.execute(
-            "INSERT into profile (username, first_name, last_name) "
-            "VALUES (?, ?, ?);",
+            "INSERT into profile (username, first_name, last_name, join_date) "
+            "VALUES (?, ?, ?, date());",
             (
                 username,
                 first_name,
@@ -147,6 +147,6 @@ def register_user(
         cur.execute(
             "INSERT into car (owner, make, mpg, fuel_type, engine_size) "
             "VALUES (?, ?, ?, ?, ?);",
-            (username, "Not set", 0, 0, 0),
+            (username, "Not set", 50, "petrol", 1),
         )
         conn.commit()

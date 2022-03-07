@@ -149,30 +149,22 @@ def routes() -> object:
             f"&destination={destination_convert}&mode={travel_mode_full}&units=metric"
         )
 
-        # Fetches the user's car information and calculates the fuel cost and
-        # consumption for the journey.
-        car_make, car_mpg, fuel_type, engine_size = helper_routes.get_car(
-            session["username"]
-        )
-
         driving_distance = helper_routes.safeget(
             details, "modes", "driving", "distance", "value"
         )
 
-        # initialise values to prevent crash later
-        fuel_used_driving = 0
-        fuel_cost_driving = 0.0
-        fuel_price = helper_routes.get_fuel_price(fuel_type)
-        if driving_distance is not None:
-            driving_distance = float(driving_distance / 1000)
-            distance_miles = helper_routes.convert_km_to_miles(driving_distance)
-            fuel_used_driving = round(
-                helper_routes.calculate_fuel_used(distance_miles, car_mpg), 2
-            )
+        car_make, car_mpg, fuel_type, engine_size = helper_routes.get_car(
+            session["username"]
+        )
 
-            fuel_cost_driving = round(
-                helper_routes.calculate_fuel_cost(fuel_used_driving, fuel_price), 2
-            )
+        (
+            fuel_used_driving,
+            fuel_cost_driving,
+            fuel_price,
+        ) = helper_routes.calculate_total_fuel_cost(
+            driving_distance, car_mpg, fuel_type
+        )
+
         fuel_used = fuel_used_driving if travel_mode_full == "driving" else 0
         fuel_cost = fuel_cost_driving if travel_mode_full == "driving" else 0
 

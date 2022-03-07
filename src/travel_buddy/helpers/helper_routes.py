@@ -93,6 +93,23 @@ def convert_gallons_to_litres(gallons: float) -> float:
     return gallons * 4.54609
 
 
+def calculate_total_fuel_cost(driving_distance, car_mpg, fuel_type):
+    """
+    Fetches the user's car information and calculates the fuel cost and
+    consumption for the journey.
+    """
+    # initialise values to prevent crash later
+    fuel_used_driving = 0
+    fuel_cost_driving = 0.0
+    fuel_price = get_fuel_price(fuel_type)
+    if driving_distance is not None:
+        driving_distance = float(driving_distance / 1000)
+        distance_miles = convert_km_to_miles(driving_distance)
+        fuel_used_driving = round(calculate_fuel_used(distance_miles, car_mpg), 2)
+        fuel_cost_driving = round(calculate_fuel_cost(fuel_used_driving, fuel_price), 2)
+    return fuel_used_driving, fuel_cost_driving, fuel_price
+
+
 def get_fuel_price(fuel_type: str) -> float:
     """
     Collects the current UK petrol or diesel prices from an online source.
@@ -313,7 +330,7 @@ def get_recommendations(
             f"<b>{co2_list.get('driving', 0)}kg</b> of CO2 compared to if you "
             "drove this journey!"
         )
-        trees = co2_to_trees(round(co2_list["driving"] * 40, 2), 30)
+        trees = helper_general.co2_to_trees(round(co2_list["driving"] * 40, 2), 30)
         body.append(
             "Is this your daily commute? Cycling this journey twice every week day for "
             "one month would save about "
@@ -329,7 +346,7 @@ def get_recommendations(
             f"<b>{co2_list.get('driving', 0)}kg</b> of CO2 compared to if you drove "
             "this journey!"
         )
-        trees = co2_to_trees(round(co2_list["driving"] * 40, 2), 30)
+        trees = helper_general.co2_to_trees(round(co2_list["driving"] * 40, 2), 30)
         body.append(
             "Is this your daily commute? Walking this journey twice every week day for "
             f"one month would save about <b>{round(co2_list.get('driving', 0) * 40, 2)}"
@@ -390,7 +407,9 @@ def get_recommendations(
                 f"CO2 and would burn <b>{calories['walking']} - {calories['running']} "
                 "kcal</b>!"
             )
-            trees = co2_to_trees(round(co2_list["public transport"] * 40, 2), 30)
+            trees = helper_general.co2_to_trees(
+                round(co2_list["public transport"] * 40, 2), 30
+            )
             body.append(
                 f"Is this your daily commute? Cycling this journey twice every working "
                 f"day would save about <b>{round(co2_list['public transport'] * 40, 2)}"
@@ -447,7 +466,9 @@ def get_recommendations(
                         f"you would save about <b>{co2_list['driving']} kg</b> of CO2 and "
                         f"would burn <b>{calories['walking']} - {calories['running']} kcal</b>!"
                     )
-                trees = co2_to_trees(round(co2_list["driving"] * 40, 2), 30)
+                trees = helper_general.co2_to_trees(
+                    round(co2_list["driving"] * 40, 2), 30
+                )
                 cost = format((fuel_cost * 40), ".2f")
                 if (
                     float(trees) >= 1
@@ -492,17 +513,6 @@ def append_cycle_walk_str(time_1: int, time_2: int, mode: str) -> str:
             f"If you were to {mode} this journey instead then you would be able to "
             f"complete the journey <b>{extra_time} faster</b>! Also, "
         )
-
-
-def co2_to_trees(co2: float, days: int) -> float:
-    """
-    Convert kilograms of CO2 to yearly tree offset
-    Source: https://www.viessmann.co.uk/heating-advice/how-much-co2-does-tree-absorb
-    """
-    yearly_offset = 21
-    daily_offset = yearly_offset / 365
-    required_trees = co2 / (daily_offset * days)
-    return round(required_trees, 2)
 
 
 def save_route(username: str, origin: str, destination: str):
@@ -578,9 +588,38 @@ def add_route_to_user(conn, username: str, route_id: int):
             )
     else:
         cur.execute(
-            "INSERT INTO route_search "
-            "(username, route_id, search_count, last_searched_timestamp, last_updated_timestamp) "
+            "INSERT INTO route_search (username, route_id, search_count, "
+            "last_searched_timestamp, last_updated_timestamp) "
             "VALUES (?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);",
             (username, route_id, 1),
         )
         conn.commit()
+
+
+def get_total_routes_searched(username: str) -> Tuple[int, int]:
+    """
+    Gets the number of routes searched by the user (unique and total).
+    Args:
+        username: The user to calculate the statistic for.
+    Returns:
+        The unique and total number of routes searched by the user.
+    """
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        # Queries the total unique routes searched.
+        cur.execute(
+            "SELECT COUNT(route_id) FROM route_search WHERE username=?;",
+            (username,),
+        )
+        total_unique_routes_searched = cur.fetchone()[0]
+        # Prevents 0, None from being returned when there are no routes searched.
+        if total_unique_routes_searched == 0:
+            return 0, 0
+
+        # Queries the total number of routes searched.
+        cur.execute(
+            "SELECT SUM(search_count) FROM route_search WHERE username=?;",
+            (username,),
+        )
+        total_routes_searched = cur.fetchone()[0]
+    return total_routes_searched, total_unique_routes_searched
