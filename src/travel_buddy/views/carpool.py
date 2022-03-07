@@ -156,7 +156,7 @@ def view_carpool_journey(journey_id: int):
         duration_text=duration_text,
         co2_pp=co2_pp,
         co2_saved=co2_saved,
-        passenger_list=passenger_list
+        passenger_list=passenger_list,
     )
 
 
