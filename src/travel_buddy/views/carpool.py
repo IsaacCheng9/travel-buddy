@@ -119,7 +119,6 @@ def view_carpool_journey(journey_id: int):
         session["error"] = "Carpool journey does not exist."
         return render_template("view_carpool.html")
     (
-        _,
         driver,
         is_complete,
         seats_initial,
@@ -133,7 +132,7 @@ def view_carpool_journey(journey_id: int):
         duration_text,
         co2_pp,
         co2_saved,
-    ) = carpool_details[0]
+    ) = carpool_details
 
     # Displays price with two decimal places.
     price = format(price, ".2f")
