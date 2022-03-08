@@ -47,7 +47,7 @@ def routes() -> object:
             map_query=map_query,
             autocomplete_query=autocomplete_query,
             route_exists=False,
-            home_and_work=home_and_work
+            home_and_work=home_and_work,
         )
 
     elif request.method == "POST":
@@ -219,5 +219,5 @@ def routes() -> object:
             fuel_price=format(fuel_price, ".2f"),
             calories=calories,
             recommendations=recommendations,
-            home_and_work=home_and_work
+            home_and_work=home_and_work,
         )

@@ -21,16 +21,16 @@ def get_most_frequent_route():
         )
         row = cur.fetchone()
         return row
-    
+
+
 def get_home_and_work():
     with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
         cur.execute(
-            "SELECT home, work FROM profile WHERE username=?;",
-            (session["username"],)
+            "SELECT home, work FROM profile WHERE username=?;", (session["username"],)
         )
         row = cur.fetchone()
-        return row        
+        return row
 
 
 def generate_client(api_key: str) -> object:

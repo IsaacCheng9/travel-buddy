@@ -34,7 +34,16 @@ def settings() -> object:
             "FROM profile WHERE username=?;",
             (session["username"],),
         )
-        first_name, last_name, is_driver, bio, photo, verified, home, work = cur.fetchone()
+        (
+            first_name,
+            last_name,
+            is_driver,
+            bio,
+            photo,
+            verified,
+            home,
+            work,
+        ) = cur.fetchone()
         cur.execute(
             "SELECT make, mpg, fuel_type, engine_size " "FROM car WHERE owner=?;",
             (session["username"],),
@@ -58,7 +67,7 @@ def settings() -> object:
         fuel_type=fuel_type,
         engine_size=engine_size,
         home=home,
-        work=work
+        work=work,
     )
 
 
@@ -96,7 +105,14 @@ def edit_user_details() -> object:
         if new_home is not None and new_work is not None:
             cur.execute(
                 "UPDATE profile SET bio=?, first_name=?, last_name=?, home=?, work=? WHERE username=?;",
-                (new_bio, new_f_name, new_l_name, new_home, new_work, session["username"]),
+                (
+                    new_bio,
+                    new_f_name,
+                    new_l_name,
+                    new_home,
+                    new_work,
+                    session["username"],
+                ),
             )
         else:
             cur.execute(
