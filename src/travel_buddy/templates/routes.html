@@ -100,6 +100,17 @@
 							</div>
 							<button class="ui button black fluid" id="search_btn" style="font-size: 1.2em;">Search</button>
 						</form>
+						{% if most_frequent_route is not none %}
+						<form action="/routes" method="POST">
+							<div class="field frequent">
+								<input type="hidden" id="start_point" name="start_point" value="{{ most_frequent_route[1] }}">
+								<input type="hidden" id="destination" name="destination" value="{{ most_frequent_route[2] }}">
+								<input type="hidden" id="mode" name="mode" value="driving">
+								<label>Your most frequently taken route</label>
+								<button class="ui button black fluid" id="frequent_btn" style="font-size: 1.2em;">{{ most_frequent_route[1]|truncate(20,true) }} to {{ most_frequent_route[2]|truncate(20,true) }} <i class="fa fa-info-circle" data-content="{{ most_frequent_route[1] }} to {{ most_frequent_route[2] }}"></i></button>
+							</div>
+						</form>
+						{% endif %}
 					</div>
 					{% if route_exists %}
 					<div class="ui dividing header"><i class="fa fa-info-circle"></i> Route Info</div>
@@ -309,6 +320,14 @@
 		background: #74B49B;
 	}
 
+	#frequent_btn{
+		background: #A7D7C5;
+	}
+
+	#frequent_btn:hover{
+		background: #74B49B;
+	}
+
 	#search_btn:hover {
 		background: #5C8D89;
 	}
@@ -418,6 +437,11 @@
 	
 	.active{
 		border-bottom-color: #FFFFFF !important;
+	}
+
+	.frequent{
+		margin-top: 2rem !important;
+		text-align: left;
 	}
 
 </style>
