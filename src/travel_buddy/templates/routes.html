@@ -109,7 +109,7 @@
 								<input type="hidden" id="destination" name="destination" value="{{ most_frequent_route[2] }}">
 								<input type="hidden" id="mode" name="mode" value="driving">
 								<label>Your Most Frequently Taken Route</label>
-								<button class="ui button black fluid" id="frequent_btn" style="font-size: 1.2em;">{{ most_frequent_route[1]|truncate(20,true) }} to {{ most_frequent_route[2]|truncate(20,true) }} <i class="fa fa-info-circle" data-content="{{ most_frequent_route[1] }} to {{ most_frequent_route[2] }}"></i></button>
+								<button class="ui button black fluid" id="frequent_btn" style="font-size: 1.2em;">{{ most_frequent_route[1]|truncate(19,true) }} to {{ most_frequent_route[2]|truncate(19,true) }} <i class="fa fa-info-circle" data-content="{{ most_frequent_route[1] }} to {{ most_frequent_route[2] }}"></i></button>
 							</div>
 						</form>
 						{% endif %}
@@ -123,7 +123,7 @@
 									<div class="field frequent"><label id="home_header" style="float:left;">Home to Work</label><i class="exchange icon" onclick='workswitch();' style="float:left; margin-left:1rem; margin-bottom: 0rem;"></i></div>
 									<label style="float:right;"><a href="../settings">Edit</a></label>
 								</div>
-								<button class="ui button black fluid" id="home_btn" style="font-size: 1.2em;">{{ home_and_work[0]|truncate(20,true) }} to {{ home_and_work[1]|truncate(20,true) }} <i class="fa fa-info-circle" data-content="{{ home_and_work[0] }} to {{ home_and_work[1] }}"></i></button>
+								<button class="ui button black fluid" id="home_btn" style="font-size: 1.2em;">{{ home_and_work[0]|truncate(19,true) }} to {{ home_and_work[1]|truncate(19,true) }} <i class="fa fa-info-circle" data-content="{{ home_and_work[0] }} to {{ home_and_work[1] }}"></i></button>
 							</div>
 						</form>
 						{% endif %}
