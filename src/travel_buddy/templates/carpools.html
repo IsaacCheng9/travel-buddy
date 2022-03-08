@@ -5,6 +5,7 @@
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,300' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="../static/css/mobile.css">
     <link rel="stylesheet" href="../static/css/carpools.css">
     
@@ -21,26 +22,25 @@
 <body>
     <!-- make a menu with options to create car pool and search car pools -->
     <div class="ui secondary pointing menu big nav">
-        <a class="item" href="/profile">
+        <a class="white-overlay item" href="/profile">
             <i class="user icon"></i>
             <div class="mobile hidden">Profile</div>
         </a>
-        
-        <a class="item" href="/routes">
+        <a class="white-overlay item" href="/routes">
             <i class="map icon"></i>
             <div class="mobile hidden">Route Analysis</div>
         </a>
-        <a class="item active" href="/carpools">
+        <a class="white-overlay item active" href="/carpools">
             <i class="car icon"></i>
             <div class="mobile hidden">Carpools</div>
         </a>
-        <a class="item" href="/settings">
+        <a class="white-overlay item" href="/settings">
             <i class="settings icon"></i>
             <div class="mobile hidden">Settings</div>
         </a>
-        <a class="item right" href="/logout">
+        <a class="white-overlay item right" href="/logout">
             <i class="sign out alternate icon"></i>
-            <div class="mobile hidden">Log out of {{username}}</div>
+            <div class="mobile hidden">Log Out of {{username}}</div>
         </a>
     </div>
     <div class="ui container">
@@ -248,11 +248,7 @@
         padding-top: 20px;
     }
 
-	.item{
+    .white-overlay{
 		color: #FFFFFF !important;	
-	}
-	
-	.active{
-		border-bottom-color: #FFFFFF !important;
 	}
 </style>
