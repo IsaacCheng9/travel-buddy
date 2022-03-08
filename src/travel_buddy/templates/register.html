@@ -101,7 +101,6 @@
 </html>
 
 <style>
-	@import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
 
 	* {
 		box-sizing: border-box;
@@ -145,8 +144,55 @@
 		color: lightgray;
 	}
 
+	@import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
+
+	* {
+		box-sizing: border-box;
+		transition: all 0.4s;
+		font-family: "Open Sans", "Helvetica", "Montserrat", sans-serif;
+	}
+	
+	.error {
+		color: red;
+		font-weight: 600;
+	}
+
+	.input-icon {
+		position: absolute;
+		margin-top: 20px;
+		right: 60px;
+		cursor: pointer;
+		color: grey;
+		width: 20px;
+	}
+
+	.input-icon:hover {
+		color: black;
+	}
+
+	ul>li {
+		list-style-type: none;
+		float: left;
+	}
+
+	ul>li.active {
+		color: #333;
+	}
+
+	ul>li {
+		color: lightgray;
+	}
+
+	ul>li.active i {
+		color: #4caf50;
+	}
+
+	ul>li i {
+		color: lightgray;
+	}
+
 	body {
-		background: #f3e0e2;
+		background: #F4F9F4;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -174,7 +220,7 @@
 	}
 
 	a {
-		color: #ff4b2b;
+		color: #5C8D89;
 		font-size: 14px;
 		text-decoration: none;
 		margin: 15px 0;
@@ -183,8 +229,8 @@
 
 	button {
 		border-radius: 20px;
-		border: 1px solid #ff4b2b;
-		background-color: #ff4b2b;
+		background-color: rgb(116, 180, 155);
+		border-color: rgb(116, 180, 155);
 		color: #ffffff;
 		font-size: 12px;
 		font-weight: bold;
@@ -192,10 +238,12 @@
 		letter-spacing: 1px;
 		text-transform: uppercase;
 		transition: transform 80ms ease-in;
+		border: none;
 	}
 
 	button:hover {
-		background-color: #ff816b;
+		background-color: #5C8D89;
+		border-color: #5C8D89;
 		cursor: pointer;
 	}
 
@@ -254,8 +302,9 @@
 		height: 100%;
 	}
 
-	@media screen and (max-width: 700px) {
+	@media screen and (max-width: 600px) {
 		.log-in-container {
+			top: 50%;
 			bottom: 0;
 			left: 0;
 			right: 0;
@@ -265,15 +314,16 @@
 
 		.overlay-container {
 			width: 100%;
+			height: 50%;
 			top: 0;
 			left: 0;
 			right: 0;
+			bottom: 50%;
 			height: auto;
-			display: none;
 		}
 
 		.container {
-			height: 150vh;
+			height: 100%;
 		}
 
 		.overlay-right img {
@@ -283,8 +333,8 @@
 
 	.overlay {
 		background: #ff416c;
-		background: -webkit-linear-gradient(to right, #ff4b2b, #ff416c);
-		background: linear-gradient(to right, #ff4b2b, #ff416c);
+		background: -webkit-linear-gradient(to right, #33c8cc, #5C8D89);
+		background: linear-gradient(to right, #33c8cc, #5C8D89);
 		background-repeat: no-repeat;
 		background-size: cover;
 		background-position: 0 0;
