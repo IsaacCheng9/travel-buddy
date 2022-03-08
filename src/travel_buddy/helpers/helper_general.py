@@ -158,7 +158,7 @@ def get_user_rating(username):
             (username,),
         )
         rating = cursor.fetchone()
-        
+
         if rating[0] is None:
             return 0, 0
 
