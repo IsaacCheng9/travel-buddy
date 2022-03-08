@@ -182,7 +182,9 @@ def view_carpool_journey(journey_id: int):
 
     rating_average, rating_count = helper_general.get_user_rating(driver)
 
-    interested_carpools_list = helper_carpool.get_user_interested_carpools(session["username"])
+    interested_carpools_list = helper_carpool.get_user_interested_carpools(
+        session["username"]
+    )
 
     is_interested = int(journey_id) in interested_carpools_list
 
@@ -204,7 +206,7 @@ def view_carpool_journey(journey_id: int):
         rating_average=rating_average,
         rating_count=rating_count,
         is_interested=is_interested,
-        journey_id=journey_id
+        journey_id=journey_id,
     )
 
 
