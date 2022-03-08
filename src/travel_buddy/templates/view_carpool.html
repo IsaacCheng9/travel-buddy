@@ -69,6 +69,10 @@
                 <a class="item"><i class="fa-solid fa-money-bill"></i> Price for one passenger <span style="float: right;">£{{price}}</span></a>
 
                 <a class="item">{{description}}</a>
+                
+                {% if icons|length > 0%}
+                <a class="item">{{icons|safe}}</a>
+                {%endif%}
 
                 <div class="ui divider custom-divider"></div>
 

@@ -14,6 +14,9 @@
 			<form action="/register" method="POST">
 				<h1>Register</h1>
 				<br />
+
+				{% if "error" in session %} <div class="error">This user has already been registered.</div> {% endif %}
+
 				<input type="text" name="first_name" placeholder="First Name" required autocomplete="name" />
 				<input type="text" name="last_name" placeholder="Last Name" required autocomplete="family-name" />
 
@@ -34,7 +37,7 @@
 					<li><i class="fa-solid fa-circle-check"></i> Passwords match</li>
 				</ul>
 
-				<a href="/">Already have an account?</a>
+				<a href="/"><b>Already have an account?</b></a>
 				<button>Register</button>
 			</form>
 		</div>
@@ -42,7 +45,7 @@
 			<div class="overlay">
 				<div class="overlay-panel overlay-right">
 					<h1>Join Travel Buddy</h1>
-					<img style="height: 35vh; margin: 1em" src="https://cdn.pixabay.com/photo/2019/07/19/09/54/map-4348394_1280.png" alt="" />
+					<img style="height: 35vh; margin: 1em; padding: 2em; border-radius: 1em; background-color: #f4f9f4;" src="../static/logos/text_and_image.png" alt="" />
 					<p>Quickly plan your journey, save money, and help the planet!</p>
 				</div>
 			</div>
