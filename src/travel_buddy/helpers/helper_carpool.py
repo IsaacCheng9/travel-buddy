@@ -635,21 +635,24 @@ def get_money_saved(username: str) -> float:
 
     return total_money_saved
 
+
 def get_datetime_obj(t: str):
     """
     Return a datetime object from a datetime string
     """
     return datetime.strptime(t, "%Y-%m-%d %H:%M:%S")
 
+
 def format_start_time(start_time: object):
     """
     Return hours and minutes from a datetime object
     """
-    return datetime.strftime(start_time, '%H:%M')
+    return datetime.strftime(start_time, "%H:%M")
+
 
 def get_end_time(start_time: object, duration: int) -> str:
     """
     Return the estimated end time based on the start time and duration in seconds
     """
-    end_time = start_time + timedelta(seconds=round(duration/60)*60)
-    return datetime.strftime(end_time, '%H:%M')
+    end_time = start_time + timedelta(seconds=round(duration / 60) * 60)
+    return datetime.strftime(end_time, "%H:%M")
