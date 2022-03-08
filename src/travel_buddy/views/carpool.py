@@ -6,12 +6,16 @@ of carpools participated in.
 
 import travel_buddy.helpers.helper_carpool as helper_carpool
 import travel_buddy.helpers.helper_general as helper_general
+
 from flask import Blueprint, redirect, render_template, request, session
 from travel_buddy.helpers.helper_limiter import limiter
 
 carpool_blueprint = Blueprint(
     "carpool", __name__, static_folder="static", template_folder="templates"
 )
+
+import sqlite3
+
 DB_PATH = helper_general.get_database_path()
 
 
@@ -35,13 +39,17 @@ def show_available_carpools():
         filename="keys.json", func="autocomplete_no_map"
     )
 
+    interested_list = helper_carpool.get_user_interested_carpools(session["username"])
+
     if request.method == "GET":
         incomplete_carpools = helper_carpool.get_incomplete_carpools()
+
         return render_template(
             "carpools.html",
             username=session.get("username"),
             carpools=incomplete_carpools,
             autocomplete_query=autocomplete_query,
+            interested_list=interested_list,
         )
 
     if request.method == "POST":
@@ -52,6 +60,9 @@ def show_available_carpools():
         price = int(request.form["price"])
         description = request.form["description"]
         num_seats = int(request.form["seats"])
+        distance, duration, co2 = helper_carpool.estimate_carpool_details(
+            starting_point, destination, "keys.json"
+        )
 
         valid, errors = helper_carpool.validate_carpool_ride(
             session["username"],
@@ -61,6 +72,9 @@ def show_available_carpools():
             pickup_datetime,
             price,
             description,
+            distance,
+            duration,
+            co2,
         )
         incomplete_carpools = helper_carpool.get_incomplete_carpools()
 
@@ -98,11 +112,45 @@ def show_available_carpools():
             errors=errors,
             carpools=incomplete_carpools,
             autocomplete_query=autocomplete_query,
+            interested_list=interested_list,
         )
 
 
+@carpool_blueprint.route("/toggle_carpool_interest/<id>", methods=["GET"])
+@limiter.limit("2/second")
+def toggle_carpool_interest(id):
+    """
+    Toggles whether the user is interested in carpooling.
+
+    Args:
+        id: The id of the carpool ride.
+
+    Returns:
+        New current state of the interest
+    """
+    if "username" not in session:
+        return "null"
+
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM carpool_interest WHERE journey_id=?", (id,))
+        interested = cursor.fetchone()
+
+        if interested:
+            cursor.execute("DELETE FROM carpool_interest WHERE journey_id=?", (id,))
+        else:
+            cursor.execute(
+                "INSERT INTO carpool_interest (journey_id, username) VALUES (?, ?)",
+                (id, session["username"]),
+            )
+
+        conn.commit()
+
+    return str(not interested)
+
+
 @carpool_blueprint.route("/carpools/<journey_id>", methods=["GET"])
-@limiter.limit("15/minute")
+@limiter.limit("1/sec")
 def view_carpool_journey(journey_id: int):
     """
     Displays the carpool journey selected by the user so that they can interact
@@ -115,11 +163,13 @@ def view_carpool_journey(journey_id: int):
         The web page for viewing the selected carpool journey.
     """
     carpool_details = helper_carpool.get_carpool_details(journey_id)
+
     # Gets the carpool details if the journey ID exists, otherwise returns
     # an error.
     if not carpool_details:
         session["error"] = "Carpool journey does not exist."
         return render_template("view_carpool.html")
+
     (
         driver,
         is_complete,
@@ -142,6 +192,8 @@ def view_carpool_journey(journey_id: int):
     # Gets the list of passengers for the carpool.
     passenger_list = helper_carpool.get_passenger_list(journey_id)
 
+    average_rating, total_ratings = helper_general.get_user_rating(driver)
+
     return render_template(
         "view_carpool.html",
         username=session.get("username"),
@@ -159,6 +211,10 @@ def view_carpool_journey(journey_id: int):
         co2_pp=co2_pp,
         co2_saved=co2_saved,
         passenger_list=passenger_list,
+        journey_id=journey_id,
+        avatar=helper_general.get_user_avatar(driver),
+        rating_average=average_rating,
+        rating_count=total_ratings,
     )
 
 

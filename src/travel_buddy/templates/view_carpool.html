@@ -1,33 +1,203 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
 <head>
-  <title>Travel Buddy - Carpool</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+	<link rel="stylesheet" href="../static/css/mobile.css">
+    <link rel="stylesheet" href="../static/css/carpools.css">
+    <link rel="stylesheet" href="../static/css/theme.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+
+    <script src="../static/javascript/autocomplete.js"></script>
+    <script src={{autocomplete_query}} async></script>
+
+    <title>Travel Buddy - Carpools</title>
 </head>
 
 <body>
-  <p>Driver: {{ driver }}</p>
-  <p>Seats Available: {{ seats_available }}</p>
-  <p>Origin: {{ starting_point }}</p>
-  <p>Destination: {{ destination }}</p>
-  <p>Pick-up: {{ pickup_datetime }}</p>
-  <p>Price: £{{ price }}</p>
-  <p>Distance: {{ distance_text }}</p>
-  <p>Estimated Duration: {{ estimate_duration_text }}</p>
-  <p>Estimated CO2 Emissions: {{ estimate_co2 }}</p>
-  <p>Description: {{ description }} <br /><br /></p>
+    <!-- make a menu with options to create car pool and search car pools -->
+    <div class="ui secondary pointing menu big nav">
+        <a class="item" href="/profile">
+            <i class="user icon"></i>
+            <div class="mobile hidden">Profile</div>
+        </a>
+        
+        <a class="item" href="/routes">
+            <i class="map icon"></i>
+            <div class="mobile hidden">Route Analysis</div>
+        </a>
+        <a class="item active" href="/carpools">
+            <i class="car icon"></i>
+            <div class="mobile hidden">Carpools</div>
+        </a>
+        <a class="item" href="/settings">
+            <i class="settings icon"></i>
+            <div class="mobile hidden">Settings</div>
+        </a>
+        <a class="item right" href="/logout">
+            <i class="sign out alternate icon"></i>
+            <div class="mobile hidden">Logout</div>
+        </a>
+    </div>
+    <div class="ui container">
+        <div class="ui grid divided stackable">
+            {% if is_complete == 1 %}
+                <div class="ui fluid green message" style="width: 100%;">This carpool has been completed.</div>
+            {% endif %}
 
-  <!-- Displays list of passengers if it exists. -->
-  <p>Passengers:</p>
-  {% if passengers %}
-  <ul class="list">
-    {% for passenger in passengers %}
-    <li>{{ passenger }}</li>
-    {% endfor %}
-  </ul>
-  {% endif %}
-  <!-- If there aren't passengers, let the user know instead of displaying an
-   empty list.-->
-  {% if not passengers %}
-  <p>No passengers have joined this carpool yet.</p>
-  {% endif %}
+            <div class="ui horizontal divider hidden"></div>
 
-  <button type="button">Join/Leave Carpool</button>
+            <div class="ui secondary big vertical menu fluid">
+                <a href="/carpools" class="item">
+                    <div>
+                        <i class="icon left arrow"></i> Go back to carpools
+                    </div>
+                </a>
+
+                <div class="ui divider custom-divider"></div>
+
+                <a class="item"><i class="fa-solid fa-calendar-days"></i> {{pickup_datetime}}</a>
+                <a class="item"><i class="fa-solid fa-location-dot"></i> {{starting_point}}</a>
+                <a class="item"><i class="fa-solid fa-map-location-dot"></i> {{destination}}</a>
+
+                <div class="ui divider custom-divider"></div>
+
+                <a class="item"><i class="fa-solid fa-money-bill"></i> Price for one passenger <span style="float: right;">£{{price}}</span></a>
+
+                <a class="item">{{description}}</a>
+
+                <div class="ui divider custom-divider"></div>
+
+                <a class="item" href="/profile/{{driver}}">
+                    <img class="ui avatar image" src="../static/avatars/{{avatar}}">
+                    {{driver}} {%if is_verified %} <i class="fa-solid fa-circle-check"></i> {%endif%}
+
+                    <div style="float: right;">
+                        <i class="star icon"></i> {{rating_average}} ({{rating_count}})
+                    </div>
+                </a>
+
+                <a class="item">
+                    <div style="color: #5C8D89;">
+                        <i class="chat icon"></i>
+                        Contact user
+                        <span style="float: right;"><i class="right arrow icon"></i></span>
+                    </div>
+                </a>
+
+                <div class="ui divider"></div>
+
+                <a class="item">
+                    <i class="fa fa-route"></i>
+                    {{distance_text}}
+                </a>
+                <a class="item">
+                    <div>
+                        <i class="time icon"></i>
+                        {{duration_text}}
+                    </div>
+                </a>
+                <a class="item">
+                    <div>
+                        <i class="leaf icon"></i>
+                        {{co2_pp}}kg of CO2 saved
+                    </div>
+                </a>
+
+                <div class="ui divider"></div>
+                <a class="item">
+                    <i class="fa-solid fa-dog"></i>
+                    Pet Friendly
+                </a>
+                <a class="item">
+                    <i class="fa-solid fa-person"></i>
+                    {{seats_available}} / {{seats_initial}} seats available
+                </a>
+                <a class="item">
+                    <i class="fa-solid fa-car"></i>
+                    Opel Astra
+                </a>
+
+                {% if is_interested %}
+                <button id="toggle_interest_btn" class="ui button fluid green theme-4"><i class="fa-solid fa-check" style="color: white !important;"></i> Interested</button>
+                {% else %}
+                <button id="toggle_interest_btn" class="ui button fluid green theme-4"><i class="fa-solid fa-bolt" style="color: white !important;"></i> Show interest</button>
+                {%endif%}
+            </div>
+        </div>
+    </div>
 </body>
+
+<script>
+
+    document.getElementById("toggle_interest_btn").onclick = ToggleInterest;
+
+    function ToggleInterest(){
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("toggle_interest_btn").disabled = true;
+                document.getElementById("toggle_interest_btn").innerHTML = '<i class="fa-solid fa-spinner"></i>';
+
+                var responseText = this.responseText;
+
+                setTimeout(function(){
+                    window.location.reload();
+                },500);
+            }
+        };
+        xhttp.open("GET", "/toggle_carpool_interest/{{journey_id}}", true);
+        xhttp.send();
+    }
+</script>
+
+</html>
+
+<style>
+    @import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
+    * {
+		box-sizing: border-box;
+		transition: all 0.4s;
+		font-family: "Open Sans", "Helvetica", "Montserrat", sans-serif;
+	}  
+    
+    .fa-spinner {
+        animation: fa-spin 2s infinite linear;
+    }
+
+    .custom-divider {
+        border-top: 5px solid #EDEDED !important;
+    }
+
+    .item {
+        transition: 0.2s !important;
+        transition-property: padding-left, background-color;
+    }
+
+    .item:hover {
+        padding-left: 30px !important;
+    }
+
+    .nav{
+		background: -webkit-linear-gradient(to right, #2cafa4, #74B49B) !important;
+		background: linear-gradient(to right, #2cafa4, #74B49B) !important;
+		color: #FFFFFF !important;
+		margin: 0rem !important;
+	}
+
+    .nav.item {
+		color: #FFFFFF !important;	
+	}
+
+    .nav a{
+        color: #FFFFFF !important;
+    }
+	
+	.active{
+		border-bottom-color: #FFFFFF !important;
+	}
+</style>

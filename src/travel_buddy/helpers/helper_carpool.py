@@ -120,6 +120,9 @@ def validate_carpool_ride(
     pickup_datetime: datetime,
     price: float,
     description: str,
+    distance: str,
+    duration: str,
+    co2: str,
 ) -> Tuple[bool, List[str]]:
     """
     Validates that a carpool ride has valid details.
@@ -262,7 +265,7 @@ def get_incomplete_carpools() -> List[
                     c.seats_available,
                     c.starting_point,
                     c.destination,
-                    c.pickup_datetime,
+                    strftime('%H:%M', c.pickup_datetime),
                     c.price,
                     c.description,
                     c.distance_text,
@@ -282,6 +285,29 @@ def get_incomplete_carpools() -> List[
         )
         incomplete_carpools = cur.fetchall()
     return incomplete_carpools
+
+
+def get_user_interested_carpools(username: str) -> list:
+    """
+    Gets all carpools that the user is interested in.
+
+    Args:
+        username: The username of the user.
+
+    Returns:
+        A list of tuples containing the carpool ids.
+    """
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        cur.execute(
+            """SELECT journey_id FROM carpool_interest
+            WHERE username=?;""",
+            (username,),
+        )
+        interested_carpools = cur.fetchall()
+
+    # change list of tupples [('22',), ('23',)] to list of ints [22, 23]
+    return list(map(lambda x: int(x[0]), interested_carpools))
 
 
 def get_carpool_details(journey_id: int) -> list:

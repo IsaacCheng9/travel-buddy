@@ -1,0 +1,42 @@
+.custom-card {
+    width: 100%;
+    padding: 16px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    -webkit-box-pack: justify;
+    box-shadow: 0 0 5px #aeaeae;
+
+    border-radius: 0.5em;
+
+    font-size: 1.3em;
+
+    transition: 200ms ease-in-out;
+    transition-property: box-shadow, border-left;
+}
+
+.custom-card.active {
+    border-left: 10px solid #5C8D89;
+}
+
+.city {
+    padding: 0.3em;
+}
+
+.city .left {
+    display: inline-block;
+    text-align: center;
+    width: 50px;
+}
+
+a.custom-card {
+    text-decoration: none;
+    color: black;
+}
+
+/* .custom-card:hover {
+    box-shadow: 0 0 10px #aeaeae;
+} */

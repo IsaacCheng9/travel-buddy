@@ -1,0 +1,35 @@
+.item i {
+    text-align: center;
+    width: 30px;
+}
+
+.container i {
+    color: #5C8D89 !important;
+}
+
+button i {
+    color: #f4f9f4 !important;
+}
+
+.theme-1 {
+    background-color: #f4f9f4 !important;
+}
+
+.theme-2 {
+    background-color: #A7D7C5 !important;
+}
+
+.theme-3 {
+    background-color: #74B49B !important;
+}
+
+.theme-4 {
+    background-color: #5C8D89 !important;
+}
+
+.gradient {
+    background: -webkit-linear-gradient(left, #5C8D89, #74B49B);
+    background: -o-linear-gradient(left, #5C8D89, #74B49B);
+    background: -moz-linear-gradient(left, #5C8D89, #74B49B);
+    background: linear-gradient(to right, #5C8D89, #74B49B);
+}
