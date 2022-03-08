@@ -11,6 +11,8 @@
 	<link rel="stylesheet" href="../static/css/checkbox.css">
 
 	<title>Travel Buddy - Settings</title>
+	<script src="../static/javascript/autocomplete.js"></script>
+    <script src={{autocomplete_query}} async></script>
 </head>
 
 <body>
@@ -94,6 +96,29 @@
 							<textarea id="bio_input" maxlength=180 style="min-height: 6em;" cols="30" rows="5">{{bio}}</textarea>
 							<div id="bio_chars_left"></div>
 						</div>
+						<h4 class="ui horizontal divider header">
+							<i class="icon user secret"></i>
+							Not visible to public
+						</h4>
+						{% if home is not none and work is not none %}
+						<div class="field">
+							<label>Home</label>
+							<input id="input-1" type="text" value="{{ home }}">
+						</div>
+						<div class="field">
+							<label>Work</label>
+							<input id="input-2" type="text" value="{{ work }}">
+						</div>
+						{% else %}
+						<div class="field">
+							<label>Home</label>
+							<input id="input-1" type="text">
+						</div>
+						<div class="field">
+							<label>Work</label>
+							<input id="input-2" type="text">
+						</div>
+						{% endif %}
 						<div class="ui field">
 							<button class="ui button update" id="update_bio_button">Update</button>
 							<button class="ui button white" id="bio_cancel_button">Cancel</button>
@@ -184,8 +209,10 @@
 		const new_bio = document.getElementById("bio_input").value;
 		const f_name = document.getElementById("f_name").value;
 		const l_name = document.getElementById("l_name").value;
+		const home = document.getElementById("input-1").value;
+		const work = document.getElementById("input-2").value;
 
-		xhttp.open("POST", `/settings/edit-user-details?bio=${new_bio}&f_name=${f_name}&l_name=${l_name}`, true);
+		xhttp.open("POST", `/settings/edit-user-details?bio=${new_bio}&f_name=${f_name}&l_name=${l_name}&home=${home}&work=${work}`, true);
 		xhttp.send();
 
 		document.getElementById("update_bio_button").innerHTML = `<div class="ui active inline loader mini"></div>`;
