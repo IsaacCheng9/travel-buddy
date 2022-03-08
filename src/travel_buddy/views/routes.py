@@ -41,6 +41,7 @@ def routes() -> object:
 
         return render_template(
             "routes.html",
+            username=session.get("username"),
             map_query=map_query,
             autocomplete_query=autocomplete_query,
             route_exists=False,
@@ -194,6 +195,7 @@ def routes() -> object:
 
         return render_template(
             "routes.html",
+            username=session.get("username"),
             distance_range=distance_range,
             mode=travel_mode_simple,
             details=details,

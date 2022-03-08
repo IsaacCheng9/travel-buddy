@@ -72,6 +72,7 @@ def profile(username: str) -> object:
 
     return render_template(
         "profile.html",
+        username=session.get("username"),
         first_name=first_name,
         last_name=last_name,
         is_driver=is_driver,
