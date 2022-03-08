@@ -122,11 +122,38 @@
                     Opel Astra
                 </a>
 
-                <button class="ui button fluid green theme-4"><i class="fa-solid fa-bolt" style="color: white !important;"></i> Show interest</button>
+                {% if is_interested %}
+                <button id="toggle_interest_btn" class="ui button fluid green theme-4"><i class="fa-solid fa-check" style="color: white !important;"></i> Interested</button>
+                {% else %}
+                <button id="toggle_interest_btn" class="ui button fluid green theme-4"><i class="fa-solid fa-bolt" style="color: white !important;"></i> Show interest</button>
+                {%endif%}
             </div>
         </div>
     </div>
 </body>
+
+<script>
+
+    document.getElementById("toggle_interest_btn").onclick = ToggleInterest;
+
+    function ToggleInterest(){
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("toggle_interest_btn").disabled = true;
+                document.getElementById("toggle_interest_btn").innerHTML = '<i class="fa-solid fa-spinner"></i>';
+
+                var responseText = this.responseText;
+
+                setTimeout(function(){
+                    window.location.reload();
+                },500);
+            }
+        };
+        xhttp.open("GET", "/toggle_carpool_interest/{{journey_id}}", true);
+        xhttp.send();
+    }
+</script>
 
 </html>
 
@@ -136,7 +163,11 @@
 		box-sizing: border-box;
 		transition: all 0.4s;
 		font-family: "Open Sans", "Helvetica", "Montserrat", sans-serif;
-	}    
+	}  
+    
+    .fa-spinner {
+        animation: fa-spin 2s infinite linear;
+    }
 
     .custom-divider {
         border-top: 5px solid #EDEDED !important;

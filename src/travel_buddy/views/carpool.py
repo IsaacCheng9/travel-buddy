@@ -145,7 +145,7 @@ def toggle_carpool_interest(id):
 
 
 @carpool_blueprint.route("/carpools/<journey_id>", methods=["GET"])
-@limiter.limit("15/minute")
+@limiter.limit("1/sec")
 def view_carpool_journey(journey_id: int):
     """
     Displays the carpool journey selected by the user so that they can interact
@@ -182,6 +182,10 @@ def view_carpool_journey(journey_id: int):
 
     rating_average, rating_count = helper_general.get_user_rating(driver)
 
+    interested_carpools_list = helper_carpool.get_user_interested_carpools(session["username"])
+
+    is_interested = int(journey_id) in interested_carpools_list
+
     return render_template(
         "view_carpool.html",
         driver=driver,
@@ -199,6 +203,8 @@ def view_carpool_journey(journey_id: int):
         is_verified=helper_general.is_user_verified(driver),
         rating_average=rating_average,
         rating_count=rating_count,
+        is_interested=is_interested,
+        journey_id=journey_id
     )
 
 
