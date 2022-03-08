@@ -426,7 +426,7 @@ def get_recommendations(
         cost = format(fuel_cost, ".2f")
         walk_distance = safeget(route_details, "walking", "distance", "value")
         if walk_distance is not None:
-            if walk_distance > 50000:
+            if walk_distance > 40000:
                 if co2_excess_over_transit > 0:
                     body.append(
                         "Planning to drive? This is a long journey! If you could travel "
