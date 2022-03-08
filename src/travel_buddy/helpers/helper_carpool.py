@@ -647,7 +647,7 @@ def format_start_time(start_time: object) -> str:
     """
     Return hours and minutes from a datetime object
     """
-    return datetime.strftime(start_time, "%H:%M")
+    return datetime.strftime(start_time, "%e/%m %H:%M")
 
 
 def get_end_time(start_time: object, duration: int) -> str:
@@ -655,4 +655,4 @@ def get_end_time(start_time: object, duration: int) -> str:
     Return the estimated end time based on the start time and duration in seconds
     """
     end_time = start_time + timedelta(seconds=round(duration / 60) * 60)
-    return datetime.strftime(end_time, "%H:%M")
+    return datetime.strftime(end_time, "%e/%m %H:%M")
