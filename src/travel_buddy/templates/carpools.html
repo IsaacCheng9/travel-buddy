@@ -107,7 +107,7 @@
                             <span class="right">{{ride[3]}}</span>
                         </div>
                         <div class="city">
-                            <span class="left">12:00</span>
+                            <span class="left">{{ride[16]}}</span>
                             <span class="right">{{ride[4]}}</span>
                         </div>
                     </div>
@@ -117,13 +117,13 @@
                                 <i class="fa-solid fa-car"></i> {{ride[2]}}
                             </div>
                             <div class="item">
-                                <i class="fa fa-route"></i> {{ride[8]}}
+                                <i class="fa fa-route"></i> {{ride[9]}}
                             </div>
                             <div class="item">
-                                <i class="icon stopwatch"></i>~{{ride[9]}}
+                                <i class="icon stopwatch"></i>~{{ride[11]}}
                             </div>
                             <div class="item">
-                                <i class="icon leaf"></i> {{ride[10]}}kg of CO2 saved
+                                <i class="icon leaf"></i> {{ride[12]}}kg of CO2 saved
                             </div>
                         </div>
                     </div>
@@ -135,8 +135,8 @@
                         {{ride[1]}}
                         <br>
                         <i class="icon star"></i>
-                        {% if ride[12] != None%}
-                        {{ride[12]}} ({{ride[13]}})
+                        {% if ride[14] != None%}
+                        {{ride[14]}} ({{ride[15]}})
                         {%else%}
                         Not enough ratings
                         {%endif%}
@@ -251,4 +251,8 @@
     .white-overlay{
 		color: #FFFFFF !important;	
 	}
+
+    .custom-card {
+        background-color: #FFFFFF;
+    }
 </style>
