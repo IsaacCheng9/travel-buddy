@@ -310,6 +310,7 @@ def get_recommendations(
     co2_list: dict,
     calories: dict,
     fuel_cost: float,
+    fuel_type: str,
 ) -> list:
     """
     Generates recommendation points relevant to the journey the user is viewing
@@ -425,7 +426,7 @@ def get_recommendations(
         cost = format(fuel_cost, ".2f")
         walk_distance = safeget(route_details, "walking", "distance", "value")
         if walk_distance is not None:
-            if walk_distance > 50000:
+            if walk_distance > 40000:
                 if co2_excess_over_transit > 0:
                     body.append(
                         "Planning to drive? This is a long journey! If you could travel "
@@ -434,7 +435,7 @@ def get_recommendations(
                         f"<b>£{cost}</b> of fuel!"
                     )
 
-            elif walk_distance > 10000:
+            elif walk_distance > 20000:
                 if co2_excess_over_transit > 0:
                     body.append(
                         "Planning to drive? You would save about "
@@ -470,6 +471,7 @@ def get_recommendations(
                     round(co2_list["driving"] * 40, 2), 30
                 )
                 cost = format((fuel_cost * 40), ".2f")
+                print(float(trees), float(cost), round(co2_list["driving"] * 40, 2))
                 if (
                     float(trees) >= 1
                     and float(cost) > 0.0
@@ -483,6 +485,13 @@ def get_recommendations(
                         "trees offset in a month! "
                         "(<a href='https://www.viessmann.co.uk/heating-advice/how-much-co2-does-tree-absorb' target='_blank'>Source</a>)"
                     )
+            if fuel_type.lower() != "electric":
+                body.append(
+                    append_ev_recommendation(
+                        safeget(route_details, "driving", "distance", "value"),
+                        float(fuel_cost),
+                    )
+                )
 
     return body
 
@@ -513,6 +522,29 @@ def append_cycle_walk_str(time_1: int, time_2: int, mode: str) -> str:
             f"If you were to {mode} this journey instead then you would be able to "
             f"complete the journey <b>{extra_time} faster</b>! Also, "
         )
+
+
+def append_ev_recommendation(distance, petrol_cost) -> str:
+    """
+    Return a string on information on electric vehicle recommendation
+    source for fuel_per_m_ev:
+        https://insights.leaseplan.co.uk/electric-vehicles/ev-news/electric-vehicle-cost/
+    """
+    fuel_per_m_ev = 0.000034176
+    fuel_cost_ev = fuel_per_m_ev * distance
+
+    saved = petrol_cost - fuel_cost_ev
+    fuel_cost_ev = format(fuel_cost_ev, ".2f")
+    saved_2dp = format(saved, ".2f")
+
+    if saved > 0:
+        return (
+            "Have you thought about buying an electric car? "
+            "An estimate for the electricity cost of this route "
+            f"is <b>£{fuel_cost_ev}</b>, that's a saving of <b>£{saved_2dp}</b>!"
+        )
+    else:
+        return ""
 
 
 def save_route(username: str, origin: str, destination: str):
@@ -574,7 +606,7 @@ def add_route_to_user(conn, username: str, route_id: int):
         ) < datetime.now() - timedelta(minutes=5):
             cur.execute(
                 "UPDATE route_search "
-                "SET search_count=?, last_searched_timestamp=CURRENT_TIMESTAMP "
+                "SET search_count=?, last_searched_timestamp=CURRENT_TIMESTAMP, "
                 "last_updated_timestamp=CURRENT_TIMESTAMP "
                 "WHERE username=? AND route_id=?;",
                 (route_search[0] + 1, username, route_id),
