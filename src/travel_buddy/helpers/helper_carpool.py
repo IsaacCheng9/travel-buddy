@@ -636,14 +636,14 @@ def get_money_saved(username: str) -> float:
     return total_money_saved
 
 
-def get_datetime_obj(t: str):
+def get_datetime_obj(t: str) -> object:
     """
     Return a datetime object from a datetime string
     """
     return datetime.strptime(t, "%Y-%m-%d %H:%M:%S")
 
 
-def format_start_time(start_time: object):
+def format_start_time(start_time: object) -> str:
     """
     Return hours and minutes from a datetime object
     """
