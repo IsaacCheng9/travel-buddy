@@ -60,8 +60,15 @@ def show_available_carpools():
         price = int(request.form["price"])
         description = request.form["description"]
         num_seats = int(request.form["seats"])
-        distance, duration, co2 = helper_carpool.estimate_carpool_details(
-            starting_point, destination, "keys.json"
+        (
+            distance,
+            distance_text,
+            duration,
+            duration_text,
+            co2_pp,
+            co2_saved,
+        ) = helper_carpool.estimate_carpool_details(
+            starting_point, destination, num_seats + 1, "keys.json"
         )
 
         valid, errors = helper_carpool.validate_carpool_ride(
@@ -74,7 +81,7 @@ def show_available_carpools():
             description,
             distance,
             duration,
-            co2,
+            co2_saved,
         )
         incomplete_carpools = helper_carpool.get_incomplete_carpools()
 
