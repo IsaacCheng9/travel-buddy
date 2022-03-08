@@ -13,6 +13,9 @@ from travel_buddy.helpers.helper_limiter import limiter
 carpool_blueprint = Blueprint(
     "carpool", __name__, static_folder="static", template_folder="templates"
 )
+
+import sqlite3
+
 DB_PATH = helper_general.get_database_path()
 
 
@@ -36,13 +39,17 @@ def show_available_carpools():
         filename="keys.json", func="autocomplete_no_map"
     )
 
+    interested_list = helper_carpool.get_user_interested_carpools(session["username"])
+
     if request.method == "GET":
         incomplete_carpools = helper_carpool.get_incomplete_carpools()
+
         return render_template(
             "carpools.html",
             username=session.get("username"),
             carpools=incomplete_carpools,
             autocomplete_query=autocomplete_query,
+            interested_list=interested_list,
         )
 
     if request.method == "POST":
@@ -105,6 +112,7 @@ def show_available_carpools():
             errors=errors,
             carpools=incomplete_carpools,
             autocomplete_query=autocomplete_query,
+            interested_list=interested_list,
         )
 
 
@@ -163,7 +171,6 @@ def view_carpool_journey(journey_id: int):
         return render_template("view_carpool.html")
 
     (
-        id,
         driver,
         is_complete,
         seats_initial,
@@ -185,6 +192,8 @@ def view_carpool_journey(journey_id: int):
     # Gets the list of passengers for the carpool.
     passenger_list = helper_carpool.get_passenger_list(journey_id)
 
+    average_rating, total_ratings = helper_general.get_user_rating(driver)
+    
     return render_template(
         "view_carpool.html",
         username=session.get("username"),
@@ -202,6 +211,10 @@ def view_carpool_journey(journey_id: int):
         co2_pp=co2_pp,
         co2_saved=co2_saved,
         passenger_list=passenger_list,
+        journey_id=journey_id,
+        avatar=helper_general.get_user_avatar(driver),
+        rating_average=average_rating,
+        rating_count=total_ratings
     )
 
 
