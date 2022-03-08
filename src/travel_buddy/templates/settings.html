@@ -13,30 +13,31 @@
 </head>
 
 <body>
+	<div class="ui secondary pointing menu big nav">
+		<a class="item" href="/profile">
+			<i class="user icon"></i>
+			<div class="mobile hidden">Profile</div>
+		</a>
+		
+		<a class="item" href="/routes">
+			<i class="map icon"></i>
+			<div class="mobile hidden">Route Analysis</div>
+		</a>
+		<a class="item" href="/carpools">
+			<i class="car icon"></i>
+			<div class="mobile hidden">Carpools</div>
+		</a>
+		<a class="item active" href="/settings">
+			<i class="settings icon"></i>
+			<div class="mobile hidden">Settings</div>
+		</a>
+		<a class="item right" href="/logout">
+			<i class="sign out alternate icon"></i>
+			<div class="mobile hidden">Logout</div>
+		</a>
+	</div>
 	<div class="ui container">
-		<div class="ui secondary pointing menu big">
-			<a class="item" href="/profile">
-				<i class="user icon"></i>
-				<div class="mobile hidden">Profile</div>
-			</a>
-			
-			<a class="item" href="/routes">
-				<i class="map icon"></i>
-				<div class="mobile hidden">Route Analysis</div>
-			</a>
-			<a class="item" href="/carpools">
-				<i class="car icon"></i>
-				<div class="mobile hidden">Carpools</div>
-			</a>
-			<a class="item active" href="/settings">
-				<i class="settings icon"></i>
-				<div class="mobile hidden">Settings</div>
-			</a>
-			<a class="item right" href="/logout">
-				<i class="sign out alternate icon"></i>
-				<div class="mobile hidden">Log out of {{username}}</div>
-			</a>
-		</div>
+
 		<div id="message_notification" class="ui green message">Your changes have been saved.</div>
 		<div class="ui grid">
 			<div class="four wide column">
@@ -93,7 +94,7 @@
 							<div id="bio_chars_left"></div>
 						</div>
 						<div class="ui field">
-							<button class="ui button blue" id="update_bio_button">Update</button>
+							<button class="ui button update" id="update_bio_button">Update</button>
 							<button class="ui button white" id="bio_cancel_button">Cancel</button>
 						</div>
 					</div>
@@ -126,7 +127,7 @@
 							</select>
 						</div>
 						<div class="ui field">
-							<button class="ui button blue" id="update_car_button">Update</button>
+							<button class="ui button update" id="update_car_button">Update</button>
 							<button class="ui button white" id="car_cancel_button">Cancel</button>
 						</div>
 					</div>
@@ -350,8 +351,11 @@
 
 	* {
 		box-sizing: border-box;
-		transition: all 0.4s;
 		font-family: "Open Sans", "Helvetica", "Montserrat", sans-serif;
+	}
+
+	body{
+		background-color: #F4F9F4;
 	}
 
 	.error {
@@ -368,6 +372,21 @@
 		width: 100px;
 		height: 100px;
 		margin: 0 auto;
+	}
+
+	.nav{
+		background: -webkit-linear-gradient(to right, #2cafa4, #74B49B) !important;
+		background: linear-gradient(to right, #2cafa4, #74B49B) !important;
+		color: #FFFFFF !important;
+		margin: 0rem !important;
+	}
+
+	.nav .item{
+		color: #FFFFFF !important;	
+	}
+	
+	.active{
+		border-bottom-color: #FFFFFF !important;
 	}
 
 	.name {
@@ -421,6 +440,15 @@
 		top: 0;
 		left: 0;
 		cursor: pointer;
+	}
+
+	.update{
+		background: #74B49B !important;
+		color: #FFFFFF !important;
+	}
+
+	.update:hover{
+		background: #5C8D89 !important;
 	}
 
 </style>

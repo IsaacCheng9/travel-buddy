@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="../static/css/mobile.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/popup.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/transition.min.css">
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,300' rel='stylesheet' type='text/css'>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/transition.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/popup.min.js"></script>
@@ -15,59 +16,63 @@
 </head>
 
 <body onload="generate_stats()">
-	<div class="ui container" id="container">
-		<div class="ui secondary pointing menu big">
-			<a class="item active" href="/profile">
-				<i class="user icon"></i>
-				<div class="mobile hidden">Profile</div>
-			</a>
-			
-			<a class="item" href="/routes">
-				<i class="map icon"></i>
-				<div class="mobile hidden">Route Analysis</div>
-			</a>
-			<a class="item" href="/carpools">
-				<i class="car icon"></i>
-				<div class="mobile hidden">Carpools</div>
-			</a>
-			<a class="item" href="/settings">
-				<i class="settings icon"></i>
-				<div class="mobile hidden">Settings</div>
-			</a>
-			<a class="item right" href="/logout">
-				<i class="sign out alternate icon"></i>
-				<div class="mobile hidden">Log out of {{username}}</div>
-			</a>
+	<div class="ui secondary pointing menu big nav">
+		<a class="item active" href="/profile">
+			<i class="user icon"></i>
+			<div class="mobile hidden">Profile</div>
+		</a>
+		
+		<a class="item" href="/routes">
+			<i class="map icon"></i>
+			<div class="mobile hidden">Route Analysis</div>
+		</a>
+		<a class="item" href="/carpools">
+			<i class="car icon"></i>
+			<div class="mobile hidden">Carpools</div>
+		</a>
+		<a class="item" href="/settings">
+			<i class="settings icon"></i>
+			<div class="mobile hidden">Settings</div>
+		</a>
+		<a class="item right" href="/logout">
+			<i class="sign out alternate icon"></i>
+			<div class="mobile hidden">Logout</div>
+		</a>
+	</div>
+	<div class="app">
+	<div class="container" id="container">
+		<div class="form-container log-in-container">
+			<form action="/" method="POST">
+				<div style="font-size: 25px;"><i class="bar chart icon"></i> User Statistics</div>
+				<br />
+				<table class="ui very basic collapsing stackable celled table" style="text-align: center; width: 100%;" id="stats_table"></table>
+			</form>
 		</div>
-	
-		<div class="ui grid">
-			<div class="sixteen wide column">
-				<div class="center">
-					<div class="ui image small">
-						<img class="avatar" src="/static/avatars/{{avatar}}">
+		<div class="overlay-container">
+			<div class="overlay">
+				<div class="overlay-panel overlay-right">
+					<img class="avatar" style="height: 25vh; margin: 1em" src="/static/avatars/{{avatar}}" alt="" />
+					<div class="center name" style="padding: 0.5em;">
+						{{ first_name }} {{ last_name }}
+						{% if verified == 1 %}
+						<i class="check circle icon" data-content="Verified User" style="color: #FFFFFF;"></i>
+						{% endif %}
 					</div>
-				</div>
-				<div class="center" style="padding: 0.5em;">
-					{{ first_name }} {{ last_name }}
-					{% if verified == 1 %}
-					<i class="check circle icon" data-content="Verified User" style="color: #3498DB;"></i>
+					{% if is_driver == 1 %}
+						<div class="center">
+							<div class="ui label basic"><i class="car icon"></i> Verified Driver</div>
+						</div>
 					{% endif %}
-				</div>
-				{% if is_driver == 1 %}
-					<div class="center">
-						<div class="ui label basic"><i class="car icon"></i> Verified Driver</div>
+					<br>
+					<div class="bio">
+						{{ bio }}
 					</div>
-				{% endif %}
-				<br>
-				<div class="bio">
-					{{ bio }}
 				</div>
-				<div class="ui horizontal divider"><i class="bar chart icon"></i> User Statistics</div>
-				<table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;" id="stats_table"></table>
 			</div>
 		</div>
 	</div>
-	
+	</div>
+
 </body>
 <script>
 	function generate_stats() {
@@ -192,6 +197,222 @@
 <style>
 	@import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
 
+* {
+	box-sizing: border-box;
+	transition: all 0.4s;
+	font-family: "Open Sans", "Helvetica", "Montserrat", sans-serif;
+}
+
+.error {
+	color: red;
+	font-weight: 600;
+}
+
+.input-icon {
+	position: absolute;
+	margin-top: 20px;
+	right: 60px;
+	cursor: pointer;
+	color: grey;
+	width: 20px;
+}
+
+.input-icon:hover {
+	color: black;
+}
+
+ul>li {
+	list-style-type: none;
+	float: left;
+}
+
+ul>li.active {
+	color: #333;
+}
+
+ul>li {
+	color: lightgray;
+}
+
+ul>li.active i {
+	color: #4caf50;
+}
+
+ul>li i {
+	color: lightgray;
+}
+
+.app {
+	background: #F4F9F4;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	font-family: "Montserrat", sans-serif;
+	height: calc(100vh - 6rem);
+}
+
+h1 {
+	font-weight: bold;
+	margin: 0;
+}
+
+p {
+	font-size: 14px;
+	font-weight: 100;
+	line-height: 20px;
+	letter-spacing: 0.5px;
+	margin: 20px 0 30px;
+}
+
+span {
+	font-size: 12px;
+}
+
+a {
+	color: #5C8D89;
+	font-size: 16px;
+	text-decoration: none;
+	margin: 15px 0;
+	font-weight: 500;
+}
+
+button {
+	border-radius: 20px;
+	background-color: rgb(116, 180, 155);
+	border-color: rgb(116, 180, 155);
+	color: #ffffff;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 12px 45px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: transform 80ms ease-in;
+	border: none;
+}
+
+button:hover {
+	background-color: #5C8D89;
+	border-color: #5C8D89;
+	cursor: pointer;
+}
+
+form {
+	background-color: #ffffff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	padding: 0 50px;
+	height: 100%;
+	text-align: center;
+}
+
+input {
+	background-color: #eee;
+	border: none;
+	padding: 12px 15px;
+	margin: 8px 0;
+	width: 100%;
+	outline: none;
+}
+
+input:focus {
+	background-color: #ddd;
+}
+
+.container {
+	background-color: #fff;
+	border-radius: 10px;
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+	position: relative;
+	overflow: hidden;
+	width: 986px;
+	max-width: 100%;
+	min-height: 594px;
+}
+
+.form-container {
+	position: absolute;
+	top: 0;
+	height: 100%;
+}
+
+.log-in-container {
+	left: 0;
+	width: 50%;
+	z-index: 2;
+}
+
+.overlay-container {
+	position: absolute;
+	top: 0;
+	left: 50%;
+	width: 50%;
+	height: 100%;
+}
+
+@media screen and (max-width: 600px) {
+	.log-in-container {
+		top: 50%;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		width: 100%;
+		height: auto;
+	}
+
+	.overlay-container {
+		width: 100%;
+		height: 50%;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 50%;
+		height: auto;
+	}
+
+	.container {
+		height: 100%;
+	}
+
+	.overlay-right img {
+		height: 25vh !important;
+	}
+}
+
+.overlay {
+	background: #ff416c;
+	background: -webkit-linear-gradient(to right, #33c8cc, #5C8D89);
+	background: linear-gradient(to right, #33c8cc, #5C8D89);
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: 0 0;
+	color: #ffffff;
+	position: relative;
+	left: -100%;
+	height: 100%;
+	width: 200%;
+}
+
+.overlay-panel {
+	position: absolute;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	padding: 0 40px;
+	text-align: center;
+	top: 0;
+	height: 100%;
+	width: 50%;
+}
+
+.overlay-right {
+	right: 0;
+}
+
+
 	* {
 		box-sizing: border-box;
 		transition: all 0.4s;
@@ -216,4 +437,32 @@
 		float: right;
 	}
 
+	body {
+		background-color: #F4F9F4;
+	}
+
+	.nav{
+		background: -webkit-linear-gradient(to right, #2cafa4, #74B49B) !important;
+		background: linear-gradient(to right, #2cafa4, #74B49B) !important;
+		color: #FFFFFF !important;
+		margin: 0rem !important;
+	}
+
+	.item{
+		color: #FFFFFF !important;	
+	}
+	
+	.active{
+		border-bottom-color: #FFFFFF !important;
+	}
+
+	.avatar {
+    border: 6px solid;
+    border-color: #5C8D89;
+	}
+
+	.name{
+		font-size: 23px;
+    	font-weight: bold;
+	}
 </style>
