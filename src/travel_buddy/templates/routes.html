@@ -111,7 +111,7 @@
 							</div>
 						</form>
 						{% endif %}
-						{% if home_and_work[0] is not none and home_and_work[1] is not none %}
+						{% if home_and_work[0] != '' and home_and_work[1] != '' %}
 						<form action="/routes" method="POST">
 							<div class="field frequent">
 								<input type="hidden" id="home_start_point" name="start_point" value="{{ home_and_work[0] }}">
