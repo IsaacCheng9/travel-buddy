@@ -193,7 +193,7 @@ def view_carpool_journey(journey_id: int):
     passenger_list = helper_carpool.get_passenger_list(journey_id)
 
     average_rating, total_ratings = helper_general.get_user_rating(driver)
-    
+
     return render_template(
         "view_carpool.html",
         username=session.get("username"),
@@ -214,7 +214,7 @@ def view_carpool_journey(journey_id: int):
         journey_id=journey_id,
         avatar=helper_general.get_user_avatar(driver),
         rating_average=average_rating,
-        rating_count=total_ratings
+        rating_count=total_ratings,
     )
 
 
