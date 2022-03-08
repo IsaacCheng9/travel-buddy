@@ -19,31 +19,31 @@
 </head>
 
 <body>
+    <!-- make a menu with options to create car pool and search car pools -->
+    <div class="ui secondary pointing menu big nav">
+        <a class="item" href="/profile">
+            <i class="user icon"></i>
+            <div class="mobile hidden">Profile</div>
+        </a>
+        
+        <a class="item" href="/routes">
+            <i class="map icon"></i>
+            <div class="mobile hidden">Route Analysis</div>
+        </a>
+        <a class="item active" href="/carpools">
+            <i class="car icon"></i>
+            <div class="mobile hidden">Carpools</div>
+        </a>
+        <a class="item" href="/settings">
+            <i class="settings icon"></i>
+            <div class="mobile hidden">Settings</div>
+        </a>
+        <a class="item right" href="/logout">
+            <i class="sign out alternate icon"></i>
+            <div class="mobile hidden">Log out of {{username}}</div>
+        </a>
+    </div>
     <div class="ui container">
-        <!-- make a menu with options to create car pool and search car pools -->
-        <div class="ui secondary pointing menu big">
-			<a class="item" href="/profile">
-				<i class="user icon"></i>
-				<div class="mobile hidden">Profile</div>
-			</a>
-			
-			<a class="item" href="/routes">
-				<i class="map icon"></i>
-				<div class="mobile hidden">Route Analysis</div>
-			</a>
-			<a class="item active" href="/carpools">
-				<i class="car icon"></i>
-				<div class="mobile hidden">Carpools</div>
-			</a>
-			<a class="item" href="/settings">
-				<i class="settings icon"></i>
-				<div class="mobile hidden">Settings</div>
-			</a>
-			<a class="item right" href="/logout">
-				<i class="sign out alternate icon"></i>
-				<div class="mobile hidden">Log out of {{username}}</div>
-			</a>
-		</div>
         <div class="ui grid divided stackable">
             {% if errors %}
             <div class="row">
@@ -147,11 +147,11 @@
                     </div>
                 </div>
                 <div class="ui buttons">
-                    <button onclick='window.location="/carpools/{{ride[0]}}"' class="ui button green theme-4"><i class="fa-solid fa-circle-info"></i> See Details</button>
+                    <button onclick='window.location="/carpools/{{ride[0]}}"' class="ui button green theme-4"><i style="color: white !important;" class="fa-solid fa-circle-info"></i> See Details</button>
                     <div class="ui or"></div>
                     <button onclick="ToggleInterest('{{ride[0]}}');"
                             id="interest-btn-{{ride[0]}}"
-                            class="ui button green theme-4"><i class="fa-solid fa-bolt"></i> Show Interest</button>
+                            class="ui button green theme-4"><i style="color: white !important;" class="fa-solid fa-bolt"></i> Show Interest</button>
                 </div>
             </a>
             <div class="ui horizontal divider hidden"></div>
@@ -205,7 +205,7 @@
     function ToggleInterestUI(journey_id, state){
         if (state){
             document.getElementById("card-"+journey_id).classList.add("active");
-            document.getElementById("interest-btn-"+journey_id).innerHTML = "<i class='fa-solid fa-check'></i> Interested";
+            document.getElementById("interest-btn-"+journey_id).innerHTML = "<i style='color: white !important;' class='fa-solid fa-check'></i> Interested";
         } else {
             document.getElementById("card-"+journey_id).classList.remove("active");
             document.getElementById("interest-btn-"+journey_id).innerHTML = "<i class='fa-solid fa-bolt'></i> Show Interest";
@@ -223,4 +223,19 @@
     .fa-spinner {
         animation: fa-spin 2s infinite linear;
     }
+
+    .nav{
+		background: -webkit-linear-gradient(to right, #2cafa4, #74B49B) !important;
+		background: linear-gradient(to right, #2cafa4, #74B49B) !important;
+		color: #FFFFFF !important;
+		margin: 0rem !important;
+	}
+
+    .item{
+		color: #FFFFFF !important;	
+	}
+	
+	.active{
+		border-bottom-color: #FFFFFF !important;
+	}
 </style>
