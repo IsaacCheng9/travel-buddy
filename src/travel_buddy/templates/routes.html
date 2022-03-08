@@ -19,30 +19,32 @@
 	<script src={{autocomplete_query}} async></script>
 </head>
 
+	<div class="ui secondary pointing menu big nav">
+		<a class="item" href="/profile">
+			<i class="user icon"></i>
+			<div class="mobile hidden">Profile</div>
+		</a>
+		
+		<a class="item active" href="/routes">
+			<i class="map icon"></i>
+			<div class="mobile hidden">Route Analysis</div>
+		</a>
+		<a class="item" href="/carpools">
+			<i class="car icon"></i>
+			<div class="mobile hidden">Carpools</div>
+		</a>
+		<a class="item" href="/settings">
+			<i class="settings icon"></i>
+			<div class="mobile hidden">Settings</div>
+		</a>
+		<a class="item right" href="/logout">
+			<i class="sign out alternate icon"></i>
+			<div class="mobile hidden">Logout</div>
+		</a>
+	</div>
+
 	<div class="ui container" style="background-color: transparent;">
-		<div class="ui secondary pointing menu big">
-			<a class="item" href="/profile">
-				<i class="user icon"></i>
-				<div class="mobile hidden">Profile</div>
-			</a>
-			
-			<a class="item active" href="/routes">
-				<i class="map icon"></i>
-				<div class="mobile hidden">Route Analysis</div>
-			</a>
-			<a class="item" href="/carpools">
-				<i class="car icon"></i>
-				<div class="mobile hidden">Carpools</div>
-			</a>
-			<a class="item" href="/settings">
-				<i class="settings icon"></i>
-				<div class="mobile hidden">Settings</div>
-			</a>
-			<a class="item right" href="/logout">
-				<i class="sign out alternate icon"></i>
-				<div class="mobile hidden">Log out of {{username}}</div>
-			</a>
-		</div>
+
 	</div>
 	<div class="ui grid stackable" style="height: 100%; margin: 0 2em 0 2em;">
 		<div class="four wide column" style="text-align: center;">
@@ -293,7 +295,7 @@
 	}
 
 	body {
-		background: #f3e0e2;
+		background: #F4F9F4;
 		/* display: flex; */
 		/* justify-content: center; */
 		/* align-items: center; */
@@ -304,21 +306,27 @@
 	}
 
 	#search_btn {
-		background: #ff416c;
-		background: -webkit-linear-gradient(to right, #ff4b2b, #ff416c);
-		background: linear-gradient(to right, #ff4b2b, #ff416c);
+		background: #74B49B;
+	}
+
+	#search_btn:hover {
+		background: #5C8D89;
+	}
+
+	#search_carpool_btn:hover {
+		background: #5C8D89;
+	}
+
+	#create_carpool_btn:hover {
+		background: #5C8D89;
 	}
 
 	#search_carpool_btn {
-		background: #216437;
-		background: -webkit-linear-gradient(to right, #2f8f4f, #216437);
-		background: linear-gradient(to right, #2f8f4f, #216437);
+		background: #74B49B;
 	}
 
 	#create_carpool_btn {
-		background: #2f8f4f;
-		background: -webkit-linear-gradient(to right, #216437, #2f8f4f);
-		background: linear-gradient(to right, #216437, #2f8f4f);
+		background: #74B49B;
 	}
 
 	#map_iframe {
@@ -362,15 +370,15 @@
 
 	.custom-radio:hover {
 		background-color: #eaeaea;
-		color: #FF464C !important;
+		color: #5C8D89 !important;
 	}
 
 	.custom-radio:hover i {
-		color: #FF464C !important;
+		color: #5C8D89 !important;
 	}
 
 	.custom-radio.active i {
-		color: #FF464C !important;
+		color: #5C8D89 !important;
 	}
 
 	.custom-radio.active {
@@ -396,5 +404,20 @@
 		max-width: 100%;
 		min-height: 654px;
 	} */
+
+	.nav{
+		background: -webkit-linear-gradient(to right, #2cafa4, #74B49B) !important;
+		background: linear-gradient(to right, #2cafa4, #74B49B) !important;
+		color: #FFFFFF !important;
+		margin: 0rem !important;
+	}
+
+	.nav .item{
+		color: #FFFFFF !important;	
+	}
+	
+	.active{
+		border-bottom-color: #FFFFFF !important;
+	}
 
 </style>
