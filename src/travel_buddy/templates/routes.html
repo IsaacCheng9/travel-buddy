@@ -7,6 +7,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/popup.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/transition.min.css">
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,300' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="../static/css/mobile.css">
 
 	<title>Travel Buddy - Route Check</title>
@@ -19,6 +20,7 @@
 	<script src={{autocomplete_query}} async></script>
 </head>
 
+<body>
 	<div class="ui secondary pointing menu big nav">
 		<a class="item" href="/profile">
 			<i class="user icon"></i>
@@ -39,7 +41,7 @@
 		</a>
 		<a class="item right" href="/logout">
 			<i class="sign out alternate icon"></i>
-			<div class="mobile hidden">Log out of {{username}}</div>
+			<div class="mobile hidden">Log Out of {{username}}</div>
 		</a>
 	</div>
 
@@ -266,8 +268,7 @@
 			</div>
 		</div>
 	</div>
-
-</html>
+</body>
 
 <script>
 	var custom_radio_elements = document.querySelectorAll(".custom-radio");
@@ -313,6 +314,8 @@
 
 </script>
 
+</html>
+
 <style>
 	@import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
 
@@ -351,7 +354,7 @@
 		/* justify-content: center; */
 		/* align-items: center; */
 		/* flex-direction: column; */
-		font-family: "Montserrat", sans-serif;
+		font-family: "Open Sans", "Helvetica", "Montserrat", sans-serif;
 		width: 100%;
 		height: 100%;
 	}
