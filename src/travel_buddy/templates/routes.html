@@ -45,203 +45,196 @@
 		</a>
 	</div>
 
-	<div class="ui container" style="background-color: transparent;">
-
-	</div>
-	<div class="ui grid stackable" style="height: 100%; margin: 0 2em 0 2em;">
-		<div class="four wide column" style="text-align: center;">
-			<div class="ui segment">
-				<div class="ui dividing header">
-					<i class="fa fa-route"></i>
-					Route Check
-				</div>
-				<div id="collapsible">
-					<div class="ui form">
-						<form action="/routes" method="POST">
-							<div class="field">
-								<label>Start Point</label>
-								<input id="input-1" type="text" required name="start_point" value="{{origin}}">
-							</div>
-							<div class="field">
-								<label>Destination</label>
-								<input id="input-2" type="text" required name="destination" value="{{destination}}">
-							</div>
-							
-							<div class="row">
-								<input type="hidden" id="mode" name="mode" value="driving">
-								<div class="four fields">
-									<div class="field">
-										{% if mode == "driving" %}
-											<div class="custom-radio active" data-value="driving"><i class="fas fa-car"></i></div>
-										{% else %}
-											<div class="custom-radio" data-value="driving"><i class="fas fa-car"></i></div>
-										{% endif %}
-									</div>
-									<div class="field">
-										{% if mode == "walking" %}
-											<div class="custom-radio active" data-value="walking"><i class="fas fa-walking"></i></div>
-										{% else %}
-											<div class="custom-radio" data-value="walking"><i class="fas fa-walking"></i></div>
-										{% endif %}
-									</div>
-									<div class="field">
-										{% if mode == "cycling" %}
-											<div class="custom-radio active" data-value="bicycling"><i class="fas fa-biking"></i></div>
-										{% else %}
-											<div class="custom-radio" data-value="bicycling"><i class="fas fa-biking"></i></div>
-										{% endif %}
-									</div>
-									<div class="field">
-										{% if mode == "public transport" %}
-											<div class="custom-radio active" data-value="transit"><i class="fas fa-bus"></i></div>
-										{% else %}
-											<div class="custom-radio" data-value="transit"><i class="fas fa-bus"></i></div>
-										{% endif %}
-									</div>
-								</div>
-							</div>
-							<button class="ui button black fluid" id="search_btn" style="font-size: 1.2em;">Search</button>
-						</form>
+	<div class="ui segment" id="left-side-menu">
+		<div class="ui dividing header">
+			<i class="fa fa-route"></i>
+			Route Check
+		</div>
+		<div id="collapsible">
+			<div class="ui form">
+				<form action="/routes" method="POST">
+					<div class="field">
+						<label>Start Point</label>
+						<input id="input-1" type="text" required name="start_point" value="{{origin}}">
 					</div>
-					{% if route_exists %}
-					<div class="ui dividing header"><i class="fa fa-info-circle"></i> Route Info</div>
-					<table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
-						{% if details is not none %}
-						{% for item in details['modes'].keys() %}
-						<tr>
-							{% if details['modes'][item]['distance'] is not none %}
-								{% if mode == item %}
-									<td><b>{{item.capitalize()}}</b></td>
-									<td><b>{{ details['modes'][item]['distance']['text'] }}</b></td>
-									<td><b>{{ details['modes'][item]['duration']['text'] }}</b></td>
+					<div class="field">
+						<label>Destination</label>
+						<input id="input-2" type="text" required name="destination" value="{{destination}}">
+					</div>
+					
+					<div class="row">
+						<input type="hidden" id="mode" name="mode" value="driving">
+						<div class="four fields">
+							<div class="field">
+								{% if mode == "driving" %}
+									<div class="custom-radio active" data-value="driving"><i class="fas fa-car"></i></div>
 								{% else %}
-									<td>{{item.capitalize()}}</td>
-									<td>{{ details['modes'][item]['distance']['text'] }}</td>
-									<td>{{ details['modes'][item]['duration']['text'] }}</td>
+									<div class="custom-radio" data-value="driving"><i class="fas fa-car"></i></div>
 								{% endif %}
-							{% endif %}
-						</tr>
-						{% endfor %}
-						{% endif %}
-					</table>
-					<div class="ui label big fluid" style="text-align: center; background-color: #AED6F1;">{{distance_range}} <i class="fa fa-info-circle" data-content="Distance range for the above transport modes."></i></div>
-					<br><br>
-					<div class="ui grid">
-						<div class="eight wide column">
-							<button class="ui button black fluid" id="search_carpool_btn" style="font-size: 1em;">Search for Carpools</button>
-						</div>
-						<div class="eight wide column">
-							<button class="ui button black fluid" id="create_carpool_btn" style="font-size: 1em;">Create a Carpool Offer</button>
+							</div>
+							<div class="field">
+								{% if mode == "walking" %}
+									<div class="custom-radio active" data-value="walking"><i class="fas fa-walking"></i></div>
+								{% else %}
+									<div class="custom-radio" data-value="walking"><i class="fas fa-walking"></i></div>
+								{% endif %}
+							</div>
+							<div class="field">
+								{% if mode == "cycling" %}
+									<div class="custom-radio active" data-value="bicycling"><i class="fas fa-biking"></i></div>
+								{% else %}
+									<div class="custom-radio" data-value="bicycling"><i class="fas fa-biking"></i></div>
+								{% endif %}
+							</div>
+							<div class="field">
+								{% if mode == "public transport" %}
+									<div class="custom-radio active" data-value="transit"><i class="fas fa-bus"></i></div>
+								{% else %}
+									<div class="custom-radio" data-value="transit"><i class="fas fa-bus"></i></div>
+								{% endif %}
+							</div>
 						</div>
 					</div>
+					<button class="ui button black fluid" id="search_btn" style="font-size: 1.2em;"><i class="fa-brands fa-searchengin"></i> Search</button>
+				</form>
+			</div>
+			{% if route_exists %}
+			<div class="ui dividing header"><i class="fa fa-info-circle"></i> Route Info</div>
+			<table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
+				{% if details is not none %}
+				{% for item in details['modes'].keys() %}
+				<tr>
+					{% if details['modes'][item]['distance'] is not none %}
+						{% if mode == item %}
+							<td><b>{{item.capitalize()}}</b></td>
+							<td><b>{{ details['modes'][item]['distance']['text'] }}</b></td>
+							<td><b>{{ details['modes'][item]['duration']['text'] }}</b></td>
+						{% else %}
+							<td>{{item.capitalize()}}</td>
+							<td>{{ details['modes'][item]['distance']['text'] }}</td>
+							<td>{{ details['modes'][item]['duration']['text'] }}</td>
+						{% endif %}
 					{% endif %}
+				</tr>
+				{% endfor %}
+				{% endif %}
+			</table>
+			<div class="ui grid">
+				<div class="sixteen wide column">
+					<div class="ui label big fluid" style="text-align: center;">{{distance_range}} <i class="fa fa-info-circle" data-content="Distance range for the above transport modes."></i></div>
 				</div>
-			</div>
-		</div>
-		<div class="eight wide column" style="align-self: stretch; margin: 0; padding: 0;">
-			<div class="ui container compact" id="map_container">
-				<iframe id="map_iframe" loading="lazy" allowfullscreen src={{map_query}} style="border-radius: 40px"></iframe>
-				<div id="map"></div>
-			</div>
-		</div>
-		<div class="four wide column">
-			<div class="ui segment">
-				{% if route_exists %}
-				<div class="ui dividing header">
-					<i class="fa fa-chart-area"></i>
-					Route Statistics
+				<div class="eight wide column" style="margin: 0; padding: 7px;">
+					<button style="margin: 0;" class="ui fluid button green theme-4" id="search_carpool_btn"><i class="fa-brands fa-searchengin"></i> Search for Carpools</button>
 				</div>
-				<table class="ui very basic celled table" style="text-align: center; width: 100%;">
+				<div class="eight wide column" style="margin: 0; padding: 7px;">
+					<button style="margin: 0;" class="ui fluid button green theme-4" id="create_carpool_btn"><i class="fa-solid fa-car"></i> Create a Carpool Offer</button>
+				</div>
+			</div>			
+
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="ui container compact" id="map_container">
+		<iframe id="map_iframe" loading="lazy" allowfullscreen src={{map_query}} style="border-radius: 40px"></iframe>
+		<div id="map"></div>
+	</div>
+	
+	<div class="ui segment" id="right-side-menu">
+		{% if route_exists %}
+		<div class="ui dividing header">
+			<i class="fa fa-chart-area"></i>
+			Route Statistics
+		</div>
+		<table class="ui very basic celled table" style="text-align: center; width: 100%;">
+			<tr>
+				<td width=50%>
+					<i class="leaf icon"></i> CO2 Emissions:
+					<br>
+					{{co2_emissions}}{% if co2_emissions != "Unknown" %} kg{% endif %}
+				</td>
+				<td>
+					<i class="pound sign icon"></i> Fuel Cost ({{car_make}}):
+					<br>
+					£{{fuel_cost}}
+				</td>
+			</tr>
+		</table>
+		<div class="ui list">
+			<div class="item">
+				<table class="ui very basic table" style="text-align: center; width: 100%;">
 					<tr>
 						<td width=50%>
-							<i class="leaf icon"></i> CO2 Emissions:
-							<br>
-							{{co2_emissions}}{% if co2_emissions != "Unknown" %} kg{% endif %}
+							Average Fuel Cost (UK)
 						</td>
 						<td>
-							<i class="pound sign icon"></i> Fuel Cost ({{car_make}}):
-							<br>
-							£{{fuel_cost}}
+							£{{fuel_price}}
 						</td>
 					</tr>
 				</table>
-				<div class="ui list">
-					<div class="item">
-						<table class="ui very basic table" style="text-align: center; width: 100%;">
-							<tr>
-								<td width=50%>
-									Average Fuel Cost (UK)
-								</td>
-								<td>
-									£{{fuel_price}}
-								</td>
-							</tr>
-						</table>
-					</div>
-					<div class="item">
-						<table class="ui very basic table" style="text-align: center; width: 100%;">
-							<tr>
-								<td width=50%>
-									Fuel Used (Litres)
-								</td>
-								<td>
-									{{fuel_used}}
-								</td>
-							</tr>
-						</table>
-					</div>
-					{% if min_distance != -1 %}
-						{% if min_distance < 25000 %}
-							<br>
-							<div class="item">
-								<i class="fa fa-info-circle" data-content="Everyone burns calories at different rates depending on weight
-								and intensity of activity, but here's an estimate of how many calories you could burn.&#10;"></i>
-								Calories Burned (<a href="https://bupa.co.uk/health-information/tools-calculators/calories-calculator" target="_blank">Source</a>)
-							</div>
-							<table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
-							{% for item, value in calories.items() %}
-								<tr>
-									{% if item.capitalize() == 'Walking' %}
-										{% if details['modes']['walking']['distance'] is not none and details['modes']['walking']['distance']['value'] < 5000 %}
-											<td>{{ item.capitalize() }}</td>
-											<td>~ {{ value }} kcal</td>
-										{% endif %}
-									{% elif item.capitalize() == 'Running' %}
-										{% if details['modes']['walking']['distance'] is not none and details['modes']['walking']['distance']['value'] < 10000 %}
-											<td>{{ item.capitalize() }}</td>
-											<td>~ {{ value }} kcal</td>
-										{% endif %}
-									{% elif item.capitalize() == 'Cycling' %}
-										{% if details['modes']['walking']['distance'] is not none and details['modes']['cycling']['distance']['value'] < 25000 %}
-											<td>{{ item.capitalize() }}</td>
-											<td>~ {{ value }} kcal</td>
-										{% endif %}
-									{% endif %}
-								</tr>
-							{% endfor %}
-							</table>
-						{% endif %}
-					{% endif %}
-					{% if recommendations|length > 0 %}
-					<div class="item">
-						Recommendations
-						<div class="ui bulleted list">
-							{% for r in recommendations %}
-								<div class="item">
-								{{r|safe}}
-								</div>
-							{% endfor %}
-						</div>	
-					</div>
-					{% endif %}
-				</div>
-				{% else %}
-
-				Find a path first to see route statistics.
-
-				{% endif %}
 			</div>
+			<div class="item">
+				<table class="ui very basic table" style="text-align: center; width: 100%;">
+					<tr>
+						<td width=50%>
+							Fuel Used (Litres)
+						</td>
+						<td>
+							{{fuel_used}}
+						</td>
+					</tr>
+				</table>
+			</div>
+			{% if min_distance != -1 %}
+				{% if min_distance < 25000 %}
+					<br>
+					<div class="item">
+						<i class="fa fa-info-circle" data-content="Everyone burns calories at different rates depending on weight
+						and intensity of activity, but here's an estimate of how many calories you could burn.&#10;"></i>
+						Calories Burned (<a href="https://bupa.co.uk/health-information/tools-calculators/calories-calculator" target="_blank">Source</a>)
+					</div>
+					<table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
+					{% for item, value in calories.items() %}
+						<tr>
+							{% if item.capitalize() == 'Walking' %}
+								{% if details['modes']['walking']['distance'] is not none and details['modes']['walking']['distance']['value'] < 5000 %}
+									<td>{{ item.capitalize() }}</td>
+									<td>~ {{ value }} kcal</td>
+								{% endif %}
+							{% elif item.capitalize() == 'Running' %}
+								{% if details['modes']['walking']['distance'] is not none and details['modes']['walking']['distance']['value'] < 10000 %}
+									<td>{{ item.capitalize() }}</td>
+									<td>~ {{ value }} kcal</td>
+								{% endif %}
+							{% elif item.capitalize() == 'Cycling' %}
+								{% if details['modes']['walking']['distance'] is not none and details['modes']['cycling']['distance']['value'] < 25000 %}
+									<td>{{ item.capitalize() }}</td>
+									<td>~ {{ value }} kcal</td>
+								{% endif %}
+							{% endif %}
+						</tr>
+					{% endfor %}
+					</table>
+				{% endif %}
+			{% endif %}
+			{% if recommendations|length > 0 %}
+			<div class="item">
+				Recommendations
+				<div class="ui bulleted list">
+					{% for r in recommendations %}
+						<div class="item">
+						{{r|safe}}
+						</div>
+					{% endfor %}
+				</div>	
+			</div>
+			{% endif %}
 		</div>
+		{% else %}
+
+		Find a path first to see route statistics.
+
+		{% endif %}
 	</div>
 </body>
 
@@ -306,6 +299,7 @@
 		font-family: "Open Sans", "Helvetica", "Montserrat", sans-serif;
 		width: 100%;
 		height: 100%;
+		overflow: hidden;
 	}
 
 	#search_btn {
@@ -330,14 +324,6 @@
 
 	#create_carpool_btn {
 		background: #74B49B;
-	}
-
-	#map_iframe {
-		width: 100%;
-		height: 100%;
-		border: 0;
-		z-index: 5;
-		padding: 2em;
 	}
 
 	#map_container {
@@ -420,7 +406,37 @@
 	}
 	
 	.active{
-		border-bottom-color: #FFFFFF !important;
+		border-bottom-color: #74B49B !important;
 	}
+
+	#map_iframe {
+		position: fixed;
+		top: 45px;
+		left: 0;
+		width: 100%;
+		height: calc(100% - 45px);
+		z-index: 2;
+		margin: 0;
+		padding: 0;
+		border-radius: 0 !important;
+	}
+
+	#left-side-menu {
+		position: fixed;
+		top: 60px;
+		left: 20px;
+		z-index: 5;
+		max-width: 25%;
+	}
+
+	#right-side-menu {
+		position: fixed;
+		top: 60px;
+		right: 20px;
+		z-index: 5;
+		max-width: 25%;
+	}
+
+
 
 </style>
