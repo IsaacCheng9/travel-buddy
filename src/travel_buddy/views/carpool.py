@@ -231,7 +231,7 @@ def view_carpool_journey(journey_id: int):
         avatar=helper_general.get_user_avatar(driver),
         rating_average=average_rating,
         rating_count=total_ratings,
-        icons=helper_carpool.get_icons(description)
+        icons=helper_carpool.get_icons(description),
     )
 
 

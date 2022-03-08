@@ -12,11 +12,12 @@ import travel_buddy.helpers.helper_routes as helper_routes
 
 DB_PATH = helper_general.get_database_path()
 
+
 def get_icons(description):
     """
     Get the icons for the carpool description
     """
-    
+
     description = description.lower()
 
     icons = ""
@@ -26,7 +27,6 @@ def get_icons(description):
 
     return icons
 
-    
 
 def validate_carpool_request(
     num_passengers: int,
