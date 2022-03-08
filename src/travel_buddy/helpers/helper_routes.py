@@ -3,13 +3,34 @@ import sqlite3
 from datetime import datetime, timedelta
 from time import sleep
 from typing import Tuple
-
+from flask import session
 import googlemaps
 import requests
 import travel_buddy.helpers.helper_general as helper_general
 from lxml import html
 
 DB_PATH = helper_general.get_database_path()
+
+
+def get_most_frequent_route():
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT route_id, origin, destination FROM route WHERE route_id=(SELECT route_id FROM route_search WHERE search_count=(SELECT MAX(search_count) FROM route_search WHERE username=?) AND username=?);",
+            (session["username"], session["username"]),
+        )
+        row = cur.fetchone()
+        return row
+
+
+def get_home_and_work():
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT home, work FROM profile WHERE username=?;", (session["username"],)
+        )
+        row = cur.fetchone()
+        return row
 
 
 def generate_client(api_key: str) -> object:
