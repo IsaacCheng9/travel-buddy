@@ -189,6 +189,7 @@ def routes() -> object:
             co2_list,
             calories,
             fuel_cost_driving,
+            fuel_type
         )
 
         helper_routes.save_route(session.get("username", "unknown"), address1, address2)
