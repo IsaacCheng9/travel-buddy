@@ -10,8 +10,6 @@ import travel_buddy.helpers.helper_general as helper_general
 from flask import Blueprint, redirect, render_template, request, session
 from travel_buddy.helpers.helper_limiter import limiter
 
-# from random import randint
-
 import sqlite3
 
 carpool_blueprint = Blueprint(
