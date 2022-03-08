@@ -540,8 +540,8 @@ def append_ev_recommendation(distance, petrol_cost) -> str:
     if saved > 0:
         return (
             "Have you thought about buying an electric car? "
-            "an extimate for the electricity cost of this route "
-            f"is <b>£{fuel_cost_ev}</b>, thats a saving of <b>£{saved_2dp}</b>!"
+            "An estimate for the electricity cost of this route "
+            f"is <b>£{fuel_cost_ev}</b>, that's a saving of <b>£{saved_2dp}</b>!"
         )
     else:
         return ""
