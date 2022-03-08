@@ -10,8 +10,6 @@ import travel_buddy.helpers.helper_general as helper_general
 from flask import Blueprint, redirect, render_template, request, session
 from travel_buddy.helpers.helper_limiter import limiter
 
-import sqlite3
-
 carpool_blueprint = Blueprint(
     "carpool", __name__, static_folder="static", template_folder="templates"
 )
@@ -35,19 +33,16 @@ def show_available_carpools():
         return redirect("/")
 
     autocomplete_query = helper_general.get_autocomplete_query(
-        filename="keys.json", func="autocomple_no_map"
+        filename="keys.json", func="autocomplete_no_map"
     )
 
     if request.method == "GET":
         incomplete_carpools = helper_carpool.get_incomplete_carpools()
-
         return render_template(
             "carpools.html",
+            username=session.get("username"),
             carpools=incomplete_carpools,
             autocomplete_query=autocomplete_query,
-            interested_list=helper_carpool.get_user_interested_carpools(
-                session["username"]
-            ),
         )
 
     if request.method == "POST":
@@ -78,6 +73,16 @@ def show_available_carpools():
 
         # Displays errors if the submitted carpool ride is invalid.
         if valid:
+            (
+                distance,
+                distance_text,
+                duration,
+                duration_text,
+                co2_pp,
+                co2_saved,
+            ) = helper_carpool.estimate_carpool_details(
+                starting_point, destination, num_seats + 1, "keys.json"
+            )
             helper_carpool.add_carpool_ride(
                 session["username"],
                 num_seats,
@@ -87,25 +92,19 @@ def show_available_carpools():
                 price,
                 description,
                 distance,
+                distance_text,
                 duration,
-                co2,
+                duration_text,
+                co2_pp,
+                co2_saved,
             )
-            return render_template(
-                "carpools.html",
-                carpools=incomplete_carpools,
-                autocomplete_query=autocomplete_query,
-                interested_list=helper_carpool.get_user_interested_carpools(
-                    session["username"]
-                ),
-            )
+            return redirect("/carpools")
         return render_template(
             "carpools.html",
+            username=session.get("username"),
             errors=errors,
             carpools=incomplete_carpools,
             autocomplete_query=autocomplete_query,
-            interested_list=helper_carpool.get_user_interested_carpools(
-                session["username"]
-            ),
         )
 
 
@@ -167,44 +166,42 @@ def view_carpool_journey(journey_id: int):
         id,
         driver,
         is_complete,
+        seats_initial,
         seats_available,
         starting_point,
         destination,
         pickup_datetime,
         price,
         description,
-        distance,
-        duration,
-        estimate_co2,
+        distance_text,
+        duration_text,
+        co2_pp,
+        co2_saved,
     ) = carpool_details
 
-    rating_average, rating_count = helper_general.get_user_rating(driver)
+    # Displays price with two decimal places.
+    price = format(price, ".2f")
 
-    interested_carpools_list = helper_carpool.get_user_interested_carpools(
-        session["username"]
-    )
-
-    is_interested = int(journey_id) in interested_carpools_list
+    # Gets the list of passengers for the carpool.
+    passenger_list = helper_carpool.get_passenger_list(journey_id)
 
     return render_template(
         "view_carpool.html",
+        username=session.get("username"),
         driver=driver,
         is_complete=is_complete,
+        seats_initial=seats_initial,
         seats_available=seats_available,
         starting_point=starting_point,
         destination=destination,
         pickup_datetime=pickup_datetime,
         price=price,
         description=description,
-        distance=distance,
-        duration=duration,
-        estimate_co2=estimate_co2,
-        avatar=helper_general.get_user_avatar(driver),
-        is_verified=helper_general.is_user_verified(driver),
-        rating_average=rating_average,
-        rating_count=rating_count,
-        is_interested=is_interested,
-        journey_id=journey_id,
+        distance_text=distance_text,
+        duration_text=duration_text,
+        co2_pp=co2_pp,
+        co2_saved=co2_saved,
+        passenger_list=passenger_list,
     )
 
 

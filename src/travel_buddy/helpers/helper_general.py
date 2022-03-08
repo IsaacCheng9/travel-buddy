@@ -169,3 +169,14 @@ def get_autocomplete_query(**kwargs):
         if not kwargs.get("key"):
             kwargs["key"] = get_keys(kwargs.get("filename")).get("google_maps")
         return f"https://maps.googleapis.com/maps/api/js?key={kwargs['key']}&callback={kwargs.get('func')}&libraries=places&v=weekly"
+
+
+def co2_to_trees(co2: float, days: int) -> float:
+    """
+    Convert kilograms of CO2 to tree offset for day period
+    Source: https://www.viessmann.co.uk/heating-advice/how-much-co2-does-tree-absorb
+    """
+    yearly_offset = 21
+    daily_offset = yearly_offset / 365
+    required_trees = co2 / (daily_offset * days)
+    return round(required_trees, 2)
