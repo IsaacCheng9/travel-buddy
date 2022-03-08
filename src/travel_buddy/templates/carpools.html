@@ -44,6 +44,7 @@
         </a>
     </div>
     <div class="ui container">
+        <div class="top-padding"></div>
         <div class="ui grid divided stackable">
             {% if errors %}
             <div class="row">
@@ -177,7 +178,7 @@
 </script>
 
 <script>
-    const current_interested_ids = {{interested_list | tojson}};
+    const current_interested_ids = "{{interested_list | tojson}}";
 
     for (var id of current_interested_ids){
         ToggleInterestUI(id, true);
@@ -241,5 +242,17 @@
 
     body {
 		background-color: #F4F9F4;
+	}
+
+    .top-padding {
+        padding-top: 20px;
+    }
+
+	.item{
+		color: #FFFFFF !important;	
+	}
+	
+	.active{
+		border-bottom-color: #FFFFFF !important;
 	}
 </style>
