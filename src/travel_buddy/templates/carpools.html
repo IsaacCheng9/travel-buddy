@@ -134,7 +134,11 @@
                         {{ride[1]}}
                         <br>
                         <i class="icon star"></i>
+                        {% if ride[12] != None%}
                         {{ride[12]}} ({{ride[13]}})
+                        {%else%}
+                        Not enough ratings
+                        {%endif%}
                     </div>
                     <div class="five wide column" style="text-align: right;">
                         <i class="fa-solid fa-ban-smoking"></i>
