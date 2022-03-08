@@ -42,7 +42,13 @@ def show_available_carpools():
     interested_list = helper_carpool.get_user_interested_carpools(session["username"])
 
     if request.method == "GET":
-        incomplete_carpools = helper_carpool.get_incomplete_carpools()
+        incomplete_carpools = [list(c) for c in helper_carpool.get_incomplete_carpools()]
+        for i, c in enumerate(incomplete_carpools):
+            incomplete_carpools[i][6] = format(c[6], ".2f")
+            start_time_obj = helper_carpool.get_datetime_obj(c[5])
+            incomplete_carpools[i][5] = helper_carpool.format_start_time(start_time_obj)
+            incomplete_carpools[i].append(helper_carpool.get_end_time(start_time_obj, c[10]))
+
 
         return render_template(
             "carpools.html",

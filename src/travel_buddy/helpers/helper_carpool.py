@@ -4,7 +4,7 @@ Helper functions for the carpool system and related functionality.
 
 
 import sqlite3
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List, Tuple
 
 import travel_buddy.helpers.helper_general as helper_general
@@ -265,10 +265,12 @@ def get_incomplete_carpools() -> List[
                     c.seats_available,
                     c.starting_point,
                     c.destination,
-                    strftime('%H:%M', c.pickup_datetime),
+                    c.pickup_datetime,
                     c.price,
                     c.description,
+                    c.distance,
                     c.distance_text,
+                    c.estimate_duration,
                     c.estimate_duration_text,
                     c.estimate_co2_per_person,
                     c.estimate_co2_saved,
@@ -632,3 +634,22 @@ def get_money_saved(username: str) -> float:
     total_money_saved = round(money_saved_driving + money_saved_joining, 2)
 
     return total_money_saved
+
+def get_datetime_obj(t: str):
+    """
+    Return a datetime object from a datetime string
+    """
+    return datetime.strptime(t, "%Y-%m-%d %H:%M:%S")
+
+def format_start_time(start_time: object):
+    """
+    Return hours and minutes from a datetime object
+    """
+    return datetime.strftime(start_time, '%H:%M')
+
+def get_end_time(start_time: object, duration: int) -> str:
+    """
+    Return the estimated end time based on the start time and duration in seconds
+    """
+    end_time = start_time + timedelta(seconds=round(duration/60)*60)
+    return datetime.strftime(end_time, '%H:%M')
