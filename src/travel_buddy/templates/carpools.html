@@ -21,24 +21,23 @@
 <body>
     <!-- make a menu with options to create car pool and search car pools -->
     <div class="ui secondary pointing menu big nav">
-        <a class="item" href="/profile">
+        <a class="white-overlay item" href="/profile">
             <i class="user icon"></i>
             <div class="mobile hidden">Profile</div>
         </a>
-        
-        <a class="item" href="/routes">
+        <a class="white-overlay item" href="/routes">
             <i class="map icon"></i>
             <div class="mobile hidden">Route Analysis</div>
         </a>
-        <a class="item active" href="/carpools">
+        <a class="white-overlay item active" href="/carpools">
             <i class="car icon"></i>
             <div class="mobile hidden">Carpools</div>
         </a>
-        <a class="item" href="/settings">
+        <a class="white-overlay item" href="/settings">
             <i class="settings icon"></i>
             <div class="mobile hidden">Settings</div>
         </a>
-        <a class="item right" href="/logout">
+        <a class="white-overlay item right" href="/logout">
             <i class="sign out alternate icon"></i>
             <div class="mobile hidden">Log out of {{username}}</div>
         </a>
@@ -248,11 +247,7 @@
         padding-top: 20px;
     }
 
-	.item{
+    .white-overlay{
 		color: #FFFFFF !important;	
-	}
-	
-	.active{
-		border-bottom-color: #FFFFFF !important;
 	}
 </style>
