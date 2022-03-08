@@ -310,7 +310,7 @@ def get_recommendations(
     co2_list: dict,
     calories: dict,
     fuel_cost: float,
-    fuel_type: str
+    fuel_type: str,
 ) -> list:
     """
     Generates recommendation points relevant to the journey the user is viewing
@@ -487,7 +487,10 @@ def get_recommendations(
                     )
             if fuel_type.lower() != "electric":
                 body.append(
-                    append_ev_recommendation(safeget(route_details, "driving", "distance", "value"), float(fuel_cost))
+                    append_ev_recommendation(
+                        safeget(route_details, "driving", "distance", "value"),
+                        float(fuel_cost),
+                    )
                 )
 
     return body
@@ -520,6 +523,7 @@ def append_cycle_walk_str(time_1: int, time_2: int, mode: str) -> str:
             f"complete the journey <b>{extra_time} faster</b>! Also, "
         )
 
+
 def append_ev_recommendation(distance, petrol_cost) -> str:
     """
     Return a string on information on electric vehicle recommendation
@@ -541,6 +545,7 @@ def append_ev_recommendation(distance, petrol_cost) -> str:
         )
     else:
         return ""
+
 
 def save_route(username: str, origin: str, destination: str):
     """
