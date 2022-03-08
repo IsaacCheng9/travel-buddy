@@ -30,19 +30,23 @@ def settings() -> object:
     with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
         cur.execute(
-            "SELECT first_name, last_name, is_driver, bio, photo, verified "
+            "SELECT first_name, last_name, is_driver, bio, photo, verified, home, work "
             "FROM profile WHERE username=?;",
             (session["username"],),
         )
-        first_name, last_name, is_driver, bio, photo, verified = cur.fetchone()
+        first_name, last_name, is_driver, bio, photo, verified, home, work = cur.fetchone()
         cur.execute(
             "SELECT make, mpg, fuel_type, engine_size " "FROM car WHERE owner=?;",
             (session["username"],),
         )
         make, mpg, fuel_type, engine_size = cur.fetchone()
+        autocomplete_query = helper_general.get_autocomplete_query(
+            filename="keys.json", func="autocomplete_no_map"
+        )
     return render_template(
         "settings.html",
         username=session.get("username"),
+        autocomplete_query=autocomplete_query,
         bio=bio,
         first_name=first_name,
         last_name=last_name,
@@ -53,6 +57,8 @@ def settings() -> object:
         mpg=mpg,
         fuel_type=fuel_type,
         engine_size=engine_size,
+        home=home,
+        work=work
     )
 
 
@@ -73,6 +79,8 @@ def edit_user_details() -> object:
     new_bio = request.args.get("bio")
     new_f_name = request.args.get("f_name")
     new_l_name = request.args.get("l_name")
+    new_home = request.args.get("home")
+    new_work = request.args.get("work")
 
     if len(new_bio) > 180:
         return "405"
@@ -85,10 +93,16 @@ def edit_user_details() -> object:
 
     with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
-        cur.execute(
-            "UPDATE profile SET bio=?, first_name=?, last_name=? WHERE username=?;",
-            (new_bio, new_f_name, new_l_name, session["username"]),
-        )
+        if new_home is not None and new_work is not None:
+            cur.execute(
+                "UPDATE profile SET bio=?, first_name=?, last_name=?, home=?, work=? WHERE username=?;",
+                (new_bio, new_f_name, new_l_name, new_home, new_work, session["username"]),
+            )
+        else:
+            cur.execute(
+                "UPDATE profile SET bio=?, first_name=?, last_name=? WHERE username=?;",
+                (new_bio, new_f_name, new_l_name, session["username"]),
+            )
 
     return "200"
 
