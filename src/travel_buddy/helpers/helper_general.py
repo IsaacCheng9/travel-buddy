@@ -12,6 +12,8 @@ import requests
 from lxml import html
 import sqlite3
 
+import random
+
 from PIL import Image
 
 
@@ -189,8 +191,9 @@ def get_electric_cars():
             '//*[@id="evdb"]/main/div[2]/div[3]/div/div/div[1]/a/img/@data-src'
         )
     ]
-    cars = list(zip(make, models, price, efficiencies, images))[:10]
-    return cars
+    cars = list(zip(make, models, price, efficiencies, images))
+
+    return random.sample(cars, 10)
 
 
 def get_autocomplete_query(**kwargs):
