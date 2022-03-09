@@ -22,6 +22,7 @@
 
 <body>
 	<div class="ui secondary pointing menu big nav">
+		<div class="item"><img src="../static/logos/nav logo.png" style="width:7.5em; user-select: none;" ondragstart="return false;"></div>
 		<a class="item" href="/profile">
 			<i class="user icon"></i>
 			<div class="mobile hidden">Profile</div>
@@ -101,6 +102,20 @@
 					</div>
 					<button class="ui button black fluid" id="search_btn" style="font-size: 1.2em;"><i class="fa-brands fa-searchengin"></i> Search</button>
 				</form>
+				{% if home_and_work[0] != '' and home_and_work[1] != '' %}
+				<form action="/routes" method="POST">
+					<div class="field frequent">
+						<input type="hidden" id="home_start_point" name="start_point" value="{{ home_and_work[0] }}">
+						<input type="hidden" id="home_destination" name="destination" value="{{ home_and_work[1] }}">
+						<input type="hidden" id="mode" name="mode" value="driving">
+						<div>
+							<div class="field frequent"><label id="home_header" style="float:left;">Home to Work</label><a href="#"><i class="exchange icon" onclick='workswitch();' style="float:left; margin-left:1rem; margin-bottom: 0rem;"></i></a></div>
+							<label style="float:right;"><a href="../settings">Edit</a></label>
+						</div>
+						<button class="ui button black fluid" id="home_btn" style="font-size: 1.2em;">{{ home_and_work[0]|truncate(19,true) }} to {{ home_and_work[1]|truncate(19,true) }} <i class="fa fa-info-circle" data-content="{{ home_and_work[0] }} to {{ home_and_work[1] }}"></i></button>
+					</div>
+				</form>
+				{% endif %}
 				{% if most_frequent_route is not none %}
 				<form action="/routes" method="POST">
 					<div class="field frequent">
@@ -109,20 +124,6 @@
 						<input type="hidden" id="mode" name="mode" value="driving">
 						<label>Your Most Frequently Taken Route</label>
 						<button class="ui button black fluid" id="frequent_btn" style="font-size: 1.2em;">{{ most_frequent_route[1]|truncate(19,true) }} to {{ most_frequent_route[2]|truncate(19,true) }} <i class="fa fa-info-circle" data-content="{{ most_frequent_route[1] }} to {{ most_frequent_route[2] }}"></i></button>
-					</div>
-				</form>
-				{% endif %}
-				{% if home_and_work[0] != '' and home_and_work[1] != '' %}
-				<form action="/routes" method="POST">
-					<div class="field frequent">
-						<input type="hidden" id="home_start_point" name="start_point" value="{{ home_and_work[0] }}">
-						<input type="hidden" id="home_destination" name="destination" value="{{ home_and_work[1] }}">
-						<input type="hidden" id="mode" name="mode" value="driving">
-						<div>
-							<div class="field frequent"><label id="home_header" style="float:left;">Home to Work</label><i class="exchange icon" onclick='workswitch();' style="float:left; margin-left:1rem; margin-bottom: 0rem;"></i></div>
-							<label style="float:right;"><a href="../settings">Edit</a></label>
-						</div>
-						<button class="ui button black fluid" id="home_btn" style="font-size: 1.2em;">{{ home_and_work[0]|truncate(19,true) }} to {{ home_and_work[1]|truncate(19,true) }} <i class="fa fa-info-circle" data-content="{{ home_and_work[0] }} to {{ home_and_work[1] }}"></i></button>
 					</div>
 				</form>
 				{% endif %}
