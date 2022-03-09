@@ -514,7 +514,7 @@ def get_recommendations(
                     append_ev_recommendation(
                         safeget(route_details, "driving", "distance", "value"),
                         float(fuel_cost),
-                        co2_list.get('driving'),
+                        co2_list.get("driving"),
                     )
                 )
 
