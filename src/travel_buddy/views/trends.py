@@ -20,9 +20,12 @@ def trends():
     if "username" not in session:
         return redirect("/")
 
-    user_car_make, user_car_mpg, user_fuel_type, user_engine_size = helper_routes.get_car(
-        session.get("username")
-    )
+    (
+        user_car_make,
+        user_car_mpg,
+        user_fuel_type,
+        user_engine_size,
+    ) = helper_routes.get_car(session.get("username"))
 
     evs = helper_general.get_best_efficiency_electric(
         helper_general.get_electric_cars()
@@ -38,10 +41,16 @@ def trends():
     user_fuel_used_1_month = helper_routes.calculate_fuel_used(
         1000, float(user_car_mpg)
     )
-    user_fuel_cost_1_month = helper_routes.calculate_fuel_cost(user_fuel_used_1_month, fuel_price)
+    user_fuel_cost_1_month = helper_routes.calculate_fuel_cost(
+        user_fuel_used_1_month, fuel_price
+    )
 
-    user_fuel_costs = ["{:,}".format(round(user_fuel_cost_1_month * x)) for x in denominations]
-    user_co2_emissions = ["{:,}".format(round(user_co2_emissions_1_month * x)) for x in denominations]
+    user_fuel_costs = [
+        "{:,}".format(round(user_fuel_cost_1_month * x)) for x in denominations
+    ]
+    user_co2_emissions = [
+        "{:,}".format(round(user_co2_emissions_1_month * x)) for x in denominations
+    ]
 
     if request.method == "GET":
         return render_template(
@@ -56,7 +65,7 @@ def trends():
             user_fuel_costs=user_fuel_costs,
             user_co2_emissions=user_co2_emissions,
         )
-    
+
     elif request.method == "POST":
 
         car = request.form.get("car")
@@ -68,13 +77,17 @@ def trends():
         fuel_cost_1_month = helper_general.get_ev_cost_1_month(wpm, 1000)
         print(fuel_cost_1_month)
 
-        fuel_costs = ["{:,}".format(round(fuel_cost_1_month * x)) for x in denominations]
-        
+        fuel_costs = [
+            "{:,}".format(round(fuel_cost_1_month * x)) for x in denominations
+        ]
+
         watts_required = helper_general.get_watts_required(wpm, 1000)
         co2_emissions_1_month = helper_general.get_ev_co2_1_month(watts_required)
         print(co2_emissions_1_month)
 
-        co2_emissions = ["{:,}".format(round(co2_emissions_1_month * x)) for x in denominations]
+        co2_emissions = [
+            "{:,}".format(round(co2_emissions_1_month * x)) for x in denominations
+        ]
 
         return render_template(
             "trends.html",

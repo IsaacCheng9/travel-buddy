@@ -195,8 +195,10 @@ def get_electric_cars():
 
     return random.sample(cars, 10)
 
+
 def get_watts_required(wpm, distance):
     return wpm * distance
+
 
 def get_ev_cost_1_month(wpm, distance):
     """
@@ -206,6 +208,7 @@ def get_ev_cost_1_month(wpm, distance):
     watts_required = wpm * distance
     return price_per_watt * watts_required
 
+
 def get_ev_co2_1_month(watts):
     """
     Source: https://bulb.co.uk/carbon-tracker/
@@ -213,6 +216,7 @@ def get_ev_co2_1_month(watts):
     co2_kg_per_w = 0.000233
     print(watts)
     return co2_kg_per_w * watts
+
 
 def get_best_efficiency_electric(cars):
     sorted_efficiency = sorted(cars, key=lambda tup: tup[3], reverse=True)
