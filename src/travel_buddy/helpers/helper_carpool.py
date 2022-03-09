@@ -671,6 +671,7 @@ def get_end_time_obj(start_time: object, duration: int) -> object:
     """
     return start_time + timedelta(seconds=round(duration / 60) * 60)
 
+
 def get_end_time(emd_time_obj: object) -> str:
     """
     Return the estimated end time string
