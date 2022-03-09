@@ -352,15 +352,16 @@ def get_recommendations(
             f"<b>{co2_list.get('driving', 0)}kg</b> of CO2 compared to if you "
             "drove this journey!"
         )
-        trees = helper_general.co2_to_trees(round(co2_list["driving"] * 40, 2), 30)
-        body.append(
-            "Is this your daily commute? Cycling this journey twice every week day for "
-            "one month would save about "
-            f"<b>{round(co2_list.get('driving', 0) * 40, 2)} kg</b> of CO2 "
-            f"emissions!<br> That's the same as the amount of oxygen <b>{trees}</b> "
-            "trees offset in a month! "
-            "(<a href='https://www.viessmann.co.uk/heating-advice/how-much-co2-does-tree-absorb' target='_blank'>Source</a>)"
-        )
+        if safeget(route_details, "walking", "distance", "value") > 25000:
+            trees = helper_general.co2_to_trees(round(co2_list["driving"] * 40, 2), 30)
+            body.append(
+                "Is this your daily commute? Cycling this journey twice every week day for "
+                "one month would save about "
+                f"<b>{round(co2_list.get('driving', 0) * 40, 2)} kg</b> of CO2 "
+                f"emissions!<br> That's the same as the amount of oxygen <b>{trees}</b> "
+                "trees offset in a month! "
+                "(<a href='https://www.viessmann.co.uk/heating-advice/how-much-co2-does-tree-absorb' target='_blank'>Source</a>)"
+            )
 
     elif travel_mode_simple == "walking":
         body.append(
