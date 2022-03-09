@@ -171,6 +171,13 @@
                         <div class="content">
                             {{user_engine_size}}L
                         </div>
+                        <h4 class="ui sub header">Monthly Miles <i class="fa-solid fa-map" style="padding-left: 0.5rem; color:black !important;"></i></h4>
+                        <div class="content">
+                          Expected monthy miles
+                          <div class="ui input">
+                            <input type="text" value=1000 name="monthly_miles">
+                          </div>
+                        </div>
                     </div>
                 </div>
 
@@ -210,6 +217,12 @@
                             data-index="{{loop.index}}"
                             onclick="CompareCar(this);"
                             class="ui button fluid green bottom attached theme-4 car-btn-compare">Compare {{ ev[0] }} {{ ev[1] }}</button>
+                  <!--
+                  <form action="/trends" method="POST" id="form1">
+                    <input type="hidden" value="{{ev[0]}} {{ev[1]}}" name="car">
+                    <input type="hidden" value="{{ev[3]}}" name="wpm">
+                    <button class="ui button fluid green bottom attached theme-4">Compare {{ ev[0] }} {{ ev[1] }}</button>
+                  </form>-->
                 </div>
                 <div class="ui hidden divider"></div>
                 {% endfor %}

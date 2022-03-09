@@ -214,7 +214,6 @@ def get_ev_co2_1_month(watts):
     Source: https://bulb.co.uk/carbon-tracker/
     """
     co2_kg_per_w = 0.000233
-    print(watts)
     return co2_kg_per_w * watts
 
 
