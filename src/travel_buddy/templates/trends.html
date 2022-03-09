@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<head>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,300' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="../static/css/mobile.css">
+
+    <link rel="stylesheet" href="../static/css/trends.css" />
+
+	<title>Travel Buddy - Trends</title>
+</head>
+
+<body>
+	<div class="ui secondary pointing menu big nav">
+        <div class="item"><img src="../static/logos/nav logo.png" style="width:7.5em; user-select: none;" ondragstart="return false;"></div>
+		<a class="item" href="/profile">
+			<i class="user icon"></i>
+			<div class="mobile hidden">Profile</div>
+		</a>
+		<a class="item" href="/routes">
+			<i class="map icon"></i>
+			<div class="mobile hidden">Route Analysis</div>
+		</a>
+		<a class="item" href="/carpools">
+			<i class="car icon"></i>
+			<div class="mobile hidden">Carpools</div>
+		</a>
+        <a class="item active" href="/trends">
+			<i class="question icon"></i>
+			<div class="mobile hidden">My Trends</div>
+		</a>
+		<a class="item" href="/settings">
+			<i class="settings icon"></i>
+			<div class="mobile hidden">Settings</div>
+		</a>
+		<a class="item right" href="/logout">
+			<i class="sign out alternate icon"></i>
+			<div class="mobile hidden">Log Out of {{username}}</div>
+		</a>
+	</div>
+
+    <div class="ui container">
+        <div class="top-padding"></div>
+
+        <div class="ui four cards" >
+            <div class="ui card">
+                <div class="content">
+                    <div class="header">Your {{car_make}}</div>
+                </div>
+                <div class="content">
+                    <h4 class="ui sub header">Miles per Gallon</h4>
+                    <div class="content">
+                        {{car_mpg}}
+                    </div>
+                    <h4 class="ui sub header">Fuel Type</h4>
+                    <div class="content">
+                        {{fuel_type}}
+                    </div>
+                    <h4 class="ui sub header">Engine Size</h4>
+                    <div class="content">
+                        {{engine_size}}
+                    </div>
+                </div>
+                <div class="extra content">
+                    <a href="{{ url_for('trends.show_car', car=car_make, mpg=car_mpg, fuel=fuel_type, engine=engine_size) }}">
+                        <button class="ui button">View {{car_make}}</button>
+                    </a>  
+                </div>
+            </div>
+            <div class="ui card">
+                <div class="content">
+                    <div class="header">Renault Clio</div>
+                </div>
+                <div class="content">
+                    <h4 class="ui sub header">Miles per Gallon</h4>
+                    <div class="content">
+                        51
+                    </div>
+                    <h4 class="ui sub header">Fuel Type</h4>
+                    <div class="content">
+                        Petrol
+                    </div>
+                    <h4 class="ui sub header">Engine Size</h4>
+                    <div class="content">
+                        1.0
+                    </div>
+                </div>
+                <div class="extra content">
+                    <a href="{{ url_for('trends.show_car', car=ReanultClio, mpg=51, fuel=petrol, engine=1.0) }}">
+                        <button class="ui button">View Renault Clio</button>
+                    </a>
+                </div>
+            </div>
+            <div class="ui card">
+                <div class="content">
+                    <div class="header">Audi A1</div>
+                </div>
+                <div class="content">
+                    <h4 class="ui sub header">Miles per Gallon</h4>
+                    <div class="content">
+                        74
+                    </div>
+                    <h4 class="ui sub header">Fuel Type</h4>
+                    <div class="content">
+                        Diesel
+                    </div>
+                    <h4 class="ui sub header">Engine Size</h4>
+                    <div class="content">
+                        1.6
+                    </div>
+                </div>
+                <div class="extra content">
+                    <a href="{{ url_for('trends.show_car', car=AudiA1, mpg=74, fuel=diesel, engine=1.6) }}">
+                        <button class="ui button">View Audi A1</button>
+                    </a>
+                </div>
+            </div>
+            <div class="ui card">
+                <div class="content">
+                    <div class="header">Vauxhall Astra</div>
+                </div>
+                <div class="content">
+                    <h4 class="ui sub header">Miles per Gallon</h4>
+                    <div class="content">
+                        41
+                    </div>
+                    <h4 class="ui sub header">Fuel Type</h4>
+                    <div class="content">
+                        Petrol
+                    </div>
+                    <h4 class="ui sub header">Engine Size</h4>
+                    <div class="content">
+                        1.2
+                    </div>
+                </div>
+                <div class="extra content">
+                    <a href="{{ url_for('trends.show_car', car=VauxhallAstra, mpg=41, fuel=petrol, engine=1.2) }}">
+                        <button class="ui button">View Vauxhal Astra</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+          
+        <div class="ui segment">
+            <h2>1 month</h2>
+            <table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
+            <tr>
+                <td>
+                    <h2>
+                        £{{fuel_costs[0]}}
+                    </h2>
+                    <div>
+                        Expected Fuel Cost
+                    </div>
+                </td>
+                <td>
+                    <h2>
+                        {{co2_emissions[0]}}kg
+                    </h2>
+                    <div>
+                        Expected CO2 Emissions
+                    </div>
+                </td>
+            </tr>
+            </table>
+        </div>
+        <div class="ui segment">
+            <h2>3 months</h2>
+            <table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
+                <tr>
+                    <td>
+                        <h2>
+                            £{{fuel_costs[1]}}
+                        </h2>
+                        <div>
+                            Expected Fuel Cost
+                        </div>
+                    </td>
+                    <td>
+                        <h2>
+                            {{co2_emissions[1]}}kg
+                        </h2>
+                        <div>
+                            Expected CO2 Emissions
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="ui segment">
+            <h2>6 months</h2>
+            <table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
+                <tr>
+                    <td>
+                        <h2>
+                            £{{fuel_costs[2]}}
+                        </h2>
+                        <div>
+                            Expected Fuel Cost
+                        </div>
+                    </td>
+                    <td>
+                        <h2>
+                            {{co2_emissions[2]}}kg
+                        </h2>
+                        <div>
+                            Expected CO2 Emissions
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="ui segment">
+            <h2>1 year</h2>
+            <table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
+                <tr>
+                    <td>
+                        <h2>
+                            £{{fuel_costs[3]}}
+                        </h2>
+                        <div>
+                            Expected Fuel Cost
+                        </div>
+                    </td>
+                    <td>
+                        <h2>
+                            {{co2_emissions[3]}}kg
+                        </h2>
+                        <div>
+                            Expected CO2 Emissions
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="ui segment">
+            <h2>5 years</h2>
+            <table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
+                <tr>
+                    <td>
+                        <h2>
+                            £{{fuel_costs[4]}}
+                        </h2>
+                        <div>
+                            Expected Fuel Cost
+                        </div>
+                    </td>
+                    <td>
+                        <h2>
+                            {{co2_emissions[4]}}kg
+                        </h2>
+                        <div>
+                            Expected CO2 Emissions
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="ui segment">
+            <h2>10 years</h2>
+            <table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
+                <tr>
+                    <td>
+                        <h2>
+                            £{{fuel_costs[5]}}
+                        </h2>
+                        <div>
+                            Expected Fuel Cost
+                        </div>
+                    </td>
+                    <td>
+                        <h2>
+                            {{co2_emissions[5]}}kg
+                        </h2>
+                        <div>
+                            Expected CO2 Emissions
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+
+    <!--
+    <main>
+        <section class="home-intro">
+            
+          <div class="ui segment" style="color: black;">
+            eq2e
+          </div>
+        </section>
+  
+        <div class="home-about">
+          <h2>About us</h2>
+          <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+          <div class="columns">
+            <div class="col fade-in">
+              <h3>Lorem, ipsum.</h3>
+              <p>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vitae
+                maiores fuga eos provident voluptas perferendis.
+              </p>
+            </div>
+            <div class="col fade-in">
+              <h3>A, illo!</h3>
+              <p>
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                Voluptatibus minima quo beatae eius blanditiis officiis.
+              </p>
+            </div>
+            <div class="col fade-in">
+              <h3>Repudiandae, error?</h3>
+              <p>
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laborum
+                quasi quis doloribus quia illum laudantium.
+              </p>
+            </div>
+          </div>
+        </div>
+  
+        <div class="home-more-stuff">
+          <div class="more-stuff-grid">
+            <img
+              src="https://unsplash.it/400"
+              alt=""
+              class="slide-in from-left"
+            />
+            <p class="slide-in from-right">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis fugit,
+              quae beatae vero sit magni quaerat id ratione. Dolor optio unde amet
+              omnis sapiente neque cumque consequuntur reiciendis deserunt.
+              Dolorem vero exercitationem consequuntur, eligendi cupiditate
+              debitis facilis quibusdam magni. Eveniet.
+            </p>
+          </div>
+          <div class="more-stuff-grid">
+            <p class="slide-in from-left">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis fugit,
+              quae beatae vero sit magni quaerat id ratione. Dolor optio unde amet
+              omnis sapiente neque cumque consequuntur reiciendis deserunt.
+              Dolorem vero exercitationem consequuntur, eligendi cupiditate
+              debitis facilis quibusdam magni. Eveniet.
+            </p>
+            <img
+              src="https://unsplash.it/401"
+              alt=""
+              class="slide-in from-right"
+            />
+          </div>
+          <div class="more-stuff-grid">
+            <img
+              src="https://unsplash.it/400"
+              alt=""
+              class="slide-in from-left"
+            />
+            <p class="slide-in from-right">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis fugit,
+              quae beatae vero sit magni quaerat id ratione. Dolor optio unde amet
+              omnis sapiente neque cumque consequuntur reiciendis deserunt.
+              Dolorem vero exercitationem consequuntur, eligendi cupiditate
+              debitis facilis quibusdam magni. Eveniet.
+            </p>
+          </div>
+          <div class="more-stuff-grid">
+            <p class="slide-in from-left">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis fugit,
+              quae beatae vero sit magni quaerat id ratione. Dolor optio unde amet
+              omnis sapiente neque cumque consequuntur reiciendis deserunt.
+              Dolorem vero exercitationem consequuntur, eligendi cupiditate
+              debitis facilis quibusdam magni. Eveniet.
+            </p>
+            <img
+              src="https://unsplash.it/401"
+              alt=""
+              class="slide-in from-right"
+            />
+          </div>
+          <div class="more-stuff-grid">
+            <img
+              src="https://unsplash.it/400"
+              alt=""
+              class="slide-in from-left"
+            />
+            <p class="slide-in from-right">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis fugit,
+              quae beatae vero sit magni quaerat id ratione. Dolor optio unde amet
+              omnis sapiente neque cumque consequuntur reiciendis deserunt.
+              Dolorem vero exercitationem consequuntur, eligendi cupiditate
+              debitis facilis quibusdam magni. Eveniet.
+            </p>
+          </div>
+          <div class="more-stuff-grid">
+            <p class="slide-in from-left">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis fugit,
+              quae beatae vero sit magni quaerat id ratione. Dolor optio unde amet
+              omnis sapiente neque cumque consequuntur reiciendis deserunt.
+              Dolorem vero exercitationem consequuntur, eligendi cupiditate
+              debitis facilis quibusdam magni. Eveniet.
+            </p>
+            <img
+              src="https://unsplash.it/401"
+              alt=""
+              class="slide-in from-right"
+            />
+          </div>
+        </div>
+      </main>
+      <script src="../static/javascript/observer.js"></script>
+      -->
+</body>
+
+<style>
+    @import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
+
+    * {
+        box-sizing: border-box;
+        transition: all 0.4s;
+        font-family: "Open Sans", "Helvetica", "Montserrat", sans-serif;
+    }
+
+    .nav{
+		background: -webkit-linear-gradient(to right, #2cafa4, #74B49B) !important;
+		background: linear-gradient(to right, #2cafa4, #74B49B) !important;
+		color: #FFFFFF !important;
+		margin: 0rem !important;
+	}
+
+	.nav .item{
+		color: #FFFFFF !important;	
+	}
+	
+	.active{
+		border-bottom-color: #FFFFFF !important;
+	}
+
+    .top-padding {
+        padding-top: 20px;
+    }
+
+
+</style>
+
+</html>

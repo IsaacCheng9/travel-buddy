@@ -35,6 +35,10 @@
             <i class="car icon"></i>
             <div class="mobile hidden">Carpools</div>
         </a>
+        <a class="white-overlay item" href="/trends">
+			<i class="question icon"></i>
+			<div class="mobile hidden">My Trends</div>
+		</a>
         <a class="white-overlay item" href="/settings">
             <i class="settings icon"></i>
             <div class="mobile hidden">Settings</div>
@@ -104,12 +108,12 @@
                 <div class="ui grid stackable" style="width: 100%;">
                     <div class="ten wide column">
                         <div class="city">
-                            <span class="left">{{ride[5]}}</span>
-                            <span class="right">{{ride[3]}}</span>
+                            <b>{{ride[5]}}</b><br>{{ride[3]}}
+                            <!--<span class="left">{{ride[5]}}</span>
+                            <span class="right">{{ride[3]}}</span>-->
                         </div>
                         <div class="city">
-                            <span class="left">{{ride[16]}}</span>
-                            <span class="right">{{ride[4]}}</span>
+                            <b>{{ride[16]}}</b><br>{{ride[4]}}
                         </div>
 
                         <form action="/routes" method="POST">
@@ -127,6 +131,7 @@
                     <div class="four wide column">
                         <div class="ui list">
                             <div class="item">
+                                <!--data-content="{{ride[2]}} seat(s) available"-->
                                 <i class="fa-solid fa-car"></i> {{ride[2]}}
                             </div>
                             <div class="item">
@@ -224,46 +229,3 @@
         }
     }
 </script>
-
-<style>
-    @import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
-    * {
-		box-sizing: border-box;
-		font-family: "Open Sans", "Helvetica", "Montserrat", sans-serif;
-	}
-
-    .fa-spinner {
-        animation: fa-spin 2s infinite linear;
-    }
-
-    .nav{
-		background: -webkit-linear-gradient(to right, #2cafa4, #74B49B) !important;
-		background: linear-gradient(to right, #2cafa4, #74B49B) !important;
-		color: #FFFFFF !important;
-		margin: 0rem !important;
-	}
-
-    .item{
-		color: #000000 !important;	
-	}
-	
-	.active{
-		border-bottom-color: #FFFFFF !important;
-	}
-
-    body {
-		background-color: #F4F9F4;
-	}
-
-    .top-padding {
-        padding-top: 20px;
-    }
-
-    .white-overlay{
-		color: #FFFFFF !important;	
-	}
-
-    .custom-card {
-        background-color: #FFFFFF;
-    }
-</style>

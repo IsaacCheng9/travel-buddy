@@ -10,11 +10,11 @@ import travel_buddy.helpers.helper_general as helper_general
 from flask import Blueprint, redirect, render_template, request, session
 from travel_buddy.helpers.helper_limiter import limiter
 
+import sqlite3
+
 carpool_blueprint = Blueprint(
     "carpool", __name__, static_folder="static", template_folder="templates"
 )
-
-import sqlite3
 
 DB_PATH = helper_general.get_database_path()
 

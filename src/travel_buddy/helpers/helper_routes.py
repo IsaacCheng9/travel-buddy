@@ -369,22 +369,25 @@ def get_recommendations(
             "this journey!"
         )
         trees = helper_general.co2_to_trees(round(co2_list["driving"] * 40, 2), 30)
-        body.append(
-            "Is this your daily commute? Walking this journey twice every week day for "
-            f"one month would save about <b>{round(co2_list.get('driving', 0) * 40, 2)}"
-            " kg</b> of CO2 emissions!<br> That's the same as the amount of oxygen "
-            f"<b>{trees}</b> trees offset in a month! "
-            "(<a href='https://www.viessmann.co.uk/heating-advice/how-much-co2-does-tree-absorb' target='_blank'>Source</a>)"
-        )
-        time_saved = 60 * round(((time_walking * 40) - (time_cycling * 40)) / 60)
-        time_saved_daily = 60 * round((time_walking - time_cycling) / 60)
-        if time_saved > 120:
-            time_saved = timedelta(seconds=time_saved)
+        walk_distance = safeget(route_details, "walking", "distance", "value")
+        if walk_distance < 5000:
             body.append(
-                "If you were to cycle this route instead, you could also save about "
-                f"<b>{time_saved_daily}</b> each day, or <b>{time_saved}</b> over your "
-                "working days for the month!"
+                "Is this your daily commute? Walking this journey twice every week day for "
+                f"one month would save about <b>{round(co2_list.get('driving', 0) * 40, 2)}"
+                " kg</b> of CO2 emissions!<br> That's the same as the amount of oxygen "
+                f"<b>{trees}</b> trees offset in a month! "
+                "(<a href='https://www.viessmann.co.uk/heating-advice/how-much-co2-does-tree-absorb' target='_blank'>Source</a>)"
             )
+        if walk_distance < 40000:
+            time_saved = 60 * round(((time_walking * 40) - (time_cycling * 40)) / 60)
+            time_saved_daily = 60 * round((time_walking - time_cycling) / 60)
+            if time_saved > 120:
+                time_saved = timedelta(seconds=time_saved)
+                body.append(
+                    "If you were to cycle this route instead, you could also save about "
+                    f"<b>{time_saved_daily}</b> each day, or <b>{time_saved}</b> over your "
+                    "working days for the month!"
+                )
 
     if travel_mode_simple == "public transport":
         co2_saved_over_driving = round(
@@ -511,6 +514,7 @@ def get_recommendations(
                     append_ev_recommendation(
                         safeget(route_details, "driving", "distance", "value"),
                         float(fuel_cost),
+                        co2_list.get("driving"),
                     )
                 )
 
@@ -545,7 +549,7 @@ def append_cycle_walk_str(time_1: int, time_2: int, mode: str) -> str:
         )
 
 
-def append_ev_recommendation(distance, petrol_cost) -> str:
+def append_ev_recommendation(distance, petrol_cost, petrol_co2) -> str:
     """
     Return a string on information on electric vehicle recommendation
     source for fuel_per_m_ev:
@@ -554,15 +558,22 @@ def append_ev_recommendation(distance, petrol_cost) -> str:
     fuel_per_m_ev = 0.000034176
     fuel_cost_ev = fuel_per_m_ev * distance
 
-    saved = petrol_cost - fuel_cost_ev
-    fuel_cost_ev = format(fuel_cost_ev, ".2f")
-    saved_2dp = format(saved, ".2f")
+    co2_per_m_ev = 0.000035
+    co2_emission_ev = co2_per_m_ev * distance
 
-    if saved > 0:
+    cost_saved = petrol_cost - fuel_cost_ev
+    fuel_cost_ev = format(fuel_cost_ev, ".2f")
+    cost_saved_2dp = format(cost_saved, ".2f")
+
+    co2_saved = petrol_co2 - co2_emission_ev
+
+    if cost_saved > 0 and co2_saved > 0:
         return (
             "Have you thought about buying an electric car? "
             "An estimate for the electricity cost of this route "
-            f"is <b>£{fuel_cost_ev}</b>, that's a saving of <b>£{saved_2dp}</b>!"
+            f"is <b>£{fuel_cost_ev}</b>, that's a saving of <b>£{cost_saved_2dp}</b>! "
+            f"Additionally, you could expect to use just <b>{round(co2_emission_ev, 2)}kg</b> of CO2, "
+            f"that's <b>{round(co2_saved,2)}kg</b> less than in a petrol car."
         )
     else:
         return ""
