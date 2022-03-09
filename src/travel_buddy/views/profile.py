@@ -4,6 +4,7 @@ Handles the view for user profiles and related functionality.
 
 import sqlite3
 from typing import List, Tuple
+from datetime import datetime
 
 import travel_buddy.helpers.helper_general as helper_general
 import travel_buddy.helpers.helper_carpool as helper_carpool
@@ -59,7 +60,12 @@ def profile(username: str) -> object:
             return "".join([f"<h1>{m}</h1>" for m in message])
 
     first_name, last_name, is_driver, bio, photo, verified, join_date = profile_data
-
+    join_date = datetime.strptime(join_date, "%Y-%m-%d")
+    if 4 <= join_date.day <= 20 or 24 <= join_date.day <= 30:
+        suffix = "th"
+    else:
+        suffix = ["st", "nd", "rd"][join_date.day % 10 - 1]
+    join_date = join_date.strftime(f"%e{suffix} %B %Y")
     carpools_joined = helper_carpool.get_total_carpools_joined(username)
     carpools_driven = helper_carpool.get_total_carpools_drove(username)
     distance_travelled = helper_carpool.get_total_distance_carpooled(username)
