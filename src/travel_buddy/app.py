@@ -7,6 +7,7 @@ import travel_buddy.views.profile as profile
 import travel_buddy.views.register as register
 import travel_buddy.views.routes as routes
 import travel_buddy.views.settings as settings
+import travel_buddy.views.trends as trends
 from travel_buddy.helpers.helper_limiter import limiter
 
 API_KEY_FILE = "keys.json"
@@ -28,6 +29,7 @@ def create_app() -> Flask:
     app.register_blueprint(routes.routes_blueprint, url_prefix="")
     app.register_blueprint(settings.settings_blueprint, url_prefix="")
     app.register_blueprint(carpool.carpool_blueprint, url_prefix="")
+    app.register_blueprint(trends.trends_blueprint, url_prefix="")
 
     app.url_map.strict_slashes = False
     app.secret_key = KEYS["app_secret_key"]
