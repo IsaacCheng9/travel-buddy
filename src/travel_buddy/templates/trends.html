@@ -53,7 +53,7 @@
                     <thead>
                         <tr>
                             <th colspan="3" style="font-size: 1.5em;">
-                                Your Car ({{car_make}})
+                                Your Car ({{user_car_make}})
                             </th>
                         </tr>
                     </thead>
@@ -65,37 +65,38 @@
                         </tr>
                         <tr>
                             <td>1 Month</td>
-                            <td>{{fuel_costs[0]}}</td>
-                            <td>{{co2_emissions[0]}}</td>
+                            <td>{{user_fuel_costs[0]}}</td>
+                            <td>{{user_co2_emissions[0]}}</td>
                         </tr>
                         <tr>
                             <td>3 Months</td>
-                            <td>{{fuel_costs[1]}}</td>
-                            <td>{{co2_emissions[1]}}</td>
+                            <td>{{user_fuel_costs[1]}}</td>
+                            <td>{{user_co2_emissions[1]}}</td>
                         </tr>
                         <tr>
                             <td>6 Months</td>
-                            <td>{{fuel_costs[2]}}</td>
-                            <td>{{co2_emissions[2]}}</td>
+                            <td>{{user_fuel_costs[2]}}</td>
+                            <td>{{user_co2_emissions[2]}}</td>
                         </tr>
                         <tr>
                             <td>1 Year</td>
-                            <td>{{fuel_costs[3]}}</td>
-                            <td>{{co2_emissions[3]}}</td>
+                            <td>{{user_fuel_costs[3]}}</td>
+                            <td>{{user_co2_emissions[3]}}</td>
                         </tr>
                         <tr>
                             <td>5 Years</td>
-                            <td>{{fuel_costs[4]}}</td>
-                            <td>{{co2_emissions[4]}}</td>
+                            <td>{{user_fuel_costs[4]}}</td>
+                            <td>{{user_co2_emissions[4]}}</td>
                         </tr>
                         <tr>
                             <td>10 Years</td>
-                            <td>{{fuel_costs[5]}}</td>
-                            <td>{{co2_emissions[5]}}</td>
+                            <td>{{user_fuel_costs[5]}}</td>
+                            <td>{{user_co2_emissions[5]}}</td>
                         </tr>
                     </tbody>
                 </table>
 
+                {% if comparison %}
                 <table class="ui selectable basic collapsing celled table" style="text-align: center; width: 100%;">
                     <thead>
                         <tr>
@@ -112,64 +113,65 @@
                     <tbody>
                         <tr>
                             <td>1 Month</td>
-                            <td>{{fuel_costs[0]}}</td>
+                            <td>{{user_fuel_costs[0]}}</td>
                             <td style="color: #5C8D89; font-weight: 900;">{{fuel_costs[0]}}</td>
-                            <td>{{co2_emissions[0]}}</td>
+                            <td>{{user_co2_emissions[0]}}</td>
                             <td style="color: #5C8D89; font-weight: 900;">{{co2_emissions[0]}}</td>
                         </tr>
                         <tr>
                             <td>3 Months</td>
-                            <td>{{fuel_costs[1]}}</td>
+                            <td>{{user_fuel_costs[1]}}</td>
                             <td style="color: #5C8D89; font-weight: 900;">{{fuel_costs[1]}}</td>
-                            <td>{{co2_emissions[1]}}</td>
+                            <td>{{user_co2_emissions[1]}}</td>
                             <td style="color: #5C8D89; font-weight: 900;">{{co2_emissions[1]}}</td>
                         </tr>
                         <tr>
                             <td>6 Months</td>
-                            <td>{{fuel_costs[2]}}</td>
+                            <td>{{user_fuel_costs[2]}}</td>
                             <td style="color: #5C8D89; font-weight: 900;">{{fuel_costs[2]}}</td>
-                            <td>{{co2_emissions[2]}}</td>
+                            <td>{{user_co2_emissions[2]}}</td>
                             <td style="color: #5C8D89; font-weight: 900;">{{co2_emissions[2]}}</td>
                         </tr>
                         <tr>
                             <td>1 Year</td>
-                            <td>{{fuel_costs[3]}}</td>
+                            <td>{{user_fuel_costs[3]}}</td>
                             <td style="color: #5C8D89; font-weight: 900;">{{fuel_costs[3]}}</td>
-                            <td>{{co2_emissions[3]}}</td>
+                            <td>{{user_co2_emissions[3]}}</td>
                             <td style="color: #5C8D89; font-weight: 900;">{{co2_emissions[3]}}</td>
                         </tr>
                         <tr>
                             <td>5 Years</td>
-                            <td>{{fuel_costs[4]}}</td>
+                            <td>{{user_fuel_costs[4]}}</td>
                             <td style="color: #5C8D89; font-weight: 900;">{{fuel_costs[4]}}</td>
-                            <td>{{co2_emissions[4]}}</td>
+                            <td>{{user_co2_emissions[4]}}</td>
                             <td style="color: #5C8D89; font-weight: 900;">{{co2_emissions[4]}}</td>
                         </tr>
                         <tr>
                             <td>10 Years</td>
-                            <td>{{fuel_costs[5]}}</td>
+                            <td>{{user_fuel_costs[5]}}</td>
                             <td style="color: #5C8D89; font-weight: 900;">{{fuel_costs[5]}}</td>
-                            <td>{{co2_emissions[5]}}</td>
+                            <td>{{user_co2_emissions[5]}}</td>
                             <td style="color: #5C8D89; font-weight: 900;">{{co2_emissions[5]}}</td>
                         </tr>
                     </tbody>
                 </table>
+            {% endif %}
             </div>
             <div class="six wide column" style="height:calc(100vh - 60px); overflow:auto;">
                 <div class="ui card fluid" style="background-color: #A7D7C5;">
                     <div class="content">
-                        <div class="header">Your {{car_make}}</div>
+                        <div class="header">Your {{user_car_make}}</div>
                         <h4 class="ui sub header">Miles per Gallon <i class="fa-solid fa-gauge-simple-high" style="padding-left: 0.5rem; color:black !important;"></i></h4>
                         <div class="content">
-                            {{car_mpg}}
+                            {{user_car_mpg}}
                         </div>
                         <h4 class="ui sub header">Fuel Type <i class="fa-solid fa-gas-pump" style="padding-left: 0.5rem; color:black !important;"></i></h4>
                         <div class="content" style="text-transform: uppercase;">
-                            {{fuel_type}}
+                            {{user_fuel_type}}
                         </div>
                         <h4 class="ui sub header">Engine Size <i class="fa-solid fa-oil-can" style="padding-left: 0.5rem; color:black !important;"></i></h4>
                         <div class="content">
-                            {{engine_size}}L
+                            {{user_engine_size}}L
                         </div>
                     </div>
                 </div>
@@ -204,14 +206,11 @@
                             </div>
                         </div>
                     </div>
-                    <a href="{{url_for('trends.show_car', car=ReanultClio, fuel=petrol, mpg=51, engine=1.0)}}">
-                        <button class="ui button fluid green bottom attached theme-4">Compare {{ ev[0] }} {{ ev[1] }}</button>
-                    </a>
-                    <!-- <div class="extra content">
-                        <a href="{{ url_for('trends.show_car', car=ReanultClio, mpg=51, fuel=petrol, engine=1.0) }}">
-                            <button class="ui button fluid green theme-4">View {{ ev[0] }} {{ ev[1] }}</button>
-                        </a>
-                    </div> -->
+                  <form action="/trends" method="POST">
+                    <input type="hidden" value="{{ev[0]}}{{ev[1]}}" name="car">
+                    <input type="hidden" value="{{ev[3]}}" name="wpm">
+                    <button class="ui button fluid green bottom attached theme-4">Compare {{ ev[0] }} {{ ev[1] }}</button>
+                  </form>
                 </div>
                 <div class="ui hidden divider"></div>
                 {% endfor %}
@@ -225,133 +224,6 @@
         
     </div>
 
-
-    <!--
-    <main>
-        <section class="home-intro">
-            
-          <div class="ui segment" style="color: black;">
-            eq2e
-          </div>
-        </section>
-  
-        <div class="home-about">
-          <h2>About us</h2>
-          <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
-          <div class="columns">
-            <div class="col fade-in">
-              <h3>Lorem, ipsum.</h3>
-              <p>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vitae
-                maiores fuga eos provident voluptas perferendis.
-              </p>
-            </div>
-            <div class="col fade-in">
-              <h3>A, illo!</h3>
-              <p>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                Voluptatibus minima quo beatae eius blanditiis officiis.
-              </p>
-            </div>
-            <div class="col fade-in">
-              <h3>Repudiandae, error?</h3>
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laborum
-                quasi quis doloribus quia illum laudantium.
-              </p>
-            </div>
-          </div>
-        </div>
-  
-        <div class="home-more-stuff">
-          <div class="more-stuff-grid">
-            <img
-              src="https://unsplash.it/400"
-              alt=""
-              class="slide-in from-left"
-            />
-            <p class="slide-in from-right">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis fugit,
-              quae beatae vero sit magni quaerat id ratione. Dolor optio unde amet
-              omnis sapiente neque cumque consequuntur reiciendis deserunt.
-              Dolorem vero exercitationem consequuntur, eligendi cupiditate
-              debitis facilis quibusdam magni. Eveniet.
-            </p>
-          </div>
-          <div class="more-stuff-grid">
-            <p class="slide-in from-left">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis fugit,
-              quae beatae vero sit magni quaerat id ratione. Dolor optio unde amet
-              omnis sapiente neque cumque consequuntur reiciendis deserunt.
-              Dolorem vero exercitationem consequuntur, eligendi cupiditate
-              debitis facilis quibusdam magni. Eveniet.
-            </p>
-            <img
-              src="https://unsplash.it/401"
-              alt=""
-              class="slide-in from-right"
-            />
-          </div>
-          <div class="more-stuff-grid">
-            <img
-              src="https://unsplash.it/400"
-              alt=""
-              class="slide-in from-left"
-            />
-            <p class="slide-in from-right">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis fugit,
-              quae beatae vero sit magni quaerat id ratione. Dolor optio unde amet
-              omnis sapiente neque cumque consequuntur reiciendis deserunt.
-              Dolorem vero exercitationem consequuntur, eligendi cupiditate
-              debitis facilis quibusdam magni. Eveniet.
-            </p>
-          </div>
-          <div class="more-stuff-grid">
-            <p class="slide-in from-left">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis fugit,
-              quae beatae vero sit magni quaerat id ratione. Dolor optio unde amet
-              omnis sapiente neque cumque consequuntur reiciendis deserunt.
-              Dolorem vero exercitationem consequuntur, eligendi cupiditate
-              debitis facilis quibusdam magni. Eveniet.
-            </p>
-            <img
-              src="https://unsplash.it/401"
-              alt=""
-              class="slide-in from-right"
-            />
-          </div>
-          <div class="more-stuff-grid">
-            <img
-              src="https://unsplash.it/400"
-              alt=""
-              class="slide-in from-left"
-            />
-            <p class="slide-in from-right">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis fugit,
-              quae beatae vero sit magni quaerat id ratione. Dolor optio unde amet
-              omnis sapiente neque cumque consequuntur reiciendis deserunt.
-              Dolorem vero exercitationem consequuntur, eligendi cupiditate
-              debitis facilis quibusdam magni. Eveniet.
-            </p>
-          </div>
-          <div class="more-stuff-grid">
-            <p class="slide-in from-left">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis fugit,
-              quae beatae vero sit magni quaerat id ratione. Dolor optio unde amet
-              omnis sapiente neque cumque consequuntur reiciendis deserunt.
-              Dolorem vero exercitationem consequuntur, eligendi cupiditate
-              debitis facilis quibusdam magni. Eveniet.
-            </p>
-            <img
-              src="https://unsplash.it/401"
-              alt=""
-              class="slide-in from-right"
-            />
-          </div>
-        </div>
-      </main>
-      <script src="../static/javascript/observer.js"></script>
-      -->
 </body>
 
 <style>
