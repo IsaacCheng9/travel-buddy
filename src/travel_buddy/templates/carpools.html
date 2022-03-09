@@ -110,6 +110,18 @@
                         <div class="city">
                             <b>{{ride[16]}}</b><br>{{ride[4]}}
                         </div>
+
+                        <form action="/routes" method="POST">
+                            <input type="hidden" value="{{ride[3]}}" name="start_point">
+                            <input type="hidden" value="{{ride[4]}}" name="destination">
+                            <input type="hidden" value="driving" name="mode">
+                            <button class="ui button theme-4" style="margin-top: 1em; background-color: #f4f9f4 !important; border: 2px solid #5C8D89;">
+                                <div>
+                                    <i style="color: #5C8D89 !important;" class="icon map"></i>
+                                    View Estimated Route
+                                </div>
+                            </button>
+                        </form>
                     </div>
                     <div class="four wide column">
                         <div class="ui list">
@@ -134,26 +146,24 @@
                     </div>
                     <div class="ten wide column">
                         {{ride[1]}}
-                        <br>
+                        <span style="padding: 8px;">
                         <i class="icon star"></i>
                         {% if ride[14] != None%}
-                        {{ride[14]}} ({{ride[15]}})
+                        {{ride[14]}} <span style="color: grey;">({{ride[15]}} ratings)</span>
                         {%else%}
-                        Not enough ratings
+                        <span style="color: grey;">Not enough ratings</span>
                         {%endif%}
+                        </span>
                     </div>
                     <div class="five wide column" style="text-align: right;">
-                        <i class="fa-solid fa-ban-smoking"></i>
-                        <i class="fa-solid fa-joint"></i>
-                        <i class="fa-solid fa-bong"></i>
+                        <div class="ui buttons">
+                            <button onclick='window.location="/carpools/{{ride[0]}}"' class="ui button green theme-4"><i style="color: white !important;" class="fa-solid fa-circle-info"></i> See Details</button>
+                            <div class="ui or"></div>
+                            <button onclick="ToggleInterest('{{ride[0]}}');"
+                                    id="interest-btn-{{ride[0]}}"
+                                    class="ui button green theme-4"><i style="color: white !important;" class="fa-solid fa-bolt"></i> Show Interest</button>
+                        </div>
                     </div>
-                </div>
-                <div class="ui buttons">
-                    <button onclick='window.location="/carpools/{{ride[0]}}"' class="ui button green theme-4"><i style="color: white !important;" class="fa-solid fa-circle-info"></i> See Details</button>
-                    <div class="ui or"></div>
-                    <button onclick="ToggleInterest('{{ride[0]}}');"
-                            id="interest-btn-{{ride[0]}}"
-                            class="ui button green theme-4"><i style="color: white !important;" class="fa-solid fa-bolt"></i> Show Interest</button>
                 </div>
             </a>
             <div class="ui horizontal divider hidden"></div>
@@ -179,7 +189,7 @@
 </script>
 
 <script>
-    const current_interested_ids = "{{interested_list | tojson}}";
+    const current_interested_ids = {{interested_list | tojson}};
 
     for (var id of current_interested_ids){
         ToggleInterestUI(id, true);

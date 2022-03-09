@@ -13,6 +13,21 @@ import travel_buddy.helpers.helper_routes as helper_routes
 DB_PATH = helper_general.get_database_path()
 
 
+def get_icons(description):
+    """
+    Get the icons for the carpool description
+    """
+
+    description = description.lower()
+
+    icons = ""
+
+    if "no smoking" in description:
+        icons += '<i class="fa-solid fa-ban-smoking"></i>'
+
+    return icons
+
+
 def validate_carpool_request(
     num_passengers: int,
     starting_point: str,
