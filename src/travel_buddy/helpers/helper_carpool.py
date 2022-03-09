@@ -341,7 +341,7 @@ def get_carpool_details(journey_id: int) -> list:
         cur = conn.cursor()
         cur.execute(
             "SELECT driver, is_complete, seats_initial, seats_available, starting_point, "
-            "destination, pickup_datetime, price, description, distance_text, "
+            "destination, pickup_datetime, price, description, distance_text, estimate_duration, "
             "estimate_duration_text, estimate_co2_per_person, estimate_co2_saved "
             "FROM carpool_ride WHERE journey_id=?;",
             (journey_id,),
@@ -665,9 +665,14 @@ def format_start_time(start_time: object) -> str:
     return datetime.strftime(start_time, "%e/%m %H:%M")
 
 
-def get_end_time(start_time: object, duration: int) -> str:
+def get_end_time_obj(start_time: object, duration: int) -> object:
     """
-    Return the estimated end time based on the start time and duration in seconds
+    Return the estimated end time object based on the start time and duration in seconds
     """
-    end_time = start_time + timedelta(seconds=round(duration / 60) * 60)
-    return datetime.strftime(end_time, "%e/%m %H:%M")
+    return start_time + timedelta(seconds=round(duration / 60) * 60)
+
+def get_end_time(emd_time_obj: object) -> str:
+    """
+    Return the estimated end time string
+    """
+    return datetime.strftime(emd_time_obj, "%e/%m %H:%M")

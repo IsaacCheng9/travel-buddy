@@ -50,7 +50,7 @@ def show_available_carpools():
             start_time_obj = helper_carpool.get_datetime_obj(c[5])
             incomplete_carpools[i][5] = helper_carpool.format_start_time(start_time_obj)
             incomplete_carpools[i].append(
-                helper_carpool.get_end_time(start_time_obj, c[10])
+                helper_carpool.get_end_time(helper_carpool.get_end_time_obj(start_time_obj, c[10]))
             )
 
         return render_template(
@@ -197,10 +197,20 @@ def view_carpool_journey(journey_id: int):
         price,
         description,
         distance_text,
+        duration,
         duration_text,
         co2_pp,
         co2_saved,
     ) = carpool_details
+
+    pickup_datetime_obj = helper_carpool.get_datetime_obj(pickup_datetime)
+    if 4 <= pickup_datetime_obj.day <= 20 or 24 <= pickup_datetime_obj.day <= 30:
+        suffix = "th"
+    else:
+        suffix = ["st", "nd", "rd"][pickup_datetime_obj.day % 10 - 1]
+    end_datetime = helper_carpool.get_end_time_obj(pickup_datetime_obj, duration)
+    end_hour, end_minute = end_datetime.hour, end_datetime.minute
+    pickup_datetime = pickup_datetime_obj.strftime(f"%e{suffix} %B %Y %H:%M - {end_hour}:{end_minute}")
 
     # Displays price with two decimal places.
     price = format(price, ".2f")
