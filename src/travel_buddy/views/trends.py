@@ -21,12 +21,19 @@ def show_trends():
         return redirect("/")
 
     car_make, car_mpg, fuel_type, engine_size = helper_routes.get_car(
-            session.get("username")
-        )
-    
+        session.get("username")
+    )
+
     return redirect(
-            url_for('trends.show_car', car=car_make, mpg=car_mpg, fuel=fuel_type, engine=engine_size)
+        url_for(
+            "trends.show_car",
+            car=car_make,
+            mpg=car_mpg,
+            fuel=fuel_type,
+            engine=engine_size,
         )
+    )
+
 
 @trends_blueprint.route("/trends/view_car", methods=["GET"])
 @limiter.limit("15/minute")
