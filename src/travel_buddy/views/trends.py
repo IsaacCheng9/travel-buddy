@@ -31,12 +31,12 @@ def trends():
         helper_general.get_electric_cars()
     )
 
-    #monthly_miles = request.form.get("monthly_miles")
-    #try:
+    # monthly_miles = request.form.get("monthly_miles")
+    # try:
     #    monthly_miles = int(monthly_miles)
     #    if monthly_miles < 0:
     #        monthly_miles = 1000
-    #except Exception:
+    # except Exception:
     #    monthly_miles = 1000
 
     monthly_miles = 1000
@@ -46,10 +46,14 @@ def trends():
 
     for ev in evs:
         wpm = int(ev[3][:-5])
-        evs_fuel_costs.append(round(helper_general.get_ev_cost_1_month(wpm, monthly_miles),2))
+        evs_fuel_costs.append(
+            round(helper_general.get_ev_cost_1_month(wpm, monthly_miles), 2)
+        )
         watts_required = helper_general.get_watts_required(wpm, monthly_miles)
-        evs_co2_emissions.append(round(helper_general.get_ev_co2_1_month(watts_required),2))
-    
+        evs_co2_emissions.append(
+            round(helper_general.get_ev_co2_1_month(watts_required), 2)
+        )
+
     print(evs_fuel_costs)
     print(evs_co2_emissions)
 
