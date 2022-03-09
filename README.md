@@ -3,7 +3,7 @@
 [![code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 ![CI](https://github.com/IsaacCheng9/travel-buddy/actions/workflows/main.yml/badge.svg)
 
-<img width="534" alt="image" src="https://user-images.githubusercontent.com/47993930/157153338-e0feca9b-5e4a-4643-87fd-f86b4d5f17bc.png">
+<img width="488" alt="image" src="https://user-images.githubusercontent.com/47993930/157455295-10e79608-0b29-4446-bc05-cf2e3cbfc662.png">
 
 A travel companion to help plan your journey while saving both money and the
 planet by providing route analysis and a carpool marketplace.
