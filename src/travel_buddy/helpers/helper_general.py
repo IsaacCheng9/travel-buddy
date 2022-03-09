@@ -196,6 +196,11 @@ def get_electric_cars():
     return random.sample(cars, 10)
 
 
+def get_best_efficiency_electric(cars):
+    sorted_efficiency = sorted(cars, key=lambda tup: tup[3], reverse=True)
+    return sorted_efficiency
+
+
 def get_autocomplete_query(**kwargs):
     """
     Get maps autocomplete query

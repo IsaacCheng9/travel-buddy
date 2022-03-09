@@ -185,6 +185,12 @@
                         <div class="ui white big ribbon label" style="background-color: #5C8D89; color: white;">
                             {{ev[2]}}
                         </div>
+                        {% if ev == evs[0] %}
+                          <p></p>
+                          <div class="ui yellow big right ribbon label" style="background-color: #918708; color: white; border-right-color:none !important;">
+                            Best efficiency <i class="trophy white icon" style="color:#FFFFFF !important; padding-left: 1rem;"></i>
+                          </div>
+                        {% endif %}
                         <img src="{{ ev[4] }}"/>
                     </div>
                     <div class="content">
@@ -371,10 +377,6 @@
 	.nav .item{
 		color: #FFFFFF !important;	
 	}
-
-    .ribbon:after {
-        border-right-color: #74B49B !important;
-    }
 	
 	.active{
 		border-bottom-color: #FFFFFF !important;
