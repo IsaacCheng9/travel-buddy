@@ -96,12 +96,11 @@
                     </tbody>
                 </table>
 
-                {% if comparison %}
-                <table class="ui selectable basic collapsing celled table" style="text-align: center; width: 100%;">
+                <table id="car-other-comparison" class="ui selectable basic collapsing celled table" style="text-align: center; width: 100%;">
                     <thead>
                         <tr>
                             <th colspan="5" style="font-size: 1.5em;">
-                                Your Car vs <span style="color: #5C8D89;">{{car_make}}</span>
+                                Your Car vs <span style="color: #5C8D89;" id="car-other"></span>
                             </th>
                         </tr>
                         <tr>
@@ -113,49 +112,48 @@
                     <tbody>
                         <tr>
                             <td>1 Month</td>
-                            <td>{{user_fuel_costs[0]}}</td>
-                            <td style="color: #5C8D89; font-weight: 900;">{{fuel_costs[0]}}</td>
-                            <td>{{user_co2_emissions[0]}}</td>
-                            <td style="color: #5C8D89; font-weight: 900;">{{co2_emissions[0]}}</td>
+                            <td id="user-fuel-0">{{user_fuel_costs[0]}}</td>
+                            <td style="color: #5C8D89; font-weight: 900;" id="fuel-0">{{fuel_costs[0]}}</td>
+                            <td id="co2-user-0">{{user_co2_emissions[0]}}</td>
+                            <td style="color: #5C8D89; font-weight: 900;" id="co2-0">{{co2_emissions[0]}}</td>
                         </tr>
                         <tr>
                             <td>3 Months</td>
-                            <td>{{user_fuel_costs[1]}}</td>
-                            <td style="color: #5C8D89; font-weight: 900;">{{fuel_costs[1]}}</td>
-                            <td>{{user_co2_emissions[1]}}</td>
-                            <td style="color: #5C8D89; font-weight: 900;">{{co2_emissions[1]}}</td>
+                            <td id="user-fuel-1">{{user_fuel_costs[1]}}</td>
+                            <td style="color: #5C8D89; font-weight: 900;" id="fuel-1">{{fuel_costs[1]}}</td>
+                            <td id="co2-user-1">{{user_co2_emissions[1]}}</td>
+                            <td style="color: #5C8D89; font-weight: 900;" id="co2-1">{{co2_emissions[1]}}</td>
                         </tr>
                         <tr>
                             <td>6 Months</td>
-                            <td>{{user_fuel_costs[2]}}</td>
-                            <td style="color: #5C8D89; font-weight: 900;">{{fuel_costs[2]}}</td>
-                            <td>{{user_co2_emissions[2]}}</td>
-                            <td style="color: #5C8D89; font-weight: 900;">{{co2_emissions[2]}}</td>
+                            <td id="user-fuel-2">{{user_fuel_costs[2]}}</td>
+                            <td style="color: #5C8D89; font-weight: 900;" id="fuel-2">{{fuel_costs[2]}}</td>
+                            <td id="co2-user-2">{{user_co2_emissions[2]}}</td>
+                            <td style="color: #5C8D89; font-weight: 900;" id="co2-2">{{co2_emissions[2]}}</td>
                         </tr>
                         <tr>
                             <td>1 Year</td>
-                            <td>{{user_fuel_costs[3]}}</td>
-                            <td style="color: #5C8D89; font-weight: 900;">{{fuel_costs[3]}}</td>
-                            <td>{{user_co2_emissions[3]}}</td>
-                            <td style="color: #5C8D89; font-weight: 900;">{{co2_emissions[3]}}</td>
+                            <td id="user-fuel-3">{{user_fuel_costs[3]}}</td>
+                            <td style="color: #5C8D89; font-weight: 900;" id="fuel-3">{{fuel_costs[3]}}</td>
+                            <td id="co2-user-3">{{user_co2_emissions[3]}}</td>
+                            <td style="color: #5C8D89; font-weight: 900;" id="co2-3">{{co2_emissions[3]}}</td>
                         </tr>
                         <tr>
                             <td>5 Years</td>
-                            <td>{{user_fuel_costs[4]}}</td>
-                            <td style="color: #5C8D89; font-weight: 900;">{{fuel_costs[4]}}</td>
-                            <td>{{user_co2_emissions[4]}}</td>
-                            <td style="color: #5C8D89; font-weight: 900;">{{co2_emissions[4]}}</td>
+                            <td id="user-fuel-4">{{user_fuel_costs[4]}}</td>
+                            <td style="color: #5C8D89; font-weight: 900;" id="fuel-4">{{fuel_costs[4]}}</td>
+                            <td id="co2-user-4">{{user_co2_emissions[4]}}</td>
+                            <td style="color: #5C8D89; font-weight: 900;" id="co2-4">{{co2_emissions[4]}}</td>
                         </tr>
                         <tr>
                             <td>10 Years</td>
-                            <td>{{user_fuel_costs[5]}}</td>
-                            <td style="color: #5C8D89; font-weight: 900;">{{fuel_costs[5]}}</td>
-                            <td>{{user_co2_emissions[5]}}</td>
-                            <td style="color: #5C8D89; font-weight: 900;">{{co2_emissions[5]}}</td>
+                            <td id="user-fuel-5">{{user_fuel_costs[5]}}</td>
+                            <td style="color: #5C8D89; font-weight: 900;" id="fuel-5">{{fuel_costs[5]}}</td>
+                            <td id="co2-user-5">{{user_co2_emissions[5]}}</td>
+                            <td style="color: #5C8D89; font-weight: 900;" id="co2-5">{{co2_emissions[5]}}</td>
                         </tr>
                     </tbody>
                 </table>
-            {% endif %}
             </div>
             <div class="six wide column" style="height:calc(100vh - 60px); overflow:auto;">
                 <div class="ui card fluid" style="background-color: #A7D7C5;">
@@ -172,6 +170,13 @@
                         <h4 class="ui sub header">Engine Size <i class="fa-solid fa-oil-can" style="padding-left: 0.5rem; color:black !important;"></i></h4>
                         <div class="content">
                             {{user_engine_size}}L
+                        </div>
+                        <h4 class="ui sub header">Monthly Miles <i class="fa-solid fa-map" style="padding-left: 0.5rem; color:black !important;"></i></h4>
+                        <div class="content">
+                          Expected monthy miles
+                          <div class="ui input">
+                            <input type="text" value=1000 name="monthly_miles">
+                          </div>
                         </div>
                     </div>
                 </div>
@@ -206,11 +211,18 @@
                             </div>
                         </div>
                     </div>
-                  <form action="/trends" method="POST">
-                    <input type="hidden" value="{{ev[0]}}{{ev[1]}}" name="car">
+                    <button data-brand="{{ev[0]}}" data-model="{{ev[1]}}"
+                            data-user-fuel-cost="{{user_fuel_costs[0]}}"
+                            data-user-co2="{{user_co2_emissions[0]}}"
+                            data-index="{{loop.index}}"
+                            onclick="CompareCar(this);"
+                            class="ui button fluid green bottom attached theme-4 car-btn-compare">Compare {{ ev[0] }} {{ ev[1] }}</button>
+                  <!--
+                  <form action="/trends" method="POST" id="form1">
+                    <input type="hidden" value="{{ev[0]}} {{ev[1]}}" name="car">
                     <input type="hidden" value="{{ev[3]}}" name="wpm">
                     <button class="ui button fluid green bottom attached theme-4">Compare {{ ev[0] }} {{ ev[1] }}</button>
-                  </form>
+                  </form>-->
                 </div>
                 <div class="ui hidden divider"></div>
                 {% endfor %}
@@ -231,7 +243,6 @@
 
     * {
         box-sizing: border-box;
-        transition: all 0.4s;
         font-family: "Open Sans", "Helvetica", "Montserrat", sans-serif;
     }
 
@@ -266,7 +277,10 @@
         animation: fa-spin 2s infinite linear;
     }
 
-
+    .car-btn-compare.active {
+        background-color: #f4f9f4 !important;
+        color: #5C8D89 !important;
+    }
 </style>
 
 <script>
@@ -278,6 +292,63 @@
             window.location.reload();
         },500);
     }
+
+    function CompareCar(btn){
+        let fuel_costs = {{evs_fuel_costs | safe}}
+        let co2s = {{evs_co2_emissions | safe}}
+
+        let user_fuel_cost = btn.getAttribute("data-user-fuel-cost");
+        let user_co2 = btn.getAttribute("data-user-co2");
+
+        let index = parseInt(btn.getAttribute("data-index")) - 1;
+
+        let time_periods = [1,3,6,12,60,120];
+
+        document.querySelectorAll(".car-btn-compare").forEach(function(btn){
+            btn.classList.remove("active");
+        });
+
+        btn.classList.add("active");
+
+        for (var i = 0; i < time_periods.length; i++){
+            let fuel_cost = fuel_costs[index];
+            let co2 = co2s[index];
+            
+            document.getElementById("fuel-"+i).innerHTML = Round(fuel_cost*time_periods[i], 0);
+            document.getElementById("co2-"+i).innerHTML = Round(co2*time_periods[i], 0);
+
+            CompareValues(document.getElementById("fuel-"+i), document.getElementById("user-fuel-"+i));
+            CompareValues(document.getElementById("co2-"+i), document.getElementById("co2-user-"+i));
+        }
+
+        document.getElementById("car-other-comparison").style.visibility = "visible";
+
+        document.getElementById("car-other").innerHTML = btn.getAttribute("data-brand") + " " + btn.getAttribute("data-model");
+    }
+
+    function CompareValues(base, other){
+        let base_value = parseFloat(base.innerHTML);
+        let other_value = parseFloat(other.innerHTML);
+
+        if (base_value > other_value){
+            base.classList.add("green");
+            other.classList.add("red");
+        } else if (base_value < other_value){
+            base.classList.add("red");
+            other.classList.add("green");
+        } else {
+            base.classList.add("grey");
+            other.classList.add("grey");
+        }
+    }
+
+    document.getElementById("car-other-comparison").style.visibility = "hidden";
+
+    function Round(num, dp){
+        return Math.round(num * Math.pow(10, dp)) / Math.pow(10, dp);
+    }
+
+    
 </script>
 
 </html>
