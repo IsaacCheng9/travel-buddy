@@ -45,7 +45,9 @@ def show_car():
         session.get("username")
     )
 
-    evs = helper_general.get_best_efficiency_electric(helper_general.get_electric_cars())
+    evs = helper_general.get_best_efficiency_electric(
+        helper_general.get_electric_cars()
+    )
 
     print(request.args)
     details = {k: v for k, v in request.args.items()} if request.args else {}
