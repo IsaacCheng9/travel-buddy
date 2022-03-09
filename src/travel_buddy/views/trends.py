@@ -55,7 +55,7 @@ def trends():
     # foreach car in evs calculate the co2 emissions and fuel cost and save into a list
     evs_co2_emissions = []
     evs_fuel_costs = []
-    
+
     for ev in evs:
         wpm = int(ev[3][:-5])
 
@@ -69,9 +69,7 @@ def trends():
 
     fuel_cost_1_month = helper_general.get_ev_cost_1_month(wpm, 1000)
 
-    fuel_costs = [
-        "{:,}".format(round(fuel_cost_1_month * x)) for x in denominations
-    ]
+    fuel_costs = ["{:,}".format(round(fuel_cost_1_month * x)) for x in denominations]
 
     return render_template(
         "trends.html",
@@ -87,10 +85,10 @@ def trends():
         fuel_costs=fuel_costs,
         evs_co2_emissions=evs_co2_emissions,
         evs_fuel_costs=evs_fuel_costs,
-        co2_emissions=user_co2_emissions
+        co2_emissions=user_co2_emissions,
     )
 
-    '''elif request.method == "POST":
+    """elif request.method == "POST":
 
         car = request.form.get("car")
         wpm = request.form.get("wpm")
@@ -130,4 +128,4 @@ def trends():
             car_wpm=wpm,
             fuel_costs=fuel_costs,
             co2_emissions=co2_emissions,
-        )'''
+        )"""
