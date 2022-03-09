@@ -8,8 +8,11 @@ import pathlib
 import uuid
 from base64 import b64decode
 from typing import List, Tuple
-
+import requests
+from lxml import html
 import sqlite3
+
+import random
 
 from PIL import Image
 
@@ -163,6 +166,34 @@ def get_user_rating(username):
             return 0, 0
 
         return rating[0], rating[1]
+
+
+def get_electric_cars():
+    page = requests.get(
+        "https://ev-database.uk/#sort:path~type~order=.rank~number~desc|range-slider-range:prev~next=0~600|range-slider-towweight:prev~next=0~2500|range-slider-acceleration:prev~next=2~23|range-slider-fastcharge:prev~next=0~1100|range-slider-lease:prev~next=150~2500|range-slider-topspeed:prev~next=60~260|paging:currentPage=0|paging:number=9"
+    )
+    tree = html.fromstring(page.content)
+    efficiencies = tree.xpath(
+        '//*[@id="evdb"]/main/div[2]/div[3]/div/div/div[4]/p[4]/span[2]/text()'
+    )
+    models = tree.xpath(
+        '//*[@id="evdb"]/main/div[2]/div[3]/div/div/div[2]/h2/a/span[2]/text()'
+    )
+    make = tree.xpath(
+        '//*[@id="evdb"]/main/div[2]/div[3]/div/div/div[2]/h2/a/span[1]/text()'
+    )
+    price = tree.xpath(
+        '//*[@id="evdb"]/main/div[2]/div[3]/div/div/div[5]/span/span[1]/text()'
+    )
+    images = [
+        "https://ev-database.uk" + img
+        for img in tree.xpath(
+            '//*[@id="evdb"]/main/div[2]/div[3]/div/div/div[1]/a/img/@data-src'
+        )
+    ]
+    cars = list(zip(make, models, price, efficiencies, images))
+
+    return random.sample(cars, 10)
 
 
 def get_autocomplete_query(**kwargs):

@@ -8,6 +8,8 @@
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,300' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="../static/css/mobile.css">
 
+    <link rel="stylesheet" href="../static/css/theme.css">
+
     <link rel="stylesheet" href="../static/css/trends.css" />
 
 	<title>Travel Buddy - Trends</title>
@@ -44,244 +46,177 @@
 
     <div class="ui container">
         <div class="top-padding"></div>
+            
+        <div class="ui grid">
+            <div class="ten wide column" style="height:calc(100vh - 60px); overflow:auto;">
+                <table class="ui selectable basic collapsing celled table" style="text-align: center; width: 100%;">
+                    <thead>
+                        <tr>
+                            <th colspan="3" style="font-size: 1.5em;">
+                                Your Car ({{car_make}})
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Time</th>
+                            <th>Expected Fuel Cost (£)</th>
+                            <th>Expected CO2 Emissions (kg)</th>
+                        </tr>
+                        <tr>
+                            <td>1 Month</td>
+                            <td>{{fuel_costs[0]}}</td>
+                            <td>{{co2_emissions[0]}}</td>
+                        </tr>
+                        <tr>
+                            <td>3 Months</td>
+                            <td>{{fuel_costs[1]}}</td>
+                            <td>{{co2_emissions[1]}}</td>
+                        </tr>
+                        <tr>
+                            <td>6 Months</td>
+                            <td>{{fuel_costs[2]}}</td>
+                            <td>{{co2_emissions[2]}}</td>
+                        </tr>
+                        <tr>
+                            <td>1 Year</td>
+                            <td>{{fuel_costs[3]}}</td>
+                            <td>{{co2_emissions[3]}}</td>
+                        </tr>
+                        <tr>
+                            <td>5 Years</td>
+                            <td>{{fuel_costs[4]}}</td>
+                            <td>{{co2_emissions[4]}}</td>
+                        </tr>
+                        <tr>
+                            <td>10 Years</td>
+                            <td>{{fuel_costs[5]}}</td>
+                            <td>{{co2_emissions[5]}}</td>
+                        </tr>
+                    </tbody>
+                </table>
 
-        <div class="ui four cards" >
-            <div class="ui card">
-                <div class="content">
-                    <div class="header">Your {{car_make}}</div>
-                </div>
-                <div class="content">
-                    <h4 class="ui sub header">Miles per Gallon</h4>
-                    <div class="content">
-                        {{car_mpg}}
-                    </div>
-                    <h4 class="ui sub header">Fuel Type</h4>
-                    <div class="content">
-                        {{fuel_type}}
-                    </div>
-                    <h4 class="ui sub header">Engine Size</h4>
-                    <div class="content">
-                        {{engine_size}}
-                    </div>
-                </div>
-                <div class="extra content">
-                    <a href="{{ url_for('trends.show_car', car=car_make, mpg=car_mpg, fuel=fuel_type, engine=engine_size) }}">
-                        <button class="ui button">View {{car_make}}</button>
-                    </a>  
-                </div>
+                <table class="ui selectable basic collapsing celled table" style="text-align: center; width: 100%;">
+                    <thead>
+                        <tr>
+                            <th colspan="5" style="font-size: 1.5em;">
+                                Your Car vs <span style="color: #5C8D89;">MG ZS EV Long Range</span>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>Time</th>
+                            <th colspan="2">Expected Fuel Cost (£)</th>
+                            <th colspan="2">Expected CO2 Emissions (kg)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1 Month</td>
+                            <td>{{fuel_costs[0]}}</td>
+                            <td style="color: #5C8D89; font-weight: 900;">{{fuel_costs[0]}}</td>
+                            <td>{{co2_emissions[0]}}</td>
+                            <td style="color: #5C8D89; font-weight: 900;">{{co2_emissions[0]}}</td>
+                        </tr>
+                        <tr>
+                            <td>3 Months</td>
+                            <td>{{fuel_costs[1]}}</td>
+                            <td style="color: #5C8D89; font-weight: 900;">{{fuel_costs[1]}}</td>
+                            <td>{{co2_emissions[1]}}</td>
+                            <td style="color: #5C8D89; font-weight: 900;">{{co2_emissions[1]}}</td>
+                        </tr>
+                        <tr>
+                            <td>6 Months</td>
+                            <td>{{fuel_costs[2]}}</td>
+                            <td style="color: #5C8D89; font-weight: 900;">{{fuel_costs[2]}}</td>
+                            <td>{{co2_emissions[2]}}</td>
+                            <td style="color: #5C8D89; font-weight: 900;">{{co2_emissions[2]}}</td>
+                        </tr>
+                        <tr>
+                            <td>1 Year</td>
+                            <td>{{fuel_costs[3]}}</td>
+                            <td style="color: #5C8D89; font-weight: 900;">{{fuel_costs[3]}}</td>
+                            <td>{{co2_emissions[3]}}</td>
+                            <td style="color: #5C8D89; font-weight: 900;">{{co2_emissions[3]}}</td>
+                        </tr>
+                        <tr>
+                            <td>5 Years</td>
+                            <td>{{fuel_costs[4]}}</td>
+                            <td style="color: #5C8D89; font-weight: 900;">{{fuel_costs[4]}}</td>
+                            <td>{{co2_emissions[4]}}</td>
+                            <td style="color: #5C8D89; font-weight: 900;">{{co2_emissions[4]}}</td>
+                        </tr>
+                        <tr>
+                            <td>10 Years</td>
+                            <td>{{fuel_costs[5]}}</td>
+                            <td style="color: #5C8D89; font-weight: 900;">{{fuel_costs[5]}}</td>
+                            <td>{{co2_emissions[5]}}</td>
+                            <td style="color: #5C8D89; font-weight: 900;">{{co2_emissions[5]}}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="ui card">
-                <div class="content">
-                    <div class="header">Renault Clio</div>
+            <div class="six wide column" style="height:calc(100vh - 60px); overflow:auto;">
+                <div class="ui card fluid" style="background-color: #A7D7C5;">
+                    <div class="content">
+                        <div class="header">Your {{car_make}}</div>
+                        <h4 class="ui sub header">Miles per Gallon</h4>
+                        <div class="content">
+                            {{car_mpg}}
+                        </div>
+                        <h4 class="ui sub header">Fuel Type</h4>
+                        <div class="content" style="text-transform: uppercase;">
+                            {{fuel_type}}
+                        </div>
+                        <h4 class="ui sub header">Engine Size</h4>
+                        <div class="content">
+                            {{engine_size}}L
+                        </div>
+                    </div>
                 </div>
-                <div class="content">
-                    <h4 class="ui sub header">Miles per Gallon</h4>
-                    <div class="content">
-                        51
+
+                <button class="ui button fluid green theme-4" onclick='RefreshCarRecommendations(this);'>
+                    <i class="fa-solid fa-arrows-rotate" style="color: white !important;"></i>
+                    Refresh Car Recommendations
+                </button>
+                <div style="font-size: 1.2em;" class="ui horizontal divider"><i class="fa-solid fa-car-battery"></i> Electric Car Recommendations</div>
+                {% for ev in evs %}
+                <div class="ui card fluid">
+                    <div class="ui fluid image">
+                        <div class="ui white big ribbon label" style="background-color: #5C8D89; color: white;">
+                            {{ev[2]}}
+                        </div>
+                        <img src="{{ ev[4] }}"/>
                     </div>
-                    <h4 class="ui sub header">Fuel Type</h4>
                     <div class="content">
-                        Petrol
+                        <div class="header">{{ ev[0] }}  {{ ev[1] }}</div>
                     </div>
-                    <h4 class="ui sub header">Engine Size</h4>
                     <div class="content">
-                        1.0
+                        <div class="ui horizontal fluid divided list">
+                            <div class="item">
+                                <b>Efficiency: </b>
+                                {{ev[3]}}
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="extra content">
-                    <a href="{{ url_for('trends.show_car', car=ReanultClio, mpg=51, fuel=petrol, engine=1.0) }}">
-                        <button class="ui button">View Renault Clio</button>
+                    <a href="{{url_for('trends.show_car', car=ReanultClio, fuel=petrol, mpg=51, engine=1.0)}}">
+                        <button class="ui button fluid green bottom attached theme-4">Compare {{ ev[0] }} {{ ev[1] }}</button>
                     </a>
+                    <!-- <div class="extra content">
+                        <a href="{{ url_for('trends.show_car', car=ReanultClio, mpg=51, fuel=petrol, engine=1.0) }}">
+                            <button class="ui button fluid green theme-4">View {{ ev[0] }} {{ ev[1] }}</button>
+                        </a>
+                    </div> -->
                 </div>
-            </div>
-            <div class="ui card">
-                <div class="content">
-                    <div class="header">Audi A1</div>
-                </div>
-                <div class="content">
-                    <h4 class="ui sub header">Miles per Gallon</h4>
-                    <div class="content">
-                        74
-                    </div>
-                    <h4 class="ui sub header">Fuel Type</h4>
-                    <div class="content">
-                        Diesel
-                    </div>
-                    <h4 class="ui sub header">Engine Size</h4>
-                    <div class="content">
-                        1.6
-                    </div>
-                </div>
-                <div class="extra content">
-                    <a href="{{ url_for('trends.show_car', car=AudiA1, mpg=74, fuel=diesel, engine=1.6) }}">
-                        <button class="ui button">View Audi A1</button>
-                    </a>
-                </div>
-            </div>
-            <div class="ui card">
-                <div class="content">
-                    <div class="header">Vauxhall Astra</div>
-                </div>
-                <div class="content">
-                    <h4 class="ui sub header">Miles per Gallon</h4>
-                    <div class="content">
-                        41
-                    </div>
-                    <h4 class="ui sub header">Fuel Type</h4>
-                    <div class="content">
-                        Petrol
-                    </div>
-                    <h4 class="ui sub header">Engine Size</h4>
-                    <div class="content">
-                        1.2
-                    </div>
-                </div>
-                <div class="extra content">
-                    <a href="{{ url_for('trends.show_car', car=VauxhallAstra, mpg=41, fuel=petrol, engine=1.2) }}">
-                        <button class="ui button">View Vauxhall Astra</button>
-                    </a>
-                </div>
+                <div class="ui hidden divider"></div>
+                {% endfor %}
+                
+                <button class="ui button fluid green theme-4" onclick='RefreshCarRecommendations(this);'>
+                    <i class="fa-solid fa-arrows-rotate" style="color: white !important;"></i>
+                    Refresh Car Recommendations
+                </button>
             </div>
         </div>
-          
-        <div class="ui segment">
-            <h2>1 month</h2>
-            <table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
-            <tr>
-                <td>
-                    <h2>
-                        £{{fuel_costs[0]}}
-                    </h2>
-                    <div>
-                        Expected Fuel Cost
-                    </div>
-                </td>
-                <td>
-                    <h2>
-                        {{co2_emissions[0]}}kg
-                    </h2>
-                    <div>
-                        Expected CO2 Emissions
-                    </div>
-                </td>
-            </tr>
-            </table>
-        </div>
-        <div class="ui segment">
-            <h2>3 months</h2>
-            <table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
-                <tr>
-                    <td>
-                        <h2>
-                            £{{fuel_costs[1]}}
-                        </h2>
-                        <div>
-                            Expected Fuel Cost
-                        </div>
-                    </td>
-                    <td>
-                        <h2>
-                            {{co2_emissions[1]}}kg
-                        </h2>
-                        <div>
-                            Expected CO2 Emissions
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div class="ui segment">
-            <h2>6 months</h2>
-            <table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
-                <tr>
-                    <td>
-                        <h2>
-                            £{{fuel_costs[2]}}
-                        </h2>
-                        <div>
-                            Expected Fuel Cost
-                        </div>
-                    </td>
-                    <td>
-                        <h2>
-                            {{co2_emissions[2]}}kg
-                        </h2>
-                        <div>
-                            Expected CO2 Emissions
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div class="ui segment">
-            <h2>1 year</h2>
-            <table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
-                <tr>
-                    <td>
-                        <h2>
-                            £{{fuel_costs[3]}}
-                        </h2>
-                        <div>
-                            Expected Fuel Cost
-                        </div>
-                    </td>
-                    <td>
-                        <h2>
-                            {{co2_emissions[3]}}kg
-                        </h2>
-                        <div>
-                            Expected CO2 Emissions
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div class="ui segment">
-            <h2>5 years</h2>
-            <table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
-                <tr>
-                    <td>
-                        <h2>
-                            £{{fuel_costs[4]}}
-                        </h2>
-                        <div>
-                            Expected Fuel Cost
-                        </div>
-                    </td>
-                    <td>
-                        <h2>
-                            {{co2_emissions[4]}}kg
-                        </h2>
-                        <div>
-                            Expected CO2 Emissions
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div class="ui segment">
-            <h2>10 years</h2>
-            <table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
-                <tr>
-                    <td>
-                        <h2>
-                            £{{fuel_costs[5]}}
-                        </h2>
-                        <div>
-                            Expected Fuel Cost
-                        </div>
-                    </td>
-                    <td>
-                        <h2>
-                            {{co2_emissions[5]}}kg
-                        </h2>
-                        <div>
-                            Expected CO2 Emissions
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
+        
     </div>
 
 
@@ -422,6 +357,10 @@
         font-family: "Open Sans", "Helvetica", "Montserrat", sans-serif;
     }
 
+    body{
+        background: #F4F9F4;
+    }
+
     .nav{
 		background: -webkit-linear-gradient(to right, #2cafa4, #74B49B) !important;
 		background: linear-gradient(to right, #2cafa4, #74B49B) !important;
@@ -432,16 +371,39 @@
 	.nav .item{
 		color: #FFFFFF !important;	
 	}
+
+    .ribbon:after {
+        border-right-color: #74B49B !important;
+    }
 	
 	.active{
 		border-bottom-color: #FFFFFF !important;
 	}
 
+    h2{
+        margin-bottom: 0px;
+    }
+
     .top-padding {
         padding-top: 20px;
     }
 
+    .fa-spinner {
+        animation: fa-spin 2s infinite linear;
+    }
+
 
 </style>
+
+<script>
+    function RefreshCarRecommendations(btn){
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner" style="color: white !important;"></i> Refreshing';
+
+        setTimeout(function(){
+            window.location.reload();
+        },500);
+    }
+</script>
 
 </html>
