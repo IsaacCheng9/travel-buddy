@@ -47,7 +47,7 @@ def routes() -> object:
             map_query=map_query,
             autocomplete_query=autocomplete_query,
             route_exists=False,
-            home_and_work=home_and_work,
+            home_and_work=home_and_work
         )
 
     elif request.method == "POST":
@@ -194,11 +194,10 @@ def routes() -> object:
             fuel_cost_driving,
             fuel_type,
         )
-
+    
         helper_routes.save_route(session.get("username", "unknown"), address1, address2)
         most_frequent_route = helper_routes.get_most_frequent_route()
         home_and_work = helper_routes.get_home_and_work()
-        print(home_and_work)
         return render_template(
             "routes.html",
             username=session.get("username"),
@@ -220,5 +219,5 @@ def routes() -> object:
             fuel_price=format(fuel_price, ".2f"),
             calories=calories,
             recommendations=recommendations,
-            home_and_work=home_and_work,
+            home_and_work=home_and_work
         )
