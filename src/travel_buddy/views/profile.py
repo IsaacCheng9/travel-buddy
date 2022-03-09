@@ -27,6 +27,7 @@ def my_profile() -> object:
         Redirection to their profile if they're logged in.
     """
     if "username" in session:
+        helper_general.get_electric_cars()
         return redirect("/profile/" + session["username"])
 
     return redirect("/")

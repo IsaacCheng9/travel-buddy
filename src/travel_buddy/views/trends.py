@@ -45,6 +45,8 @@ def show_car():
         session.get("username")
     )
 
+    evs = helper_general.get_electric_cars()
+
     print(request.args)
     details = {k: v for k, v in request.args.items()} if request.args else {}
     print(details)
@@ -66,6 +68,7 @@ def show_car():
     return render_template(
         "trends.html",
         username=session.get("username"),
+        evs=evs,
         car_make=car_make,
         car_mpg=car_mpg,
         fuel_type=fuel_type,

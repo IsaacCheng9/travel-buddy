@@ -45,243 +45,204 @@
     <div class="ui container">
         <div class="top-padding"></div>
 
-        <div class="ui four cards" >
-            <div class="ui card">
-                <div class="content">
-                    <div class="header">Your {{car_make}}</div>
+                    
+            
+        <div class="ui grid">
+            <div class="ten wide column" style="height:calc(100vh - 60px); overflow:auto;">
+                <div class="ui segment">
+                    <h2>1 month</h2>
+                    <table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
+                    <tr>
+                        <td>
+                            <h2>
+                                £{{fuel_costs[0]}}
+                            </h2>
+                            <div>
+                                Expected Fuel Cost
+                            </div>
+                        </td>
+                        <td>
+                            <h2>
+                                {{co2_emissions[0]}}kg
+                            </h2>
+                            <div>
+                                Expected CO2 Emissions
+                            </div>
+                        </td>
+                    </tr>
+                    </table>
                 </div>
-                <div class="content">
-                    <h4 class="ui sub header">Miles per Gallon</h4>
-                    <div class="content">
-                        {{car_mpg}}
-                    </div>
-                    <h4 class="ui sub header">Fuel Type</h4>
-                    <div class="content">
-                        {{fuel_type}}
-                    </div>
-                    <h4 class="ui sub header">Engine Size</h4>
-                    <div class="content">
-                        {{engine_size}}
-                    </div>
+                <div class="ui segment">
+                    <h2>3 months</h2>
+                    <table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
+                        <tr>
+                            <td>
+                                <h2>
+                                    £{{fuel_costs[1]}}
+                                </h2>
+                                <div>
+                                    Expected Fuel Cost
+                                </div>
+                            </td>
+                            <td>
+                                <h2>
+                                    {{co2_emissions[1]}}kg
+                                </h2>
+                                <div>
+                                    Expected CO2 Emissions
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
-                <div class="extra content">
-                    <a href="{{ url_for('trends.show_car', car=car_make, mpg=car_mpg, fuel=fuel_type, engine=engine_size) }}">
-                        <button class="ui button">View {{car_make}}</button>
-                    </a>  
+                <div class="ui segment">
+                    <h2>6 months</h2>
+                    <table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
+                        <tr>
+                            <td>
+                                <h2>
+                                    £{{fuel_costs[2]}}
+                                </h2>
+                                <div>
+                                    Expected Fuel Cost
+                                </div>
+                            </td>
+                            <td>
+                                <h2>
+                                    {{co2_emissions[2]}}kg
+                                </h2>
+                                <div>
+                                    Expected CO2 Emissions
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="ui segment">
+                    <h2>1 year</h2>
+                    <table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
+                        <tr>
+                            <td>
+                                <h2>
+                                    £{{fuel_costs[3]}}
+                                </h2>
+                                <div>
+                                    Expected Fuel Cost
+                                </div>
+                            </td>
+                            <td>
+                                <h2>
+                                    {{co2_emissions[3]}}kg
+                                </h2>
+                                <div>
+                                    Expected CO2 Emissions
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="ui segment">
+                    <h2>5 years</h2>
+                    <table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
+                        <tr>
+                            <td>
+                                <h2>
+                                    £{{fuel_costs[4]}}
+                                </h2>
+                                <div>
+                                    Expected Fuel Cost
+                                </div>
+                            </td>
+                            <td>
+                                <h2>
+                                    {{co2_emissions[4]}}kg
+                                </h2>
+                                <div>
+                                    Expected CO2 Emissions
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="ui segment">
+                    <h2>10 years</h2>
+                    <table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
+                        <tr>
+                            <td>
+                                <h2>
+                                    £{{fuel_costs[5]}}
+                                </h2>
+                                <div>
+                                    Expected Fuel Cost
+                                </div>
+                            </td>
+                            <td>
+                                <h2>
+                                    {{co2_emissions[5]}}kg
+                                </h2>
+                                <div>
+                                    Expected CO2 Emissions
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
-            <div class="ui card">
-                <div class="content">
-                    <div class="header">Renault Clio</div>
-                </div>
-                <div class="content">
-                    <h4 class="ui sub header">Miles per Gallon</h4>
+            <div class="six wide column" style="height:calc(100vh - 60px); overflow:auto;">
+                <div class="ui card fluid">
                     <div class="content">
-                        51
+                        <div class="header">Your {{car_make}}</div>
                     </div>
-                    <h4 class="ui sub header">Fuel Type</h4>
                     <div class="content">
-                        Petrol
+                        <h4 class="ui sub header">Miles per Gallon</h4>
+                        <div class="content">
+                            {{car_mpg}}
+                        </div>
+                        <h4 class="ui sub header">Fuel Type</h4>
+                        <div class="content">
+                            {{fuel_type}}
+                        </div>
+                        <h4 class="ui sub header">Engine Size</h4>
+                        <div class="content">
+                            {{engine_size}}
+                        </div>
                     </div>
-                    <h4 class="ui sub header">Engine Size</h4>
-                    <div class="content">
-                        1.0
-                    </div>
-                </div>
-                <div class="extra content">
-                    <a href="{{ url_for('trends.show_car', car=ReanultClio, mpg=51, fuel=petrol, engine=1.0) }}">
-                        <button class="ui button">View Renault Clio</button>
-                    </a>
-                </div>
-            </div>
-            <div class="ui card">
-                <div class="content">
-                    <div class="header">Audi A1</div>
-                </div>
-                <div class="content">
-                    <h4 class="ui sub header">Miles per Gallon</h4>
-                    <div class="content">
-                        74
-                    </div>
-                    <h4 class="ui sub header">Fuel Type</h4>
-                    <div class="content">
-                        Diesel
-                    </div>
-                    <h4 class="ui sub header">Engine Size</h4>
-                    <div class="content">
-                        1.6
+                    <div class="extra content">
+                        <a href="{{ url_for('trends.show_car', car=car_make, mpg=car_mpg, fuel=fuel_type, engine=engine_size) }}">
+                            <button class="ui button">View {{car_make}}</button>
+                        </a>  
                     </div>
                 </div>
-                <div class="extra content">
-                    <a href="{{ url_for('trends.show_car', car=AudiA1, mpg=74, fuel=diesel, engine=1.6) }}">
-                        <button class="ui button">View Audi A1</button>
-                    </a>
-                </div>
-            </div>
-            <div class="ui card">
-                <div class="content">
-                    <div class="header">Vauxhall Astra</div>
-                </div>
-                <div class="content">
-                    <h4 class="ui sub header">Miles per Gallon</h4>
+                {% for ev in evs %}
+                <div class="ui card fluid">
                     <div class="content">
-                        41
+                        <div class="header">{{ ev[0] }}  {{ ev[1] }}</div>
                     </div>
-                    <h4 class="ui sub header">Fuel Type</h4>
                     <div class="content">
-                        Petrol
+                        <h4 class="ui sub header">Efficiency</h4>
+                        <div class="content">
+                            {{ ev[3] }}
+                        </div>
+                        <h4 class="ui sub header">Fuel Type</h4>
+                        <div class="content">
+                            Electric
+                        </div>
+                        <h4 class="ui sub header">Price</h4>
+                        <div class="content">
+                            {{ ev[2] }}
+                        </div>
+                        <img class="ui image fluid" src="{{ ev[4] }}"/>
                     </div>
-                    <h4 class="ui sub header">Engine Size</h4>
-                    <div class="content">
-                        1.2
+                    <div class="extra content">
+                        <a href="{{ url_for('trends.show_car', car=ReanultClio, mpg=51, fuel=petrol, engine=1.0) }}">
+                            <button class="ui button">View {{ ev[0] }} {{ ev[1] }}</button>
+                        </a>
                     </div>
                 </div>
-                <div class="extra content">
-                    <a href="{{ url_for('trends.show_car', car=VauxhallAstra, mpg=41, fuel=petrol, engine=1.2) }}">
-                        <button class="ui button">View Vauxhall Astra</button>
-                    </a>
-                </div>
+                {% endfor %}
             </div>
         </div>
-          
-        <div class="ui segment">
-            <h2>1 month</h2>
-            <table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
-            <tr>
-                <td>
-                    <h2>
-                        £{{fuel_costs[0]}}
-                    </h2>
-                    <div>
-                        Expected Fuel Cost
-                    </div>
-                </td>
-                <td>
-                    <h2>
-                        {{co2_emissions[0]}}kg
-                    </h2>
-                    <div>
-                        Expected CO2 Emissions
-                    </div>
-                </td>
-            </tr>
-            </table>
-        </div>
-        <div class="ui segment">
-            <h2>3 months</h2>
-            <table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
-                <tr>
-                    <td>
-                        <h2>
-                            £{{fuel_costs[1]}}
-                        </h2>
-                        <div>
-                            Expected Fuel Cost
-                        </div>
-                    </td>
-                    <td>
-                        <h2>
-                            {{co2_emissions[1]}}kg
-                        </h2>
-                        <div>
-                            Expected CO2 Emissions
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div class="ui segment">
-            <h2>6 months</h2>
-            <table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
-                <tr>
-                    <td>
-                        <h2>
-                            £{{fuel_costs[2]}}
-                        </h2>
-                        <div>
-                            Expected Fuel Cost
-                        </div>
-                    </td>
-                    <td>
-                        <h2>
-                            {{co2_emissions[2]}}kg
-                        </h2>
-                        <div>
-                            Expected CO2 Emissions
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div class="ui segment">
-            <h2>1 year</h2>
-            <table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
-                <tr>
-                    <td>
-                        <h2>
-                            £{{fuel_costs[3]}}
-                        </h2>
-                        <div>
-                            Expected Fuel Cost
-                        </div>
-                    </td>
-                    <td>
-                        <h2>
-                            {{co2_emissions[3]}}kg
-                        </h2>
-                        <div>
-                            Expected CO2 Emissions
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div class="ui segment">
-            <h2>5 years</h2>
-            <table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
-                <tr>
-                    <td>
-                        <h2>
-                            £{{fuel_costs[4]}}
-                        </h2>
-                        <div>
-                            Expected Fuel Cost
-                        </div>
-                    </td>
-                    <td>
-                        <h2>
-                            {{co2_emissions[4]}}kg
-                        </h2>
-                        <div>
-                            Expected CO2 Emissions
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div class="ui segment">
-            <h2>10 years</h2>
-            <table class="ui very basic collapsing celled table" style="text-align: center; width: 100%;">
-                <tr>
-                    <td>
-                        <h2>
-                            £{{fuel_costs[5]}}
-                        </h2>
-                        <div>
-                            Expected Fuel Cost
-                        </div>
-                    </td>
-                    <td>
-                        <h2>
-                            {{co2_emissions[5]}}kg
-                        </h2>
-                        <div>
-                            Expected CO2 Emissions
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
+        
     </div>
 
 
@@ -422,6 +383,10 @@
         font-family: "Open Sans", "Helvetica", "Montserrat", sans-serif;
     }
 
+    body{
+        background: #F4F9F4;
+    }
+
     .nav{
 		background: -webkit-linear-gradient(to right, #2cafa4, #74B49B) !important;
 		background: linear-gradient(to right, #2cafa4, #74B49B) !important;
@@ -436,6 +401,10 @@
 	.active{
 		border-bottom-color: #FFFFFF !important;
 	}
+
+    h2{
+        margin-bottom: 0px;
+    }
 
     .top-padding {
         padding-top: 20px;
