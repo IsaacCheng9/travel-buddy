@@ -1,1 +1,1 @@
-web: gunicorn app:app 
+web: gunicorn src/travel_buddy/app:app 
