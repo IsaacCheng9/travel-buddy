@@ -1,1 +1,1 @@
-web: gunicorn src/travel_buddy/app:app 
+web: gunicorn src.wsgi
