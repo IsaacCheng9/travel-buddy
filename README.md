@@ -9,7 +9,7 @@ A travel companion to help plan your journey while saving both money and the
 planet by providing route analysis and a carpool marketplace.
 
 ## Visuals
-![Carpool marketplace](https://i.imgur.com/D83uUKN.gif)
+![Carpool marketplace](https://i.imgur.com/mQ80LfN.gif)
 
 ## Installation
 
