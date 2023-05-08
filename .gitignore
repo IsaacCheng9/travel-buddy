@@ -133,3 +133,6 @@ dmypy.json
 
 # Ignore VS Code config files
 .vscode/
+
+.terraform/
+.terraform.*
