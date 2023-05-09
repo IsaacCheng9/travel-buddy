@@ -13,10 +13,21 @@ resource "aws_instance" "travel-buddy-instance" {
   instance_type = "t2.micro"
   vpc_security_group_ids = [aws_security_group.travel-buddy-sgroup.id]
   subnet_id = aws_subnet.travel-buddy-subnet.id
+  provisioner "remote-exec" {
+    inline = [
+      "sudo mkdir /home/ec2-user/travel-buddy"
+    ]
+  }
 
   provisioner "file" {
-    source      = "."
-    destination = "/etc/myapp.conf"
+      source      = "install.sh"      
+      destination = "/home/ec2-user/travel-buddy/install.sh" 
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "./install.sh"
+    ]
   }
 }
 
