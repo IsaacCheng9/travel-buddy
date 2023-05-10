@@ -4,6 +4,9 @@ sudo yum install -y git
 cd /home/ec2-user/
 git clone https://github.com/KPiatigorskii/travel-buddy
 cd travel-buddy/
-sudo pip3 install -r requirements.txt
-sudo pip3 install -e .
+python3 -m venv env
+source env/bin/activate
+pip3 install -r requirements.txt
+sudo chown -R ec2-user:ec2-user /home/ec2-user/travel-buddy/src/travel_buddy.egg-info
+pip3 install -e .
     
