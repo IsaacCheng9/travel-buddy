@@ -13,37 +13,48 @@ resource "aws_instance" "travel-buddy-instance" {
   instance_type = "t2.micro"
   vpc_security_group_ids = [aws_security_group.travel-buddy-sgroup.id]
   subnet_id = aws_subnet.travel-buddy-subnet.id
-  provisioner "remote-exec" {
-    inline = [
-      "sudo mkdir /home/ec2-user/travel-buddy"
-    ]
-  }
+  associate_public_ip_address = true
+  key_name =  "${aws_key_pair.deployer-key.key_name}"
 
   provisioner "file" {
-      source      = "install.sh"      
-      destination = "/home/ec2-user/travel-buddy/install.sh" 
+    connection {
+      host = self.public_ip
+      type     = "ssh"
+      user     = "ec2-user"
+      private_key = "${file("~/.ssh/id_rsa")}"
+    }
+    source      = "install.sh"      
+    destination = "/home/ec2-user/install.sh" 
   }
 
-  provisioner "remote-exec" {
+  provisioner "remote-exec" { 
+    connection {
+      host = self.public_ip
+      type     = "ssh"
+      user     = "ec2-user"
+      private_key = "${file("~/.ssh/id_rsa")}"
+    }
     inline = [
-      "./install.sh"
+      "chmod +x /home/ec2-user/script.sh",
+      "./home/ec2-user/install.sh"
     ]
   }
 }
+
+
+ output "public_ip" {
+  value = aws_instance.travel-buddy-instance.public_ip  
+ }
+
+  output "public_dns" {
+  value = aws_instance.travel-buddy-instance.public_dns  
+ }
 
 resource "aws_vpc" "travel-buddy-vpc" {
     cidr_block = var.vpc_cidr_block
     tags = {
         Name: "${var.env_prefix}-travel-buddy-vpc"
     }
-}
-
-resource "aws_internet_gateway" "travel-buddy-gateway" {
-  vpc_id = aws_vpc.travel-buddy-vpc.id
-
-  tags = {
-    Name = "main"
-  }
 }
 
 resource "aws_subnet" "travel-buddy-subnet" {
@@ -71,6 +82,11 @@ resource "aws_route_table" "travel-buddy-route-table" {
   tags = {
     Name: "${var.env_prefix}-rtb"
   }
+}
+
+resource "aws_route_table_association" "travel-buddy-rtba" {
+  subnet_id = aws_subnet.travel-buddy-subnet.id
+  route_table_id = aws_route_table.travel-buddy-route-table.id
 }
 
 resource "aws_security_group" "travel-buddy-sgroup" {
