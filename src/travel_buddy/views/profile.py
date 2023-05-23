@@ -54,7 +54,6 @@ def profile(username: str) -> object:
 
     # Gets the user's details from the database.
     with sqlite3.connect(DB_PATH) as conn:
-
         profile_data, message = get_profile(conn, username, message)
         if message:
             # TODO: Add HTML template for error page.

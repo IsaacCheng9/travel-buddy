@@ -263,9 +263,13 @@ def add_carpool_ride(
         )
 
 
-def get_incomplete_carpools() -> List[
-    Tuple[int, str, int, str, str, str, float, str, float, int, float, float, str, int]
-]:
+def get_incomplete_carpools() -> (
+    List[
+        Tuple[
+            int, str, int, str, str, str, float, str, float, int, float, float, str, int
+        ]
+    ]
+):
     """
     Gets all incomplete carpools in the database and ratings for the driver.
 

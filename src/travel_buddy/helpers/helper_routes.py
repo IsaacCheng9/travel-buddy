@@ -265,7 +265,6 @@ def generate_co2_emissions(
         return carbon
 
     elif mode == "public transport":
-
         """
         #bus
         query_bus = "passenger_vehicle-vehicle_type_local_bus-fuel_source_na-distance_na-engine_size_na"
