@@ -2,7 +2,6 @@
 Helper functions for the carpool system and related functionality.
 """
 
-
 import sqlite3
 from datetime import datetime, timedelta
 from typing import List, Tuple

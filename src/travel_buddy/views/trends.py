@@ -1,6 +1,7 @@
 """
 Handles the view for long term trends and estimations for a user.
 """
+
 import travel_buddy.helpers.helper_routes as helper_routes
 import travel_buddy.helpers.helper_general as helper_general
 

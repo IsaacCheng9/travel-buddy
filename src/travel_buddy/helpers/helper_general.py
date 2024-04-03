@@ -1,6 +1,7 @@
 """
 Handles helper functions for general use cases, such as getting database path.
 """
+
 import datetime
 import json
 import os
