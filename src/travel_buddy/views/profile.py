@@ -6,11 +6,11 @@ import sqlite3
 from typing import List, Tuple
 from datetime import datetime
 
-import travel_buddy.helpers.helper_general as helper_general
-import travel_buddy.helpers.helper_carpool as helper_carpool
-import travel_buddy.helpers.helper_routes as helper_routes
+import src.travel_buddy.helpers.helper_general as helper_general
+import src.travel_buddy.helpers.helper_carpool as helper_carpool
+import src.travel_buddy.helpers.helper_routes as helper_routes
 from flask import Blueprint, redirect, render_template, request, session
-from travel_buddy.helpers.helper_limiter import limiter
+from src.travel_buddy.helpers.helper_limiter import limiter
 
 profile_blueprint = Blueprint(
     "profile", __name__, static_folder="static", template_folder="templates"

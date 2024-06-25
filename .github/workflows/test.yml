@@ -1,4 +1,4 @@
-name: CI
+name: Test
 
 # Controls when the action will run.
 on:
@@ -8,45 +8,38 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  test:
     # The type of runner that the job will run on.
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     # Configures the build to use the latest version of Python 3.
     strategy:
       matrix:
-        python-version: [3.x]
+        python-version: [3.12.x]
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can
       # access it.
-      - uses: actions/checkout@v2
-
-      - name: Run Python code formatting with Black
-        uses: lgeiger/black-action@v1.0.1
-        with:
-          args: "."
-
-      - name: Commit changes made with code formatters
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: Format Python code with Black
+      - uses: actions/checkout@main
 
       - name: Switch to current branch
         run: git checkout ${{ env.BRANCH }}
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@main
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install dependencies
+      - name: Install Poetry
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install -e .
+          pip install poetry
+
+      - name: Install Python dependencies with Poetry
+        run: |
+          poetry install
 
       - name: Run unit tests with Pytest
-        run: coverage run --source=src -m pytest -v
+        run: poetry run coverage run --source=src/travel_buddy -m pytest -v
 
       - name: Get code coverage report
-        run: coverage report -m
+        run: poetry run coverage report -m

@@ -4,10 +4,10 @@ Handles the view for the user login system and related functionality.
 
 import sqlite3
 
-import travel_buddy.helpers.helper_general as helper_general
-import travel_buddy.helpers.helper_login as helper_login
+import src.travel_buddy.helpers.helper_general as helper_general
+import src.travel_buddy.helpers.helper_login as helper_login
 from flask import Blueprint, redirect, render_template, request, session
-from travel_buddy.helpers.helper_limiter import limiter
+from src.travel_buddy.helpers.helper_limiter import limiter
 
 login_blueprint = Blueprint(
     "login", __name__, static_folder="static", template_folder="templates"

@@ -4,10 +4,10 @@ Handles the view for the route details check functionality
 
 import logging
 
-import travel_buddy.helpers.helper_general as helper_general
-import travel_buddy.helpers.helper_routes as helper_routes
+import src.travel_buddy.helpers.helper_general as helper_general
+import src.travel_buddy.helpers.helper_routes as helper_routes
 from flask import Blueprint, render_template, request, session, redirect
-from travel_buddy.helpers.helper_limiter import limiter
+from src.travel_buddy.helpers.helper_limiter import limiter
 
 routes_blueprint = Blueprint(
     "routes", __name__, static_folder="static", template_folder="templates"
@@ -140,9 +140,10 @@ def routes() -> object:
             logging.warning(f"Failed to find shortest and longest distances - {e}")
 
         # Gets the full address of the origin and destination.
-        address1, address2 = helper_routes.safeget(
-            details, "origin"
-        ), helper_routes.safeget(details, "destination")
+        address1, address2 = (
+            helper_routes.safeget(details, "origin"),
+            helper_routes.safeget(details, "destination"),
+        )
 
         # Displays Google Map preview for the selected mode of transport.
         origin_convert = address1.replace(" ", "+")

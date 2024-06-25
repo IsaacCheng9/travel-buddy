@@ -1,20 +1,20 @@
 from flask import Flask
 
-import travel_buddy.helpers.helper_general as helper_general
-import travel_buddy.views.carpool as carpool
-import travel_buddy.views.login as login
-import travel_buddy.views.profile as profile
-import travel_buddy.views.register as register
-import travel_buddy.views.routes as routes
-import travel_buddy.views.settings as settings
-import travel_buddy.views.trends as trends
-from travel_buddy.helpers.helper_limiter import limiter
+import src.travel_buddy.helpers.helper_general as helper_general
+import src.travel_buddy.views.carpool as carpool
+import src.travel_buddy.views.login as login
+import src.travel_buddy.views.profile as profile
+import src.travel_buddy.views.register as register
+import src.travel_buddy.views.routes as routes
+import src.travel_buddy.views.settings as settings
+import src.travel_buddy.views.trends as trends
+from src.travel_buddy.helpers.helper_limiter import limiter
 
 API_KEY_FILE = "keys.json"
 KEYS = helper_general.get_keys(API_KEY_FILE)
 
 
-def create_app() -> Flask:
+def main() -> Flask:
     """
     Creates an instance of the Flask web application.
 
@@ -33,8 +33,9 @@ def create_app() -> Flask:
 
     app.url_map.strict_slashes = False
     app.secret_key = KEYS["app_secret_key"]
+    app.run(debug=True)
     return app
 
 
 if __name__ == "__main__":
-    create_app().run(debug=True)
+    main().run(debug=True)

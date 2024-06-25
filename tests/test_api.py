@@ -2,8 +2,8 @@
 Tests the validity of api keys and api return values
 """
 
-import travel_buddy.helpers.helper_routes as helper_routes
-import travel_buddy.helpers.helper_general as helper_general
+import src.travel_buddy.helpers.helper_routes as helper_routes
+import src.travel_buddy.helpers.helper_general as helper_general
 
 
 def test_key_is_read():

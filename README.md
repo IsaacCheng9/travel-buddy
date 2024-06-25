@@ -1,7 +1,10 @@
 # Travel Buddy
 
-[![code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-![CI](https://github.com/IsaacCheng9/travel-buddy/actions/workflows/main.yml/badge.svg)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+![Test](https://github.com/IsaacCheng9/travel-buddy/actions/workflows/test.yml/badge.svg)
+
+**UPDATE (25th June 2024):** The application is no longer fully functional due
+to outdated code for scraping data from websites.
 
 **UPDATE (30th August 2022):** The route analysis and related features such as
 location autocomplete are currently unavailable as our key for the Google Maps
@@ -19,34 +22,31 @@ planet by providing route analysis and a carpool marketplace.
 <img width="2056" alt="image" src="https://user-images.githubusercontent.com/47993930/160259727-5bda8093-7a97-498a-b338-8806284647eb.png">
 <img width="2056" alt="image" src="https://user-images.githubusercontent.com/47993930/160259626-7fe98e35-d7b0-4a2e-abf8-a2faa9b0e492.png">
 
-## Installation
+## Usage
 
-### Python Version
+### Installing Dependencies
 
-The application has been developed and tested to work on _Python 3.8_ and
-onwards.
+Run the following command from the [project root](./) directory:
 
-### Running the Application Locally
+```bash
+poetry install
+```
 
-To run the application, you should follow the following steps:
+### Running the Application
 
-1. Clone this GitHub repository.
-2. Ensure that you're in the root directory: `travel-buddy`
-3. Install the required Python libraries: `pip install -r requirements.txt`
-4. Install the code as a package on your local machine with the command:
-   `pip install -e .`
-5. Run the application with the command: `python -m travel_buddy.app`
-6. Navigate to <http://127.0.0.1:5000/> in your web browser.
+Run the following command from the [project root](./) directory:
 
-### Running Tests Locally
+```bash
+poetry run app
+```
 
-1. Clone this GitHub repository.
-2. Ensure that you're in the root directory: `travel-buddy`
-3. Install the required Python libraries: `pip install -r requirements.txt`
-4. Install the code as a package on your local machine with the command:
-   `pip install -e .`
-5. Run all tests with the command `python -m pytest`
-6. View test results in the terminal.
+### Running Tests
+
+Run the following command from the [project root](./) directory:
+
+```bash
+poetry run pytest
+```
 
 ## Demo Instructions
 

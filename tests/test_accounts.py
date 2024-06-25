@@ -6,8 +6,8 @@ registration and user login.
 import random
 import string
 
-import travel_buddy.helpers.helper_login as helper_login
-import travel_buddy.helpers.helper_register as helper_register
+import src.travel_buddy.helpers.helper_login as helper_login
+import src.travel_buddy.helpers.helper_register as helper_register
 
 
 def test_password_hashing():

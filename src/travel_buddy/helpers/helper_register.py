@@ -6,7 +6,7 @@ import sqlite3
 from typing import List, Tuple
 
 import bcrypt
-import travel_buddy.helpers.helper_general as helper_general
+import src.travel_buddy.helpers.helper_general as helper_general
 
 DB_PATH = helper_general.get_database_path()
 

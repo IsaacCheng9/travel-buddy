@@ -6,8 +6,8 @@ requests.
 import sqlite3
 from datetime import datetime
 
-import travel_buddy.helpers.helper_carpool as helper_carpool
-import travel_buddy.helpers.helper_general as helper_general
+import src.travel_buddy.helpers.helper_carpool as helper_carpool
+import src.travel_buddy.helpers.helper_general as helper_general
 from pytest_steps import test_steps
 
 DB_PATH = helper_general.get_database_path()

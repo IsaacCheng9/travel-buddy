@@ -2,7 +2,7 @@
 Tests the correctness of information given by routes analysis.
 """
 
-import travel_buddy.helpers.helper_routes as helper_routes
+import src.travel_buddy.helpers.helper_routes as helper_routes
 
 
 def test_convert_km_to_miles():
