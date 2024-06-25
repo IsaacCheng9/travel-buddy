@@ -1,7 +1,7 @@
 # Travel Buddy
 
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
-![CI](https://github.com/IsaacCheng9/travel-buddy/actions/workflows/main.yml/badge.svg)
+![Tests](https://github.com/IsaacCheng9/travel-buddy/actions/workflows/tests.yml/badge.svg)
 
 **UPDATE (25th June 2024):** The application is no longer fully functional due
 to outdated code for scraping data from websites.
