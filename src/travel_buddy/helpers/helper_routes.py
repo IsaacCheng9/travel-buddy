@@ -207,9 +207,10 @@ def get_distance_range(sorted_keys, details) -> str:
     """
     Calculate range of distances and format as string
     """
-    lowest, highest = safeget(
-        details, "modes", sorted_keys[0], "distance", "text"
-    ), safeget(details, "modes", sorted_keys[-1], "distance", "text")
+    lowest, highest = (
+        safeget(details, "modes", sorted_keys[0], "distance", "text"),
+        safeget(details, "modes", sorted_keys[-1], "distance", "text"),
+    )
     if lowest == highest:
         return lowest
     else:

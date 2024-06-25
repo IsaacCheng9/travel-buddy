@@ -140,9 +140,10 @@ def routes() -> object:
             logging.warning(f"Failed to find shortest and longest distances - {e}")
 
         # Gets the full address of the origin and destination.
-        address1, address2 = helper_routes.safeget(
-            details, "origin"
-        ), helper_routes.safeget(details, "destination")
+        address1, address2 = (
+            helper_routes.safeget(details, "origin"),
+            helper_routes.safeget(details, "destination"),
+        )
 
         # Displays Google Map preview for the selected mode of transport.
         origin_convert = address1.replace(" ", "+")
