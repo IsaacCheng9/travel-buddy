@@ -2,10 +2,10 @@
 Handles the view for the user registration system and related functionality.
 """
 
-import travel_buddy.helpers.helper_general as helper_general
-import travel_buddy.helpers.helper_register as helper_register
+import src.travel_buddy.helpers.helper_general as helper_general
+import src.travel_buddy.helpers.helper_register as helper_register
 from flask import Blueprint, redirect, render_template, request, session
-from travel_buddy.helpers.helper_limiter import limiter
+from src.travel_buddy.helpers.helper_limiter import limiter
 
 register_blueprint = Blueprint(
     "register", __name__, static_folder="static", template_folder="templates"

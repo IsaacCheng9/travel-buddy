@@ -4,10 +4,10 @@ Handles the view for the route details check functionality
 
 import logging
 
-import travel_buddy.helpers.helper_general as helper_general
-import travel_buddy.helpers.helper_routes as helper_routes
+import src.travel_buddy.helpers.helper_general as helper_general
+import src.travel_buddy.helpers.helper_routes as helper_routes
 from flask import Blueprint, render_template, request, session, redirect
-from travel_buddy.helpers.helper_limiter import limiter
+from src.travel_buddy.helpers.helper_limiter import limiter
 
 routes_blueprint = Blueprint(
     "routes", __name__, static_folder="static", template_folder="templates"

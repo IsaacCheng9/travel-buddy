@@ -6,8 +6,8 @@ import sqlite3
 from datetime import datetime, timedelta
 from typing import List, Tuple
 
-import travel_buddy.helpers.helper_general as helper_general
-import travel_buddy.helpers.helper_routes as helper_routes
+import src.travel_buddy.helpers.helper_general as helper_general
+import src.travel_buddy.helpers.helper_routes as helper_routes
 
 DB_PATH = helper_general.get_database_path()
 

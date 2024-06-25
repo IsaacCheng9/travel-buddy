@@ -2,11 +2,11 @@
 Handles the view for long term trends and estimations for a user.
 """
 
-import travel_buddy.helpers.helper_routes as helper_routes
-import travel_buddy.helpers.helper_general as helper_general
+import src.travel_buddy.helpers.helper_routes as helper_routes
+import src.travel_buddy.helpers.helper_general as helper_general
 
 from flask import Blueprint, redirect, render_template, request, session, url_for
-from travel_buddy.helpers.helper_limiter import limiter
+from src.travel_buddy.helpers.helper_limiter import limiter
 
 trends_blueprint = Blueprint(
     "trends", __name__, static_folder="static", template_folder="templates"

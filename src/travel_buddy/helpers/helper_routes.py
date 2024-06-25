@@ -6,7 +6,7 @@ from typing import Tuple
 from flask import session
 import googlemaps
 import requests
-import travel_buddy.helpers.helper_general as helper_general
+import src.travel_buddy.helpers.helper_general as helper_general
 from lxml import html
 
 DB_PATH = helper_general.get_database_path()

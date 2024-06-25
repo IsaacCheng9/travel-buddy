@@ -4,7 +4,7 @@ Tests integrity of general helper functions.
 
 import datetime
 
-import travel_buddy.helpers.helper_general as helper_general
+import src.travel_buddy.helpers.helper_general as helper_general
 
 
 def test_string_to_date():
