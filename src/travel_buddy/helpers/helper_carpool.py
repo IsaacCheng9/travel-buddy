@@ -262,13 +262,9 @@ def add_carpool_ride(
         )
 
 
-def get_incomplete_carpools() -> (
-    List[
-        Tuple[
-            int, str, int, str, str, str, float, str, float, int, float, float, str, int
-        ]
-    ]
-):
+def get_incomplete_carpools() -> List[
+    Tuple[int, str, int, str, str, str, float, str, float, int, float, float, str, int]
+]:
     """
     Gets all incomplete carpools in the database and ratings for the driver.
 
@@ -547,8 +543,7 @@ def get_total_distance_carpooled(username: str) -> int:
         cur = conn.cursor()
         # Gets total distance drove by the user for a carpool.
         cur.execute(
-            "SELECT SUM(distance) FROM carpool_ride "
-            "WHERE driver=? AND is_complete=1;",
+            "SELECT SUM(distance) FROM carpool_ride WHERE driver=? AND is_complete=1;",
             (username,),
         )
         total_distance_drove = cur.fetchone()[0]

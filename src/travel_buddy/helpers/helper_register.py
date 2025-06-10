@@ -128,7 +128,7 @@ def register_user(
         cur = conn.cursor()
         # Creates the user account in the database.
         cur.execute(
-            "INSERT INTO account (username, password) " "VALUES (?, ?);",
+            "INSERT INTO account (username, password) VALUES (?, ?);",
             (
                 username,
                 hashed_password,
