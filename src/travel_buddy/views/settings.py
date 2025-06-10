@@ -45,7 +45,7 @@ def settings() -> object:
             work,
         ) = cur.fetchone()
         cur.execute(
-            "SELECT make, mpg, fuel_type, engine_size " "FROM car WHERE owner=?;",
+            "SELECT make, mpg, fuel_type, engine_size FROM car WHERE owner=?;",
             (session["username"],),
         )
         make, mpg, fuel_type, engine_size = cur.fetchone()

@@ -574,7 +574,7 @@ def append_ev_recommendation(distance, petrol_cost, petrol_co2) -> str:
             "An estimate for the electricity cost of this route "
             f"is <b>£{fuel_cost_ev}</b>, that's a saving of <b>£{cost_saved_2dp}</b>! "
             f"Additionally, you could expect to use just <b>{round(co2_emission_ev, 2)}kg</b> of CO2, "
-            f"that's <b>{round(co2_saved,2)}kg</b> less than in a petrol car."
+            f"that's <b>{round(co2_saved, 2)}kg</b> less than in a petrol car."
         )
     else:
         return ""
