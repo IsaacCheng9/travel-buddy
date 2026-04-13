@@ -17,7 +17,7 @@ pillow = "^12.1.1"
 
 [tool.poetry.group.dev.dependencies]
 coverage = "^7.5.4"
-pytest = "^8.2.2"
+pytest = ">=8.2.2,<10.0.0"
 pytest-steps = "^1.8.0"
 ruff = "^0.4.10"
 
